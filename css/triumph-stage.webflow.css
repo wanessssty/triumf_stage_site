@@ -4050,7 +4050,7 @@ figcaption {
 
 @media screen and (min-width: 1440px) {
   .hero {
-    background-position: 100%, 50% 90%;
+    background-position: 100%, 50% 100%;
   }
 
   .icon-first {
