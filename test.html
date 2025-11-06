@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul id="carList"></ul>
+</body>
+
+<script>
+const url = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/GetStations';
+
+fetch(url, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Отримані дані:', data);
+
+    if (data.status && Array.isArray(data.data)) {
+      const list = document.getElementById('carList');
+      data.data.forEach(car => {
+        const li = document.createElement('li');
+        li.textContent = car.name;
+        list.appendChild(li);
+      });
+    }
+  })
+  .catch(error => {
+    console.error('Помилка при отриманні даних:', error);
+  });
+
+</script>
+</html>
