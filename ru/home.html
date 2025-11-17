@@ -841,109 +841,34 @@
                     <div class="w-layout-grid form-grid outter">
                       <div class="w-layout-grid form-grid">
                         <div class="input-item">
-                          <p class="label dark blue">
-                            <span class="gray-text-2">Маршрут</span>
-                          </p>
-                          <select
-                            id="field"
-                            name="field"
-                            data-name="Послуги"
-                            class="input select-field w-select"
-                          >
+                          <p class="label dark blue"><span class="gray-text-2">Маршрут</span></p><select id="route-from" name="RouteFrom" data-name="Маршрут_Звідки" class="input select-field w-select">
                             <option value="">Откуда</option>
-                            <option value="First">First choice</option>
-                            <option value="Second">Second choice</option>
-                            <option value="Third">Third choice</option>
                           </select>
                         </div>
-                        <div class="input-item">
-                          <select
-                            id="field"
-                            name="field"
-                            data-name="Послуги"
-                            class="input select-field w-select"
-                          >
+                        <div class="input-item"><select id="route-to" name="RouteTo" data-name="Маршрут_Куди" class="input select-field w-select">
                             <option value="">Куда</option>
-                            <option value="First">First choice</option>
-                            <option value="Second">Second choice</option>
-                            <option value="Third">Third choice</option>
                           </select>
                         </div>
-                        <div
-                          id="w-node-_539bf559-4c54-f0b7-4991-3e0e829fd083-829fd06e"
-                          class="input-item"
-                        >
-                          <p class="label dark blue">
-                            <span class="gray-text-2">Тип груза</span>
-                          </p>
-                          <select
-                            id="field"
-                            name="field"
-                            data-name="Послуги"
-                            class="input select-field w-select"
-                          >
-                            <option value="">Выберите...</option>
-                            <option value="First">First choice</option>
-                            <option value="Second">Second choice</option>
-                            <option value="Third">Third choice</option>
-                          </select>
-                        </div>
-                        <div
-                          id="w-node-_539bf559-4c54-f0b7-4991-3e0e829fd088-829fd06e"
-                          class="input-item"
-                        >
-                          <p class="label dark blue">
-                            <span class="gray-text-2"
-                              >Тип подвижного состава</span
-                            >
-                          </p>
-                          <select
-                            id="field"
-                            name="field"
-                            data-name="Послуги"
-                            class="input select-field w-select"
-                          >
+                        <div id="w-node-_539bf559-4c54-f0b7-4991-3e0e829fd088-829fd06e" class="input-item">
+                          <p class="label dark blue"><span class="gray-text-2">Тип груза</span></p><select id="cargo-type" name="CargoType" data-name="Тип груза" class="input select-field w-select">
                             <option value="">Выбрать</option>
-                            <option value="First">First choice</option>
-                            <option value="Second">Second choice</option>
-                            <option value="Third">Third choice</option>
                           </select>
                         </div>
                         <div class="input-item">
                           <p class="label dark blue"><span class="gray-text-2">Тоннаж</span></p><input class="input w-input" maxlength="256" name="Tonnage" value="69" data-name="Tonnage" placeholder="Укажите тоннаж" id="Tonnage">
                         </div>
-                        <div class="input-item">
-                          <p class="label dark blue">Контактная информация</p>
-                          <input
-                            class="input w-input"
-                            maxlength="256"
-                            name="Contact-Phone"
-                            data-name="Contact Phone"
-                            placeholder="Ваш телефон"
-                            type="tel"
-                            id="Contact-Phone"
-                          />
+                        <div id="w-node-_539bf559-4c54-f0b7-4991-3e0e829fd088-829fd06e" class="input-item">
+                          <p class="label dark blue"><span class="gray-text-2">Тип подвижного состава</span></p><select id="field" name="field" data-name="Послуги" class="input select-field w-select">
+                            <option value="">Выбрать</option>
+                          </select>
                         </div>
                         <div class="input-item">
-                          <input
-                            class="input w-input"
-                            maxlength="256"
-                            name="Contact-Email"
-                            data-name="Contact Email"
-                            placeholder="Email"
-                            type="email"
-                            id="Contact-Email"
-                          />
+                          <p class="label dark blue"><span class="gray-text-2">Другой тип подвижного состава</span></p><input class="input w-input" maxlength="256" name="OtherRollingStock" data-name="OtherRollingStock" placeholder="Укажите другой тип" id="OtherRollingStock">
                         </div>
-                        <input
-                          class="input w-node-_539bf559-4c54-f0b7-4991-3e0e829fd098-829fd06e w-input"
-                          maxlength="256"
-                          name="Contact-Company"
-                          data-name="Contact Company"
-                          placeholder="Компания "
-                          type="text"
-                          id="Contact-Company"
-                        />
+                        <div class="input-item">
+                          <p class="label dark blue">Контактная информация</p><input class="input w-input" maxlength="256" name="Contact-Phone" data-name="Contact Phone" placeholder="Ваш телефон" type="tel" id="Contact-Phone">
+                        </div>
+                        <div class="input-item"><input class="input w-input" maxlength="256" name="Contact-Email" data-name="Contact Email" placeholder="Email" type="email" id="Contact-Email"></div><input class="input w-node-_539bf559-4c54-f0b7-4991-3e0e829fd098-829fd06e w-input" maxlength="256" name="Contact-Company" data-name="Contact Company" placeholder="Компания " type="text" id="Contact-Company">
                       </div>
                     </div>
                     <input
@@ -1424,5 +1349,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="../js/webflow.js" type="text/javascript"></script>
+    <script src="../js/index.js" type="text/javascript"></script>
   </body>
 </html>
