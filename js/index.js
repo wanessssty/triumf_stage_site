@@ -1,19 +1,16 @@
 (() => {
-  // Detect language from URL
   const detectLanguage = () => {
     const path = window.location.pathname;
     const href = window.location.href;
-    // Check for language in path or href
     if (path.includes('/ru/') || href.includes('/ru/')) return 'ru';
     if (path.includes('/pl/') || href.includes('/pl/')) return 'pl';
     if (path.includes('/en/') || href.includes('/en/')) return 'en';
-    return 'uk'; // default to Ukrainian
+    return 'uk'; 
   };
 
   const currentLang = detectLanguage();
   const SEARCHABLE_SELECT_IDS = new Set(['route-from', 'route-to', 'cargo-type', 'field']);
 
-  // Translations
   const translations = {
     uk: {
       loading: 'Завантаження…',
@@ -38,6 +35,7 @@
       submitButton: 'Отримати розрахунок',
       searchPlaceholder: 'Пошук…',
       noResults: 'Нічого не знайдено',
+      errorNameRequired: 'Вкажіть ім’я.',
     },
     ru: {
       loading: 'Загрузка…',
@@ -62,6 +60,7 @@
       submitButton: 'Получить расчет',
       searchPlaceholder: 'Поиск…',
       noResults: 'Ничего не найдено',
+      errorNameRequired: 'Укажите имя.',
     },
     pl: {
       loading: 'Ładowanie…',
@@ -86,6 +85,7 @@
       submitButton: 'Otrzymaj wycenę',
       searchPlaceholder: 'Szukaj…',
       noResults: 'Brak wyników',
+      errorNameRequired: 'Wprowadź imię.',
     },
     en: {
       loading: 'Loading…',
@@ -110,6 +110,7 @@
       submitButton: 'Get calculation',
       searchPlaceholder: 'Search…',
       noResults: 'No matches found',
+      errorNameRequired: 'Enter your name.',
     },
   };
 
@@ -228,6 +229,7 @@
         seen.add(dedupeKey);
 
         const value =
+          station?.idobject ??
           station?.id ??
           station?.code ??
           station?.identifier ??
@@ -258,7 +260,7 @@
         }
         seen.add(dedupeKey);
 
-        const value = type?.code ?? type?.idobject ?? label;
+        const value = type?.idobject ?? type?.id ?? label;
         return { label, value };
       })
       .filter(Boolean)
@@ -728,14 +730,17 @@
   }
 
   function bindFormSubmit() {
-    const form = document.getElementById(FORM_ID);
-    if (!form) {
+    const forms = Array.from(document.querySelectorAll(`form[id="${FORM_ID}"]`));
+
+    if (!forms.length) {
       return;
     }
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      await handleFormSubmit(form);
+    forms.forEach((form) => {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        await handleFormSubmit(form);
+      });
     });
   }
 
@@ -760,14 +765,12 @@
       }
       
       // Clear validation errors
-      const phoneField = document.getElementById('Contact-Phone');
-      const emailField = document.getElementById('Contact-Email');
-      if (phoneField) {
-        phoneField.classList.remove('field-error');
-      }
-      if (emailField) {
-        emailField.classList.remove('field-error');
-      }
+      form
+        .querySelectorAll('[id="Contact-Phone"]')
+        .forEach((field) => field.classList.remove('field-error'));
+      form
+        .querySelectorAll('[id="Contact-Email"]')
+        .forEach((field) => field.classList.remove('field-error'));
       
       form.reset();
       resetSearchableSelects(form);
@@ -782,15 +785,24 @@
   }
 
   function collectOrderPayload(form) {
-    const getValue = (id) =>
-      document.getElementById(id)?.value?.trim() || '';
+    const getField = (id) =>
+      form?.querySelector(`[id="${id}"]`) || null;
+
+    const getValue = (id) => {
+      const field = getField(id);
+      if (!field || typeof field.value !== 'string') {
+        return '';
+      }
+      return field.value.trim();
+    };
 
     const toNumber = (value) => {
       const parsed = Number(value);
       return Number.isFinite(parsed) ? parsed : null;
     };
 
-    const errors = [];
+    const phoneFields = Array.from(form.querySelectorAll(`[id="Contact-Phone"]`));
+    const emailFields = Array.from(form.querySelectorAll(`[id="Contact-Email"]`));
 
     const stationFromValue = getValue('route-from');
     const stationToValue = getValue('route-to');
@@ -801,6 +813,53 @@
     const phoneValue = getValue('Contact-Phone');
     const emailValue = getValue('Contact-Email');
     const companyValue = getValue('Contact-Company');
+    const nameValue = getValue('Contact-Name');
+
+    const isCalculatorForm =
+      Boolean(
+        getField('route-from') ||
+          getField('route-to') ||
+          getField('cargo-type') ||
+          getField('Tonnage'),
+      );
+
+    if (!isCalculatorForm) {
+      const errors = [];
+      const clientName = nameValue || companyValue;
+
+      if (!clientName) {
+        errors.push(t('errorNameRequired'));
+      }
+
+      if (!phoneValue) {
+        errors.push(t('errorPhoneRequired'));
+        phoneFields.forEach((field) => updateFieldValidation(field, false));
+      } else if (!PHONE_REGEX.test(phoneValue)) {
+        errors.push(t('errorPhoneFormat'));
+        phoneFields.forEach((field) => updateFieldValidation(field, false));
+      } else {
+        phoneFields.forEach((field) => updateFieldValidation(field, true));
+      }
+
+      if (emailValue && !EMAIL_REGEX.test(emailValue)) {
+        errors.push(t('errorEmailFormat'));
+        emailFields.forEach((field) => updateFieldValidation(field, false));
+      } else {
+        emailFields.forEach((field) => updateFieldValidation(field, true));
+      }
+
+      if (errors.length) {
+        throw new Error(errors.join('\n'));
+      }
+
+      return {
+        ClientName: clientName || '',
+        Phone: phoneValue,
+        Email: emailValue,
+      };
+    }
+
+    const errors = [];
 
     const stationFrom = toNumber(stationFromValue);
     if (!stationFrom) {
@@ -822,30 +881,21 @@
       errors.push(t('errorWeight'));
     }
 
-    const phoneField = document.getElementById('Contact-Phone');
-    const emailField = document.getElementById('Contact-Email');
-
     if (!phoneValue) {
       errors.push(t('errorPhoneRequired'));
-      if (phoneField) {
-        updateFieldValidation(phoneField, false);
-      }
+      phoneFields.forEach((field) => updateFieldValidation(field, false));
     } else if (!PHONE_REGEX.test(phoneValue)) {
       errors.push(t('errorPhoneFormat'));
-      if (phoneField) {
-        updateFieldValidation(phoneField, false);
-      }
-    } else if (phoneField) {
-      updateFieldValidation(phoneField, true);
+      phoneFields.forEach((field) => updateFieldValidation(field, false));
+    } else {
+      phoneFields.forEach((field) => updateFieldValidation(field, true));
     }
 
     if (emailValue && !EMAIL_REGEX.test(emailValue)) {
       errors.push(t('errorEmailFormat'));
-      if (emailField) {
-        updateFieldValidation(emailField, false);
-      }
-    } else if (emailField) {
-      updateFieldValidation(emailField, true);
+      emailFields.forEach((field) => updateFieldValidation(field, false));
+    } else {
+      emailFields.forEach((field) => updateFieldValidation(field, true));
     }
 
     const hasCarTypeSelection = Boolean(carTypeValue);
@@ -864,7 +914,7 @@
     return {
       StationFromID: stationFrom,
       StationToID: stationTo,
-      ClientName: companyValue || '',
+      ClientName: companyValue || nameValue || '',
       CargoID: cargo,
       CarTypeID: carType,
       CarTypeOther: carTypeOtherValue,
@@ -1001,10 +1051,10 @@
   }
 
   function bindFieldValidation() {
-    const phoneField = document.getElementById('Contact-Phone');
-    const emailField = document.getElementById('Contact-Email');
+    const phoneFields = document.querySelectorAll('[id="Contact-Phone"]');
+    const emailFields = document.querySelectorAll('[id="Contact-Email"]');
 
-    if (phoneField) {
+    phoneFields.forEach((phoneField) => {
       phoneField.addEventListener('input', () => {
         const value = phoneField.value.trim();
         const isValid = validatePhone(value);
@@ -1016,9 +1066,9 @@
         const isValid = validatePhone(value);
         updateFieldValidation(phoneField, isValid);
       });
-    }
+    });
 
-    if (emailField) {
+    emailFields.forEach((emailField) => {
       emailField.addEventListener('input', () => {
         const value = emailField.value.trim();
         const isValid = validateEmail(value);
@@ -1030,7 +1080,7 @@
         const isValid = validateEmail(value);
         updateFieldValidation(emailField, isValid);
       });
-    }
+    });
   }
 })();
 
