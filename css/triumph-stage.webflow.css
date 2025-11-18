@@ -2135,6 +2135,34 @@ figcaption {
   transition: opacity .2s ease, transform .2s ease;
 }
 
+.custom-select__search {
+  padding: 8px 16px 10px;
+  border-bottom: 1px solid #e4e5e933;
+  background-color: #f7f8fb;
+}
+
+.custom-select__search-input {
+  width: 100%;
+  border: 1px solid rgba(0, 57, 123, .35);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black);
+  background-color: #fff;
+}
+
+.custom-select__search-input::placeholder {
+  color: rgba(30, 33, 41, .6);
+}
+
+.custom-select__empty {
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(30, 33, 41, .6);
+}
+
 .custom-select__menu::-webkit-scrollbar {
   width: 6px;
 }

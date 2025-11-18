@@ -11,6 +11,7 @@
   };
 
   const currentLang = detectLanguage();
+  const SEARCHABLE_SELECT_IDS = new Set(['route-from', 'route-to', 'cargo-type', 'field']);
 
   // Translations
   const translations = {
@@ -35,6 +36,8 @@
       errorServer: 'Виникла помилка, спробуйте пізніше',
       submitting: 'Відправка…',
       submitButton: 'Отримати розрахунок',
+      searchPlaceholder: 'Пошук…',
+      noResults: 'Нічого не знайдено',
     },
     ru: {
       loading: 'Загрузка…',
@@ -57,6 +60,8 @@
       errorServer: 'Возникла ошибка, попробуйте позже',
       submitting: 'Отправка…',
       submitButton: 'Получить расчет',
+      searchPlaceholder: 'Поиск…',
+      noResults: 'Ничего не найдено',
     },
     pl: {
       loading: 'Ładowanie…',
@@ -79,6 +84,8 @@
       errorServer: 'Wystąpił błąd, spróbuj później',
       submitting: 'Wysyłanie…',
       submitButton: 'Otrzymaj wycenę',
+      searchPlaceholder: 'Szukaj…',
+      noResults: 'Brak wyników',
     },
     en: {
       loading: 'Loading…',
@@ -101,6 +108,8 @@
       errorServer: 'An error occurred, please try later',
       submitting: 'Submitting…',
       submitButton: 'Get calculation',
+      searchPlaceholder: 'Search…',
+      noResults: 'No matches found',
     },
   };
 
@@ -136,6 +145,12 @@
   const CUSTOM_SELECT_VALUE = 'data-custom-select-value';
   const ENHANCED_ATTR = 'data-enhanced-select';
   let customSelectMenuId = 0;
+
+  const isSearchableSelect = (select) =>
+    Boolean(
+      select &&
+        (select.dataset.searchable === 'true' || SEARCHABLE_SELECT_IDS.has(select.id)),
+    );
 
   const getSelectElements = () =>
     STATION_SELECTS.map(({ id, placeholder }) => {
@@ -519,7 +534,9 @@
         select.value = optionNode.dataset.value;
         select.dispatchEvent(new Event('change', { bubbles: true }));
       }
-
+      if (isSearchableSelect(select)) {
+        delete select.dataset.searchQuery;
+      }
       closeCustomSelect(wrapper);
     });
 
@@ -548,9 +565,62 @@
     }
 
     const currentValue = select.value;
+    const searchable = isSearchableSelect(select);
+    const searchQuery = select.dataset.searchQuery || '';
     menu.innerHTML = '';
 
-    Array.from(select.options).forEach((option, index) => {
+    const focusSearchInput = () => {
+      requestAnimationFrame(() => {
+        const nextInput = wrapper.querySelector('.custom-select__search-input');
+        if (nextInput) {
+          nextInput.focus({ preventScroll: true });
+          const caretPosition = nextInput.value.length;
+          nextInput.setSelectionRange(caretPosition, caretPosition);
+        }
+      });
+    };
+
+    if (searchable) {
+      const searchContainer = document.createElement('div');
+      searchContainer.className = 'custom-select__search';
+      searchContainer.setAttribute('role', 'presentation');
+
+      const searchInput = document.createElement('input');
+      searchInput.type = 'text';
+      searchInput.className = 'custom-select__search-input';
+      searchInput.placeholder = t('searchPlaceholder');
+      searchInput.value = searchQuery;
+      searchInput.addEventListener('input', (event) => {
+        select.dataset.searchQuery = event.target.value;
+        syncCustomSelectMenu(select, wrapper);
+        focusSearchInput();
+      });
+
+      searchContainer.appendChild(searchInput);
+      menu.appendChild(searchContainer);
+    } else {
+      delete select.dataset.searchQuery;
+    }
+
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+    const filteredOptions = Array.from(select.options).filter((option) => {
+      if (!normalizedQuery) {
+        return true;
+      }
+      const label = option.textContent?.trim().toLowerCase() || '';
+      return label.includes(normalizedQuery);
+    });
+
+    if (!filteredOptions.length) {
+      const emptyState = document.createElement('div');
+      emptyState.className = 'custom-select__empty';
+      emptyState.textContent = t('noResults');
+      emptyState.setAttribute('role', 'status');
+      menu.appendChild(emptyState);
+      return;
+    }
+
+    filteredOptions.forEach((option) => {
       const optionNode = document.createElement('button');
       optionNode.type = 'button';
       optionNode.className = 'custom-select__option';
@@ -560,7 +630,7 @@
 
       const isSelected =
         option.selected ||
-        (!currentValue && index === 0);
+        (!currentValue && option.index === 0);
 
       if (isSelected) {
         optionNode.classList.add('is-selected');
@@ -620,6 +690,13 @@
     wrapper.classList.add('is-open');
     const toggle = wrapper.querySelector(`[${CUSTOM_SELECT_TOGGLE}]`);
     toggle?.setAttribute('aria-expanded', 'true');
+    requestAnimationFrame(() => {
+      const searchInput = wrapper.querySelector('.custom-select__search-input');
+      if (searchInput) {
+        searchInput.focus({ preventScroll: true });
+        searchInput.select();
+      }
+    });
   }
 
   function closeCustomSelect(wrapper) {
@@ -693,6 +770,7 @@
       }
       
       form.reset();
+      resetSearchableSelects(form);
       enhanceSelectFields();
       form.style.display = 'none';
     } catch (error) {
@@ -791,16 +869,31 @@
       CarTypeID: carType,
       CarTypeOther: carTypeOtherValue,
       Weight: weight,
+      Phone: phoneValue,
+      Email: emailValue,
     };
   }
 
+  const buildQueryString = (payload) => {
+    const params = new URLSearchParams();
+    Object.entries(payload).forEach(([key, value]) => {
+      if (value === undefined || value === null || value === '') {
+        return;
+      }
+      params.append(key, value.toString());
+    });
+    return params.toString();
+  };
+
   async function submitOrder(payload) {
-    const response = await fetch(ADD_ORDER_API_URL, {
-      method: 'POST',
+    const query = buildQueryString(payload);
+    const requestUrl = query ? `${ADD_ORDER_API_URL}?${query}` : ADD_ORDER_API_URL;
+
+    const response = await fetch(requestUrl, {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
-      body: JSON.stringify(payload),
     });
 
     const rawBody = await response.text();
@@ -894,6 +987,17 @@
     } else {
       field.classList.add('field-error');
     }
+  }
+
+  function resetSearchableSelects(container) {
+    if (!container) {
+      return;
+    }
+    container.querySelectorAll('select').forEach((select) => {
+      if (select.dataset.searchQuery) {
+        delete select.dataset.searchQuery;
+      }
+    });
   }
 
   function bindFieldValidation() {
