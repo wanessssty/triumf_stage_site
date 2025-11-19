@@ -2627,7 +2627,7 @@ figcaption {
 }
 
 .flex-nav-button {
-  grid-column-gap: 10px;
+  grid-column-gap: 20px;
   justify-content: flex-end;
   align-items: center;
   display: flex;
@@ -3051,6 +3051,7 @@ figcaption {
 }
 
 .email-flex {
+  min-width: 210px;
   grid-column-gap: 5px;
   grid-row-gap: 5px;
   align-items: center;
@@ -4206,8 +4207,8 @@ figcaption {
   width: 80px;
   height: 35px;
   transition: all .2s;
-  position: absolute;
-  inset: 105% 5px 0% auto;
+  /* position: absolute;
+  inset: 105% 5px 0% auto; */
 }
 
 .nav_lang-container:hover {
@@ -4299,7 +4300,7 @@ figcaption {
   }
 
   .nav_lang-container {
-    right: 20px;
+    /* right: 20px; */
   }
 }
 
@@ -4337,7 +4338,7 @@ figcaption {
   }
 
   .nav_lang-container {
-    right: 50px;
+    /* right: 50px; */
   }
 }
 
@@ -4351,7 +4352,7 @@ figcaption {
   }
 
   .nav_lang-container {
-    right: 100px;
+    /* right: 100px; */
   }
 }
 
