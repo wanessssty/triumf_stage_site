@@ -610,7 +610,7 @@
         return true;
       }
       const label = option.textContent?.trim().toLowerCase() || '';
-      return label.includes(normalizedQuery);
+      return label.startsWith(normalizedQuery);
     });
 
     if (!filteredOptions.length) {
