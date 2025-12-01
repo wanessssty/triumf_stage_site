@@ -182,10 +182,13 @@
       placeholderOption.textContent = placeholder;
       element.appendChild(placeholderOption);
 
-      options.forEach(({ label, value }) => {
+      options.forEach(({ label, value, code }) => {
         const option = document.createElement('option');
         option.value = value;
         option.textContent = label;
+        if (code) {
+          option.dataset.code = code;
+        }
         element.appendChild(option);
       });
 
@@ -235,7 +238,11 @@
           station?.identifier ??
           label;
 
-        return { label, value };
+        const code = station?.code?.toString().trim() || 
+                     station?.stationCode?.toString().trim() || 
+                     null;
+
+        return { label, value, code };
       })
       .filter(Boolean)
       .sort((a, b) =>
@@ -261,7 +268,11 @@
         seen.add(dedupeKey);
 
         const value = type?.idobject ?? type?.id ?? label;
-        return { label, value };
+        const code = type?.code?.toString().trim() || 
+                     type?.cargoCode?.toString().trim() || 
+                     null;
+
+        return { label, value, code };
       })
       .filter(Boolean)
       .sort((a, b) =>
@@ -610,7 +621,11 @@
         return true;
       }
       const label = option.textContent?.trim().toLowerCase() || '';
-      return label.startsWith(normalizedQuery);
+      const code = option.dataset.code?.trim().toLowerCase() || '';
+      return label.startsWith(normalizedQuery) || 
+             code.startsWith(normalizedQuery) ||
+             label.includes(normalizedQuery) ||
+             code.includes(normalizedQuery);
     });
 
     if (!filteredOptions.length) {
