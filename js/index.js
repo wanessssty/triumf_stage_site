@@ -580,20 +580,19 @@
     const currentValue = select.value;
     const searchable = isSearchableSelect(select);
     const searchQuery = select.dataset.searchQuery || '';
-    menu.innerHTML = '';
+    
+    // Зберігаємо посилання на існуючий searchInput, щоб не перестворювати його
+    const existingSearchContainer = menu.querySelector('.custom-select__search');
+    const existingSearchInput = existingSearchContainer?.querySelector('.custom-select__search-input');
+    const wasFocused = document.activeElement === existingSearchInput;
+    const cursorPosition = existingSearchInput?.selectionStart || 0;
 
-    const focusSearchInput = () => {
-      requestAnimationFrame(() => {
-        const nextInput = wrapper.querySelector('.custom-select__search-input');
-        if (nextInput) {
-          nextInput.focus({ preventScroll: true });
-          const caretPosition = nextInput.value.length;
-          nextInput.setSelectionRange(caretPosition, caretPosition);
-        }
-      });
-    };
+    // Очищаємо тільки опції та empty state, а не весь menu
+    menu.querySelectorAll('.custom-select__option, .custom-select__empty').forEach((el) => {
+      el.remove();
+    });
 
-    if (searchable) {
+    if (searchable && !existingSearchContainer) {
       const searchContainer = document.createElement('div');
       searchContainer.className = 'custom-select__search';
       searchContainer.setAttribute('role', 'presentation');
@@ -606,13 +605,28 @@
       searchInput.addEventListener('input', (event) => {
         select.dataset.searchQuery = event.target.value;
         syncCustomSelectMenu(select, wrapper);
-        focusSearchInput();
       });
 
       searchContainer.appendChild(searchInput);
-      menu.appendChild(searchContainer);
-    } else {
+      menu.insertBefore(searchContainer, menu.firstChild);
+    } else if (searchable && existingSearchInput) {
+      if (existingSearchInput.value !== searchQuery) {
+        existingSearchInput.value = searchQuery;
+      }
+      if (wasFocused) {
+        requestAnimationFrame(() => {
+          existingSearchInput.focus({ preventScroll: true });
+          if (existingSearchInput.setSelectionRange) {
+            const pos = Math.min(cursorPosition, existingSearchInput.value.length);
+            existingSearchInput.setSelectionRange(pos, pos);
+          }
+        });
+      }
+    } else if (!searchable) {
       delete select.dataset.searchQuery;
+      if (existingSearchContainer) {
+        existingSearchContainer.remove();
+      }
     }
 
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -620,8 +634,8 @@
       if (!normalizedQuery) {
         return true;
       }
-      const label = option.textContent?.trim().toLowerCase() || '';
-      const code = option.dataset.code?.trim().toLowerCase() || '';
+      const label = (option.textContent?.trim() || '').toLowerCase();
+      const code = (option.dataset.code?.trim() || '').toLowerCase();
       return label.startsWith(normalizedQuery) || 
              code.startsWith(normalizedQuery) ||
              label.includes(normalizedQuery) ||
@@ -629,11 +643,11 @@
     });
 
     if (!filteredOptions.length) {
-      const emptyState = document.createElement('div');
-      emptyState.className = 'custom-select__empty';
-      emptyState.textContent = t('noResults');
-      emptyState.setAttribute('role', 'status');
-      menu.appendChild(emptyState);
+      const emptyStateNode = document.createElement('div');
+      emptyStateNode.className = 'custom-select__empty';
+      emptyStateNode.textContent = t('noResults');
+      emptyStateNode.setAttribute('role', 'status');
+      menu.appendChild(emptyStateNode);
       return;
     }
 
