@@ -581,13 +581,11 @@
     const searchable = isSearchableSelect(select);
     const searchQuery = select.dataset.searchQuery || '';
     
-    // Зберігаємо посилання на існуючий searchInput, щоб не перестворювати його
     const existingSearchContainer = menu.querySelector('.custom-select__search');
     const existingSearchInput = existingSearchContainer?.querySelector('.custom-select__search-input');
     const wasFocused = document.activeElement === existingSearchInput;
     const cursorPosition = existingSearchInput?.selectionStart || 0;
 
-    // Очищаємо тільки опції та empty state, а не весь menu
     menu.querySelectorAll('.custom-select__option, .custom-select__empty').forEach((el) => {
       el.remove();
     });
@@ -765,10 +763,41 @@
       return;
     }
 
+    const hideErrorElements = () => {
+      document.querySelectorAll('.error-message.w-form-fail').forEach((errorEl) => {
+        const computedStyle = window.getComputedStyle(errorEl);
+        if (computedStyle.display !== 'none' && !errorEl.textContent?.trim()) {
+          errorEl.style.setProperty('display', 'none', 'important');
+        }
+      });
+    };
+
+    forms.forEach((form) => {
+      const errorElement = form.parentElement?.querySelector(ERROR_SELECTOR);
+      if (errorElement) {
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+              const computedStyle = window.getComputedStyle(errorElement);
+              if (computedStyle.display !== 'none' && !errorElement.textContent?.trim()) {
+                errorElement.style.setProperty('display', 'none', 'important');
+              }
+            }
+          });
+        });
+        observer.observe(errorElement, {
+          attributes: true,
+          attributeFilter: ['style', 'class']
+        });
+      }
+    });
+
     forms.forEach((form) => {
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
         await handleFormSubmit(form);
+        setTimeout(hideErrorElements, 50);
+        setTimeout(hideErrorElements, 200);
       });
     });
   }
@@ -779,6 +808,46 @@
     const errorElement = form.parentElement?.querySelector(ERROR_SELECTOR);
 
     toggleSubmitState(submitButton, true);
+    
+    if (errorElement) {
+      // First, clear all content including default text
+      const messageContainer = errorElement.querySelector('div');
+      if (messageContainer) {
+        messageContainer.textContent = '';
+        messageContainer.innerHTML = '';
+      }
+      // Clear the element itself
+      errorElement.textContent = '';
+      
+      // Then hide it with multiple methods
+      errorElement.style.setProperty('display', 'none', 'important');
+      errorElement.style.setProperty('visibility', 'hidden', 'important');
+      errorElement.style.setProperty('opacity', '0', 'important');
+      errorElement.style.setProperty('height', '0', 'important');
+      errorElement.style.setProperty('margin', '0', 'important');
+      errorElement.style.setProperty('padding', '0', 'important');
+      errorElement.style.setProperty('overflow', 'hidden', 'important');
+
+      // Also hide it after short delays to override Webflow's handlers
+      setTimeout(() => {
+        if (errorElement) {
+          errorElement.style.setProperty('display', 'none', 'important');
+          const msgContainer = errorElement.querySelector('div');
+          if (msgContainer) {
+            msgContainer.textContent = '';
+          }
+        }
+      }, 0);
+      setTimeout(() => {
+        if (errorElement) {
+          errorElement.style.setProperty('display', 'none', 'important');
+        }
+      }, 50);
+    }
+    if (successElement) {
+      successElement.style.setProperty('display', 'none', 'important');
+    }
+    
     showError(errorElement, '');
 
     try {
@@ -787,13 +856,23 @@
       await submitOrder(payload);
 
       if (successElement) {
-        successElement.style.display = 'block';
+        successElement.style.setProperty('display', 'block', 'important');
       }
       if (errorElement) {
-        errorElement.style.display = 'none';
+        
+        errorElement.style.setProperty('display', 'none', 'important');
+        errorElement.style.setProperty('visibility', 'hidden', 'important');
+        errorElement.style.setProperty('opacity', '0', 'important');
+        errorElement.style.setProperty('height', '0', 'important');
+        errorElement.style.setProperty('margin', '0', 'important');
+        errorElement.style.setProperty('padding', '0', 'important');
+        setTimeout(() => {
+          if (errorElement) {
+            errorElement.style.setProperty('display', 'none', 'important');
+          }
+        }, 100);
       }
       
-      // Clear validation errors
       form
         .querySelectorAll('[id="Contact-Phone"]')
         .forEach((field) => field.classList.remove('field-error'));
@@ -983,7 +1062,6 @@
       console.error('Не вдалося розпарсити відповідь сервера', parseError, rawBody);
     }
 
-    // Check for server errors (500, 502, 503, etc.) or internal server error messages
     const errorMessage = data?.errorMessage || data?.errormessage;
     const isServerError = 
       response.status >= 500 || 
@@ -1032,12 +1110,29 @@
     }
 
     if (!message) {
-      element.style.display = 'none';
-      element.textContent = '';
+      
+      element.style.setProperty('display', 'none', 'important');
+      element.style.setProperty('visibility', 'hidden', 'important');
+      element.style.setProperty('opacity', '0', 'important');
+      element.style.setProperty('height', '0', 'important');
+      element.style.setProperty('margin', '0', 'important');
+      element.style.setProperty('padding', '0', 'important');
+      const messageContainer = element.querySelector('div');
+      if (messageContainer) {
+        messageContainer.textContent = '';
+      } else {
+        element.textContent = '';
+      }
       return;
     }
 
-    element.style.display = 'block';
+    
+    element.style.setProperty('display', 'block', 'important');
+    element.style.setProperty('visibility', 'visible', 'important');
+    element.style.setProperty('opacity', '1', 'important');
+    element.style.removeProperty('height');
+    element.style.removeProperty('margin');
+    element.style.removeProperty('padding');
     const messageContainer = element.querySelector('div');
     if (messageContainer) {
       messageContainer.textContent = message;
@@ -1055,7 +1150,7 @@
 
   function validateEmail(emailValue) {
     if (!emailValue) {
-      return true; // Email is optional
+      return true;
     }
     return EMAIL_REGEX.test(emailValue);
   }
