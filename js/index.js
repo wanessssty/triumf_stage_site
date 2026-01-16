@@ -810,16 +810,13 @@
     toggleSubmitState(submitButton, true);
     
     if (errorElement) {
-      // First, clear all content including default text
       const messageContainer = errorElement.querySelector('div');
       if (messageContainer) {
         messageContainer.textContent = '';
         messageContainer.innerHTML = '';
       }
-      // Clear the element itself
       errorElement.textContent = '';
       
-      // Then hide it with multiple methods
       errorElement.style.setProperty('display', 'none', 'important');
       errorElement.style.setProperty('visibility', 'hidden', 'important');
       errorElement.style.setProperty('opacity', '0', 'important');
@@ -828,7 +825,6 @@
       errorElement.style.setProperty('padding', '0', 'important');
       errorElement.style.setProperty('overflow', 'hidden', 'important');
 
-      // Also hide it after short delays to override Webflow's handlers
       setTimeout(() => {
         if (errorElement) {
           errorElement.style.setProperty('display', 'none', 'important');

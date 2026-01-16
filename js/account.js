@@ -338,6 +338,21 @@
     }
   };
 
+  const redirectToSearch = () => {
+    const currentPath = window.location.pathname;
+    let searchPath = 'search.html';
+    
+    const pathParts = currentPath.split('/').filter(p => p);
+    
+    if (pathParts.length > 0 && ['ru', 'pl', 'en'].includes(pathParts[0])) {
+      searchPath = 'search.html';
+    } else {
+      searchPath = 'search.html';
+    }
+    
+    window.location.href = searchPath;
+  };
+
   const showLoginSuccess = (formId, data) => {
     const form = document.getElementById(formId);
     if (form) {
@@ -352,8 +367,30 @@
       dataContent.textContent = JSON.stringify(data, null, 2);
     }
 
+    localStorage.setItem('triumph_authenticated', 'true');
+    localStorage.setItem('triumph_auth_timestamp', Date.now().toString());
+    if (data?.login || data?.email) {
+      localStorage.setItem('triumph_user_email', data.login || data.email);
+    }
+
     showMessage(t('successLogin'), 'success');
     showSuccess(t('successLogin'));
+
+    setTimeout(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const returnUrl = urlParams.get('return');
+      
+      if (returnUrl) {
+        try {
+          window.location.href = decodeURIComponent(returnUrl);
+        } catch (e) {
+          console.error('Error decoding return URL:', e);
+          redirectToSearch();
+        }
+      } else {
+        redirectToSearch();
+      }
+    }, 1000);
   };
 
   const updateLeftPanelDescription = (text) => {
@@ -682,7 +719,27 @@
       const result = await submitLogin(email);
       
       if (result.status === 200) {
-        showLoginSuccess('wf-form-Auth', result.data);
+        localStorage.setItem('triumph_authenticated', 'true');
+        localStorage.setItem('triumph_auth_timestamp', Date.now().toString());
+        if (result.data?.login || email) {
+          localStorage.setItem('triumph_user_email', result.data?.login || email);
+        }
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return');
+        
+        if (returnUrl) {
+          try {
+            window.location.replace(decodeURIComponent(returnUrl));
+            return;
+          } catch (e) {
+            console.error('Error decoding return URL:', e);
+            redirectToSearch();
+            return;
+          }
+        }
+        
+        redirectToSearch();
       } else if (result.status === 404) {
         updateLeftPanelDescription(t('userNotRegistered'));
         hideMessage();
@@ -779,7 +836,27 @@
       const result = await submitLogin(email);
       
       if (result.status === 200) {
-        showLoginSuccess('wf-form-Login-Auth', result.data);
+        localStorage.setItem('triumph_authenticated', 'true');
+        localStorage.setItem('triumph_auth_timestamp', Date.now().toString());
+        if (result.data?.login || email) {
+          localStorage.setItem('triumph_user_email', result.data?.login || email);
+        }
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return');
+        
+        if (returnUrl) {
+          try {
+            window.location.replace(decodeURIComponent(returnUrl));
+            return;
+          } catch (e) {
+            console.error('Error decoding return URL:', e);
+            redirectToSearch();
+            return;
+          }
+        }
+        
+        redirectToSearch();
       } else if (result.status === 404) {
         showError(t('userNotRegistered'));
       } else if (result.status === 409) {
@@ -903,10 +980,27 @@
     }
   };
 
+  const handleReturnUrl = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const returnUrl = urlParams.get('return');
+    
+    if (returnUrl && localStorage.getItem('triumph_authenticated') === 'true') {
+      try {
+        window.location.href = decodeURIComponent(returnUrl);
+      } catch (e) {
+        console.error('Error decoding return URL:', e);
+      }
+    }
+  };
+
   const init = () => {
     bindAuthForm();
     bindRegistrationForm();
     bindLoginForm();
+    
+    if (localStorage.getItem('triumph_authenticated') === 'true') {
+      handleReturnUrl();
+    }
   };
 
   if (document.readyState === 'loading') {
