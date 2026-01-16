@@ -307,6 +307,37 @@
     }
   };
 
+  const showAuthContactInfo = () => {
+    const rightPanel = document.querySelector('.auth-right-content');
+    if (rightPanel) {
+      const form = rightPanel.querySelector('.auth-form');
+      const messageElement = rightPanel.querySelector('#auth-message');
+      
+      if (form) {
+        form.style.display = 'none';
+      }
+      
+      let contactInfo = rightPanel.querySelector('.auth-contact-info');
+      if (!contactInfo) {
+        contactInfo = document.createElement('div');
+        contactInfo.className = 'auth-contact-info';
+        contactInfo.style.cssText = 'padding: 20px;';
+        rightPanel.appendChild(contactInfo);
+      }
+      
+      contactInfo.innerHTML = `
+        <div style="margin-bottom: 20px;">
+          <p class="auth-label" style="margin-bottom: 15px; font-size: 18px; font-weight: 600; color: #333;">${t('contactForDetails')}</p>
+          <div>
+            <a href="mailto:tpk_triumph@ukr.net" style="font-size: 16px; color: #828282; text-decoration: none; font-weight: 500; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">tpk_triumph@ukr.net</a>
+          </div>
+        </div>
+      `;
+      
+      contactInfo.style.display = 'block';
+    }
+  };
+
   const showLoginSuccess = (formId, data) => {
     const form = document.getElementById(formId);
     if (form) {
@@ -606,6 +637,7 @@
       if (result.status === 200) {
         updateLeftPanelDescription(t('requestUnderReviewFull'));
         hideMessage();
+        showAuthContactInfo();
       } else if (result.status === 409) {
         updateLeftPanelDescription(t('alreadyRegistered'));
         hideMessage();
