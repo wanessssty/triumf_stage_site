@@ -137,6 +137,50 @@
     return EMAIL_REGEX.test(email.trim());
   };
 
+  const showFloatingNotification = (message, type = 'success', duration = 5000) => {
+    const existingNotification = document.querySelector('.floating-notification');
+    if (existingNotification) {
+      existingNotification.remove();
+    }
+
+    const notification = document.createElement('div');
+    notification.className = `floating-notification ${type}`;
+    
+    let icon = '✓';
+    if (type === 'warning') {
+      icon = 'ⓘ';
+    } else if (type === 'error') {
+      icon = '✕';
+    }
+
+    notification.innerHTML = `
+      <span class="floating-notification-icon">${icon}</span>
+      <span class="floating-notification-text">${message}</span>
+    `;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+      notification.classList.add('show');
+    }, 10);
+
+    const hideNotification = () => {
+      notification.classList.remove('show');
+      notification.classList.add('hide');
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.remove();
+        }
+      }, 300);
+    };
+
+    notification.addEventListener('click', hideNotification);
+
+    if (duration > 0) {
+      setTimeout(hideNotification, duration);
+    }
+  };
+
   const showMessage = (message, type = 'error') => {
     const messageElement = document.getElementById('auth-message');
     if (!messageElement) return;
@@ -373,8 +417,7 @@
       localStorage.setItem('triumph_user_email', data.login || data.email);
     }
 
-    showMessage(t('successLogin'), 'success');
-    showSuccess(t('successLogin'));
+    showFloatingNotification(t('successLogin'), 'success');
 
     setTimeout(() => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -393,12 +436,6 @@
     }, 1000);
   };
 
-  const updateLeftPanelDescription = (text) => {
-    const descriptionText = document.querySelector('.auth-description-text');
-    if (descriptionText) {
-      descriptionText.textContent = text;
-    }
-  };
 
   const showCodeVerificationForm = (email) => {
     const form = document.getElementById('wf-form-Auth');
@@ -506,7 +543,7 @@
     }
 
     toggleButtonState(verifyBtn, true);
-    updateLeftPanelDescription(t('wait'));
+    showFloatingNotification(t('wait'), 'warning', 0);
 
     try {
       const result = await submitCodeVerification(email, code);
@@ -514,7 +551,7 @@
       if (result.status === 200) {
         showLoginSuccess('wf-form-Auth', result.data);
       } else if (result.status === 409) {
-        updateLeftPanelDescription(t('codeInvalid'));
+        showFloatingNotification(t('codeInvalid'), 'error');
         hideMessage();
         showFieldError(codeInput, t('codeInvalid'));
       } else {
@@ -522,12 +559,12 @@
                             result.data?.message ||
                             result.rawBody || 
                             `${t('confirmationError')}: ${result.status}`;
-        updateLeftPanelDescription(errorMessage);
+        showFloatingNotification(errorMessage, 'error');
         hideMessage();
       }
     } catch (error) {
       console.error('Code verification error:', error);
-      updateLeftPanelDescription(error.message || t('somethingWentWrong'));
+      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
       hideMessage();
     } finally {
       toggleButtonState(verifyBtn, false);
@@ -666,25 +703,25 @@
 
     toggleButtonState(registerBtn, true);
     toggleButtonState(loginBtn, true);
-    updateLeftPanelDescription(t('wait'));
+    showFloatingNotification(t('wait'), 'warning', 0);
 
     try {
       const result = await submitRegistration(email);
       
       if (result.status === 200) {
-        updateLeftPanelDescription(t('requestUnderReviewFull'));
+        showFloatingNotification(t('requestSent'), 'success');
         hideMessage();
         showAuthContactInfo();
       } else if (result.status === 409) {
-        updateLeftPanelDescription(t('alreadyRegistered'));
+        showFloatingNotification(t('alreadyRegistered'), 'warning');
         hideMessage();
       } else {
-        updateLeftPanelDescription(t('unknownError'));
+        showFloatingNotification(t('unknownError'), 'error');
         hideMessage();
       }
     } catch (error) {
       console.error('Registration error:', error);
-      updateLeftPanelDescription(error.message || t('somethingWentWrong'));
+      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
       hideMessage();
     } finally {
       toggleButtonState(registerBtn, false);
@@ -713,7 +750,7 @@
 
     toggleButtonState(registerBtn, true);
     toggleButtonState(loginBtn, true);
-    updateLeftPanelDescription(t('wait'));
+    showFloatingNotification(t('wait'), 'warning', 0);
 
     try {
       const result = await submitLogin(email);
@@ -724,6 +761,8 @@
         if (result.data?.login || email) {
           localStorage.setItem('triumph_user_email', result.data?.login || email);
         }
+        
+        showFloatingNotification(t('successLogin'), 'success');
         
         const urlParams = new URLSearchParams(window.location.search);
         const returnUrl = urlParams.get('return');
@@ -741,13 +780,13 @@
         
         redirectToSearch();
       } else if (result.status === 404) {
-        updateLeftPanelDescription(t('userNotRegistered'));
+        showFloatingNotification(t('userNotRegistered'), 'error');
         hideMessage();
       } else if (result.status === 409) {
-        updateLeftPanelDescription(t('requestNotReviewed'));
+        showFloatingNotification(t('requestNotReviewed'), 'warning');
         hideMessage();
       } else if (result.status === 403) {
-        updateLeftPanelDescription(t('needConfirmEmail'));
+        showFloatingNotification(t('needConfirmEmail'), 'warning');
         hideMessage();
         showCodeVerificationForm(email);
       } else {
@@ -755,12 +794,12 @@
                             result.data?.message ||
                             result.rawBody || 
                             `${t('loginError')}: ${result.status}`;
-        updateLeftPanelDescription(errorMessage);
+        showFloatingNotification(errorMessage, 'error');
         hideMessage();
       }
     } catch (error) {
       console.error('Login error:', error);
-      updateLeftPanelDescription(error.message || t('somethingWentWrong'));
+      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
       hideMessage();
     } finally {
       toggleButtonState(registerBtn, false);
@@ -792,21 +831,23 @@
       const result = await submitRegistration(email);
       
       if (result.status === 200) {
+        showFloatingNotification(t('requestSent'), 'success');
         showWaitingState('wf-form-Login', email, false);
       } else if (result.status === 409) {
+        showFloatingNotification(t('emailAlreadySent'), 'warning');
         showWaitingState('wf-form-Login', email, true);
       } else if (result.status === 403) {
-        showError(t('requestAlreadySent'));
+        showFloatingNotification(t('requestAlreadySent'), 'warning');
       } else {
         const errorMessage = result.data?.errorMessage || result.data?.errormessage || 
                             result.data?.message ||
                             result.rawBody || 
                             `${t('sendError')}: ${result.status}`;
-        showError(errorMessage);
+        showFloatingNotification(errorMessage, 'error');
       }
     } catch (error) {
       console.error('Registration error:', error);
-      showError(error.message || t('somethingWentWrong'));
+      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
     } finally {
       toggleSubmitState(submitButton, false);
     }
@@ -858,21 +899,21 @@
         
         redirectToSearch();
       } else if (result.status === 404) {
-        showError(t('userNotRegistered'));
+        showFloatingNotification(t('userNotRegistered'), 'error');
       } else if (result.status === 409) {
-        showError(t('requestNotReviewed'));
+        showFloatingNotification(t('requestNotReviewed'), 'warning');
       } else if (result.status === 403) {
-        showError(t('needConfirmEmail'));
+        showFloatingNotification(t('needConfirmEmail'), 'warning');
       } else {
         const errorMessage = result.data?.errorMessage || result.data?.errormessage || 
                             result.data?.message ||
                             result.rawBody || 
                             `${t('loginError')}: ${result.status}`;
-        showError(errorMessage);
+        showFloatingNotification(errorMessage, 'error');
       }
     } catch (error) {
       console.error('Login error:', error);
-      showError(error.message || t('somethingWentWrong'));
+      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
     } finally {
       toggleSubmitState(submitButton, false);
     }

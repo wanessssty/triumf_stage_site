@@ -4,6 +4,9 @@
   const WAGON_NUMBERS_ID = 'Wagon-Numbers';
   const RESULTS_SECTION_ID = 'sectionResults';
   const SUBMIT_BUTTON_ID = 'wagon-search-btn';
+  const CLEAR_BUTTON_ID = 'wagon-clear-btn';
+  const CLEAR_MOBILE_BUTTON_ID = 'wagon-clear-mobile-btn';
+  const BACK_TO_TOP_ID = 'back-to-top-search';
   const SUCCESS_MESSAGE_SELECTOR = '.success-message';
   const ERROR_MESSAGE_SELECTOR = '.error-message';
 
@@ -40,7 +43,8 @@
       operation: 'Операція',
       operationDate: 'Дата операції',
       cargo: 'Вантаж',
-      cargoWeight: 'Вага вантаж'
+      cargoWeight: 'Вага вантаж',
+      clearButton: 'Скинути'
     },
     ru: {
       noResults: 'Результатов не найдено',
@@ -60,7 +64,8 @@
       operation: 'Операция',
       operationDate: 'Дата операции',
       cargo: 'Груз',
-      cargoWeight: 'Вес груза'
+      cargoWeight: 'Вес груза',
+      clearButton: 'Сбросить'
     },
     en: {
       noResults: 'No results found',
@@ -80,7 +85,8 @@
       operation: 'Operation',
       operationDate: 'Operation date',
       cargo: 'Cargo',
-      cargoWeight: 'Cargo weight'
+      cargoWeight: 'Cargo weight',
+      clearButton: 'Clear'
     },
     pl: {
       noResults: 'Nie znaleziono wyników',
@@ -100,7 +106,8 @@
       operation: 'Operacja',
       operationDate: 'Data operacji',
       cargo: 'Ładunek',
-      cargoWeight: 'Waga ładunku'
+      cargoWeight: 'Waga ładunku',
+      clearButton: 'Wyczyść'
     }
   };
 
@@ -153,13 +160,51 @@
     }
     const numWeight = Number(weight);
     if (isNaN(numWeight)) return weight;
-    return `${numWeight}т`;
+    return `${numWeight} т`;
   }
 
   function clearTable() {
     const tbody = document.querySelector(`#${RESULTS_SECTION_ID} .wagon-results-table tbody`);
     if (tbody) {
       tbody.innerHTML = '';
+    }
+  }
+
+  function ensureBackToTopButton() {
+    if (document.getElementById(BACK_TO_TOP_ID)) {
+      return;
+    }
+
+    const button = document.createElement('button');
+    button.id = BACK_TO_TOP_ID;
+    button.className = 'back-to-top-btn';
+    button.type = 'button';
+    button.innerHTML = '<svg width="26" height="15" viewBox="0 0 26 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24.707 13.4142L12.707 1.41418L0.707031 13.4142" stroke="white" stroke-width="2"/></svg>';
+
+    button.addEventListener('click', () => {
+      const form = document.getElementById(FORM_ID);
+      if (form) {
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    document.body.appendChild(button);
+  }
+
+  function updateBackToTopVisibility() {
+    const button = document.getElementById(BACK_TO_TOP_ID);
+    const resultsSection = document.getElementById(RESULTS_SECTION_ID);
+    if (!button || !resultsSection) return;
+
+    const hasResultsVisible = resultsSection.style.display !== 'none';
+    const scrolledEnough = window.scrollY > 300;
+
+    if (hasResultsVisible && scrolledEnough) {
+      button.classList.add('visible');
+    } else {
+      button.classList.remove('visible');
     }
   }
 
@@ -204,22 +249,49 @@
     });
   }
 
-  function showMessage(selector, message, isError = false) {
-    const element = document.querySelector(selector);
-    if (!element) return;
+  function showFloatingNotification(message, type = 'success', duration = 5000) {
+    if (!message) return;
+    
+    const existingNotification = document.querySelector('.floating-notification');
+    if (existingNotification) {
+      existingNotification.remove();
+    }
 
-    if (message) {
-      const messageContainer = element.querySelector('div');
-      if (messageContainer) {
-        messageContainer.textContent = message;
-      } else {
-        element.textContent = message;
-      }
-      element.style.display = 'block';
-      element.style.setProperty('display', 'block', 'important');
-    } else {
-      element.style.display = 'none';
-      element.style.setProperty('display', 'none', 'important');
+    const notification = document.createElement('div');
+    notification.className = `floating-notification ${type}`;
+    
+    let icon = '✓';
+    if (type === 'warning') {
+      icon = 'ⓘ';
+    } else if (type === 'error') {
+      icon = '✕';
+    }
+
+    notification.innerHTML = `
+      <span class="floating-notification-icon">${icon}</span>
+      <span class="floating-notification-text">${message}</span>
+    `;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+      notification.classList.add('show');
+    }, 10);
+
+    const hideNotification = () => {
+      notification.classList.remove('show');
+      notification.classList.add('hide');
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.remove();
+        }
+      }, 300);
+    };
+
+    notification.addEventListener('click', hideNotification);
+
+    if (duration > 0) {
+      setTimeout(hideNotification, duration);
     }
   }
 
@@ -325,17 +397,14 @@
       return;
     }
 
-    showMessage(SUCCESS_MESSAGE_SELECTOR, '');
-    showMessage(ERROR_MESSAGE_SELECTOR, '');
-
     const inputValue = wagonNumbersInput.value.trim();
     const wagonNumbers = normalizeWagonNumbers(inputValue);
 
     if (wagonNumbers.length === 0) {
       if (!inputValue) {
-        showMessage(ERROR_MESSAGE_SELECTOR, t('enterWagonNumbers'), true);
+        showFloatingNotification(t('enterWagonNumbers'), 'error');
       } else {
-        showMessage(ERROR_MESSAGE_SELECTOR, t('invalidFormat'), true);
+        showFloatingNotification(t('invalidFormat'), 'error');
       }
       wagonNumbersInput.focus();
       return;
@@ -362,20 +431,71 @@
       
       setTimeout(() => {
         resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        updateBackToTopVisibility();
       }, 100);
 
       if (filteredData.length > 0) {
-        showMessage(SUCCESS_MESSAGE_SELECTOR, `${t('foundResults')} ${filteredData.length}`);
+        showFloatingNotification(`${t('foundResults')} ${filteredData.length}`, 'success');
       } else {
-        showMessage(SUCCESS_MESSAGE_SELECTOR, t('noResultsForInput'));
+        showFloatingNotification(t('noResultsForInput'), 'warning');
       }
     } catch (error) {
       console.error('Помилка пошуку:', error);
-      showMessage(ERROR_MESSAGE_SELECTOR, error.message || t('searchError'), true);
+      showFloatingNotification(error.message || t('searchError'), 'error');
       resultsSection.style.display = 'none';
     } finally {
       setLoadingState(false);
+      updateBackToTopVisibility();
     }
+  }
+
+  function updateClearButtonVisibility() {
+    const clearButton = document.getElementById(CLEAR_BUTTON_ID);
+    const clearMobileButton = document.getElementById(CLEAR_MOBILE_BUTTON_ID);
+    const wagonNumbersInput = document.getElementById(WAGON_NUMBERS_ID);
+    
+    if (!wagonNumbersInput) return;
+    
+    const hasText = wagonNumbersInput.value.trim().length > 0;
+    
+    if (clearButton) {
+      if (hasText) {
+        clearButton.style.display = '';
+        const buttonColor = clearButton.querySelector('.button-color');
+        if (buttonColor) {
+          buttonColor.textContent = t('clearButton');
+        } else {
+          clearButton.textContent = t('clearButton');
+        }
+      } else {
+        clearButton.style.display = 'none';
+      }
+    }
+    
+    if (clearMobileButton) {
+      if (hasText) {
+        clearMobileButton.style.display = 'flex';
+      } else {
+        clearMobileButton.style.display = 'none';
+      }
+    }
+  }
+
+  function clearSearchField() {
+    const wagonNumbersInput = document.getElementById(WAGON_NUMBERS_ID);
+    const resultsSection = document.getElementById(RESULTS_SECTION_ID);
+    
+    if (wagonNumbersInput) {
+      wagonNumbersInput.value = '';
+      wagonNumbersInput.focus();
+    }
+    
+    if (resultsSection) {
+      resultsSection.style.display = 'none';
+    }
+    
+    clearTable();
+    updateClearButtonVisibility();
   }
 
   function init() {
@@ -387,8 +507,15 @@
 
     form.addEventListener('submit', handleFormSubmit);
 
+    ensureBackToTopButton();
+    window.addEventListener('scroll', updateBackToTopVisibility);
+
     const wagonNumbersInput = document.getElementById(WAGON_NUMBERS_ID);
+    const clearButton = document.getElementById(CLEAR_BUTTON_ID);
+    const clearMobileButton = document.getElementById(CLEAR_MOBILE_BUTTON_ID);
+    
     if (wagonNumbersInput) {
+      wagonNumbersInput.addEventListener('input', updateClearButtonVisibility);
       wagonNumbersInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
@@ -399,6 +526,22 @@
         }
       });
     }
+    
+    if (clearButton) {
+      clearButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        clearSearchField();
+      });
+    }
+    
+    if (clearMobileButton) {
+      clearMobileButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        clearSearchField();
+      });
+    }
+    
+    updateClearButtonVisibility();
   }
 
   if (document.readyState === 'loading') {
