@@ -37,6 +37,7 @@
       loginError: 'Помилка входу',
       sendError: 'Помилка відправки',
       requestAlreadySent: 'Ваша заявка вже була надіслана, дочекайтеся повідомлення на пошті',
+      networkError: 'Помилка підключення до сервера. Перевірте інтернет-з\'єднання та спробуйте ще раз.',
     },
     ru: {
       wait: 'Подождите...',
@@ -65,6 +66,7 @@
       loginError: 'Ошибка входа',
       sendError: 'Ошибка отправки',
       requestAlreadySent: 'Ваша заявка уже была отправлена, дождитесь сообщения на почте',
+      networkError: 'Ошибка подключения к серверу. Проверьте интернет-соединение и попробуйте еще раз.',
     },
     pl: {
       wait: 'Poczekaj...',
@@ -93,6 +95,7 @@
       loginError: 'Błąd logowania',
       sendError: 'Błąd wysyłki',
       requestAlreadySent: 'Twój wniosek został już wysłany, poczekaj na wiadomość e-mail',
+      networkError: 'Błąd połączenia z serwerem. Sprawdź połączenie internetowe i spróbuj ponownie.',
     },
     en: {
       wait: 'Please wait...',
@@ -121,6 +124,7 @@
       loginError: 'Login error',
       sendError: 'Send error',
       requestAlreadySent: 'Your request has already been sent, wait for an email message',
+      networkError: 'Connection error. Check your internet connection and try again.',
     },
   };
 
@@ -129,6 +133,23 @@
   const REGISTRATION_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Site/Registration';
   const LOGIN_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Site/Login';
   const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Helper function to handle axios errors and return user-friendly messages
+  const handleAxiosError = (error) => {
+    // Network Error - no response from server
+    if (!error.response) {
+      if (error.message === 'Network Error' || error.code === 'ERR_NETWORK' || error.code === 'ECONNABORTED') {
+        return t('networkError');
+      }
+      if (error.code === 'ERR_INTERNET_DISCONNECTED') {
+        return t('networkError');
+      }
+      return t('networkError');
+    }
+    
+    // Server responded with error status
+    return error.message || t('somethingWentWrong');
+  };
 
   const validateEmail = (email) => {
     if (!email || !email.trim()) {
@@ -589,7 +610,8 @@
       }
     } catch (error) {
       console.error('Code verification error:', error);
-      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
+      const errorMessage = handleAxiosError(error);
+      showFloatingNotification(errorMessage, 'error');
       hideMessage();
     } finally {
       toggleButtonState(verifyBtn, false);
@@ -793,7 +815,8 @@
       }
     } catch (error) {
       console.error('Registration error:', error);
-      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
+      const errorMessage = handleAxiosError(error);
+      showFloatingNotification(errorMessage, 'error');
       hideMessage();
     } finally {
       toggleButtonState(registerBtn, false);
@@ -871,7 +894,8 @@
       }
     } catch (error) {
       console.error('Login error:', error);
-      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
+      const errorMessage = handleAxiosError(error);
+      showFloatingNotification(errorMessage, 'error');
       hideMessage();
     } finally {
       toggleButtonState(registerBtn, false);
@@ -919,7 +943,8 @@
       }
     } catch (error) {
       console.error('Registration error:', error);
-      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
+      const errorMessage = handleAxiosError(error);
+      showFloatingNotification(errorMessage, 'error');
     } finally {
       toggleSubmitState(submitButton, false);
     }
@@ -985,7 +1010,8 @@
       }
     } catch (error) {
       console.error('Login error:', error);
-      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
+      const errorMessage = handleAxiosError(error);
+      showFloatingNotification(errorMessage, 'error');
     } finally {
       toggleSubmitState(submitButton, false);
     }
