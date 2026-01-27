@@ -577,109 +577,150 @@
     
     const requestUrl = `${REGISTRATION_API_URL}?${params.toString()}`;
 
-    let response = await fetch(requestUrl, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
-
-    if (!response.ok && response.status === 400) {
-      try {
-        response = await fetch(REGISTRATION_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: JSON.stringify({ login: email }),
-        });
-      } catch (postError) {
-        const formData = new URLSearchParams();
-        formData.append('login', email);
-        
-        response = await fetch(REGISTRATION_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json',
-          },
-          body: formData.toString(),
-        });
-      }
-    }
-
-    const rawBody = await response.text();
-    let data = null;
-    
     try {
-      data = rawBody ? JSON.parse(rawBody) : null;
-    } catch (parseError) {
-      console.error('Parse error:', parseError, rawBody);
-    }
+      let response = await fetch(requestUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+        timeout: 30000, // 30 second timeout for older devices
+      });
 
-    return {
-      status: response.status,
-      ok: response.ok,
-      data: data,
-      rawBody: rawBody
-    };
+      if (!response.ok && response.status === 400) {
+        try {
+          response = await fetch(REGISTRATION_API_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: JSON.stringify({ login: email }),
+            timeout: 30000,
+          });
+        } catch (postError) {
+          const formData = new URLSearchParams();
+          formData.append('login', email);
+          
+          response = await fetch(REGISTRATION_API_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Accept': 'application/json',
+            },
+            body: formData.toString(),
+            timeout: 30000,
+          });
+        }
+      }
+
+      const rawBody = await response.text();
+      let data = null;
+      
+      try {
+        data = rawBody ? JSON.parse(rawBody) : null;
+      } catch (parseError) {
+        console.error('Parse error:', parseError, rawBody);
+      }
+
+      return {
+        status: response.status,
+        ok: response.ok,
+        data: data,
+        rawBody: rawBody
+      };
+    } catch (error) {
+      // Enhanced error handling for network issues
+      console.error('Registration request error:', error);
+      
+      // Check if it's a network error
+      if (error.message && (
+        error.message.includes('Failed to fetch') ||
+        error.message.includes('Network request failed') ||
+        error.message.includes('NetworkError') ||
+        error.message.includes('timeout')
+      )) {
+        throw new Error('Помилка підключення до сервера. Перевірте інтернет-з\'єднання та спробуйте ще раз.');
+      }
+      
+      // Re-throw with user-friendly message
+      throw new Error(error.message || 'Помилка підключення. Спробуйте ще раз.');
+    }
   };
 
   const submitLogin = async (email) => {
-
-    const params = new URLSearchParams();
-    params.append('login', email);
-    
-    const requestUrl = `${LOGIN_API_URL}?${params.toString()}`;
-
-    let response = await fetch(requestUrl, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
-
-    if (!response.ok && response.status === 400) {
-      try {
-        response = await fetch(LOGIN_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: JSON.stringify({ login: email }),
-        });
-      } catch (postError) {
-        const formData = new URLSearchParams();
-        formData.append('login', email);
-        
-        response = await fetch(LOGIN_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json',
-          },
-          body: formData.toString(),
-        });
-      }
-    }
-
-    const rawBody = await response.text();
-    let data = null;
-    
     try {
-      data = rawBody ? JSON.parse(rawBody) : null;
-    } catch (parseError) {
-      console.error('Parse error:', parseError, rawBody);
-    }
+      const params = new URLSearchParams();
+      params.append('login', email);
+      
+      const requestUrl = `${LOGIN_API_URL}?${params.toString()}`;
 
-    return {
-      status: response.status,
-      ok: response.ok,
-      data: data,
-      rawBody: rawBody
-    };
+      let response = await fetch(requestUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+        timeout: 30000, // 30 second timeout for older devices
+      });
+
+      if (!response.ok && response.status === 400) {
+        try {
+          response = await fetch(LOGIN_API_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: JSON.stringify({ login: email }),
+            timeout: 30000,
+          });
+        } catch (postError) {
+          const formData = new URLSearchParams();
+          formData.append('login', email);
+          
+          response = await fetch(LOGIN_API_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Accept': 'application/json',
+            },
+            body: formData.toString(),
+            timeout: 30000,
+          });
+        }
+      }
+
+      const rawBody = await response.text();
+      let data = null;
+      
+      try {
+        data = rawBody ? JSON.parse(rawBody) : null;
+      } catch (parseError) {
+        console.error('Parse error:', parseError, rawBody);
+      }
+
+      return {
+        status: response.status,
+        ok: response.ok,
+        data: data,
+        rawBody: rawBody
+      };
+    } catch (error) {
+      // Enhanced error handling for network issues
+      console.error('Login request error:', error);
+      
+      // Check if it's a network error
+      if (error.message && (
+        error.message.includes('Failed to fetch') ||
+        error.message.includes('Network request failed') ||
+        error.message.includes('NetworkError') ||
+        error.message.includes('timeout')
+      )) {
+        throw new Error('Помилка підключення до сервера. Перевірте інтернет-з\'єднання та спробуйте ще раз.');
+      }
+      
+      // Re-throw with user-friendly message
+      throw new Error(error.message || 'Помилка підключення. Спробуйте ще раз.');
+    }
   };
 
   const handleRegistration = async () => {
@@ -799,7 +840,9 @@
       }
     } catch (error) {
       console.error('Login error:', error);
-      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
+      // Show user-friendly error message
+      const errorMessage = error.message || t('somethingWentWrong');
+      showFloatingNotification(errorMessage, 'error');
       hideMessage();
     } finally {
       toggleButtonState(registerBtn, false);
