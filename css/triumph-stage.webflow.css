@@ -930,7 +930,7 @@
 body {
   color: var(--black-2);
   background-color: #fff;
-  font-family: Inter, sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
@@ -1053,7 +1053,7 @@ figcaption {
   color: #ffffffb3;
   text-align: center;
   margin-top: 5px;
-  font-family: Inter, sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 15px;
 }
 
@@ -2027,7 +2027,7 @@ figcaption {
   height: 50px;
   margin-bottom: 0;
   padding-left: 0;
-  font-family: Inter, sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 16px;
   font-weight: 500;
 }
@@ -2806,7 +2806,7 @@ figcaption {
   color: #fff;
   max-width: 88%;
   margin-bottom: 10px;
-  font-family: Inter, sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 26px;
   font-weight: 500;
   line-height: 32px;
@@ -3923,7 +3923,7 @@ figcaption {
 
 .photo-right {
   z-index: 15;
-  background-image: url('../images/why-us.jpg');
+  background-image: url('../images/portret-zeleznodoroznika-so-skresennymi-rukami-gordo-stoasego-na-vokzale-mezdu-vagonami 1.jpg');
   background-position: 35%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -3954,7 +3954,7 @@ figcaption {
 }
 
 .photo-right.second-photo {
-  background-image: url('../images/about-hero.jpg');
+  background-image: url('../images/about-right.jpg');
 }
 
 .photo-right.product-photo {
@@ -4203,7 +4203,7 @@ figcaption {
   color: #000;
   text-transform: none;
   margin-bottom: 0;
-  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 13px;
   font-weight: 700;
   line-height: 1.4;
@@ -4835,6 +4835,12 @@ figcaption {
   }
 
   .nav_lang-container {
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .hero {
+    background-position: 100%, 50% 125%;
   }
 }
 
