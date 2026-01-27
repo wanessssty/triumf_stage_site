@@ -44,7 +44,7 @@
       operationDate: 'Дата операції',
       cargo: 'Вантаж',
       cargoWeight: 'Вага вантаж',
-      clearButton: 'Скинути'
+      clearButton: 'Очистити'
     },
     ru: {
       noResults: 'Результатов не найдено',
@@ -65,7 +65,7 @@
       operationDate: 'Дата операции',
       cargo: 'Груз',
       cargoWeight: 'Вес груза',
-      clearButton: 'Сбросить'
+      clearButton: 'Очистить'
     },
     en: {
       noResults: 'No results found',
@@ -86,7 +86,7 @@
       operationDate: 'Operation date',
       cargo: 'Cargo',
       cargoWeight: 'Cargo weight',
-      clearButton: 'Clear'
+      clearButton: 'Clear all'
     },
     pl: {
       noResults: 'Nie znaleziono wyników',
@@ -107,7 +107,7 @@
       operationDate: 'Data operacji',
       cargo: 'Ładunek',
       cargoWeight: 'Waga ładunku',
-      clearButton: 'Wyczyść'
+      clearButton: 'Wyczyść wszystko'
     }
   };
 
