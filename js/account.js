@@ -479,51 +479,76 @@
     
     const requestUrl = `https://dc.kdg.com.ua/Triumph/Triumph/Site/Refresh?${params.toString()}`;
 
-    let response = await fetch(requestUrl, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
+    let response;
+    try {
+      response = await axios.get(requestUrl, {
+        headers: {
+          'Accept': 'application/json',
+        },
+        validateStatus: function (status) {
+          return status < 500;
+        },
+      });
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        try {
+          response = await axios.post('https://dc.kdg.com.ua/Triumph/Triumph/Site/Refresh', { login: email, code: code }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+          });
+        } catch (postError) {
+          const formData = new URLSearchParams();
+          formData.append('login', email);
+          formData.append('code', code);
+          
+          response = await axios.post('https://dc.kdg.com.ua/Triumph/Triumph/Site/Refresh', formData.toString(), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Accept': 'application/json',
+            },
+          });
+        }
+      } else {
+        throw error;
+      }
+    }
 
-    if (!response.ok && response.status === 400) {
+    if (response.status === 400) {
       try {
-        response = await fetch('https://dc.kdg.com.ua/Triumph/Triumph/Site/Refresh', {
-          method: 'POST',
+        response = await axios.post('https://dc.kdg.com.ua/Triumph/Triumph/Site/Refresh', { login: email, code: code }, {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
-          body: JSON.stringify({ login: email, code: code }),
         });
       } catch (postError) {
         const formData = new URLSearchParams();
         formData.append('login', email);
         formData.append('code', code);
         
-        response = await fetch('https://dc.kdg.com.ua/Triumph/Triumph/Site/Refresh', {
-          method: 'POST',
+        response = await axios.post('https://dc.kdg.com.ua/Triumph/Triumph/Site/Refresh', formData.toString(), {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': 'application/json',
           },
-          body: formData.toString(),
         });
       }
     }
 
-    const rawBody = await response.text();
+    const rawBody = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
     let data = null;
     
     try {
-      data = rawBody ? JSON.parse(rawBody) : null;
+      data = typeof response.data === 'object' ? response.data : (rawBody ? JSON.parse(rawBody) : null);
     } catch (parseError) {
       console.error('Parse error:', parseError, rawBody);
     }
 
     return {
       status: response.status,
-      ok: response.ok,
+      ok: response.status >= 200 && response.status < 300,
       data: data,
       rawBody: rawBody
     };
@@ -577,150 +602,156 @@
     
     const requestUrl = `${REGISTRATION_API_URL}?${params.toString()}`;
 
+    let response;
     try {
-      let response = await fetch(requestUrl, {
-        method: 'GET',
+      response = await axios.get(requestUrl, {
         headers: {
           'Accept': 'application/json',
         },
-        timeout: 30000, // 30 second timeout for older devices
+        validateStatus: function (status) {
+          return status < 500;
+        },
       });
-
-      if (!response.ok && response.status === 400) {
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
         try {
-          response = await fetch(REGISTRATION_API_URL, {
-            method: 'POST',
+          response = await axios.post(REGISTRATION_API_URL, { login: email }, {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
             },
-            body: JSON.stringify({ login: email }),
-            timeout: 30000,
           });
         } catch (postError) {
           const formData = new URLSearchParams();
           formData.append('login', email);
           
-          response = await fetch(REGISTRATION_API_URL, {
-            method: 'POST',
+          response = await axios.post(REGISTRATION_API_URL, formData.toString(), {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Accept': 'application/json',
             },
-            body: formData.toString(),
-            timeout: 30000,
           });
         }
+      } else {
+        throw error;
       }
-
-      const rawBody = await response.text();
-      let data = null;
-      
-      try {
-        data = rawBody ? JSON.parse(rawBody) : null;
-      } catch (parseError) {
-        console.error('Parse error:', parseError, rawBody);
-      }
-
-      return {
-        status: response.status,
-        ok: response.ok,
-        data: data,
-        rawBody: rawBody
-      };
-    } catch (error) {
-      // Enhanced error handling for network issues
-      console.error('Registration request error:', error);
-      
-      // Check if it's a network error
-      if (error.message && (
-        error.message.includes('Failed to fetch') ||
-        error.message.includes('Network request failed') ||
-        error.message.includes('NetworkError') ||
-        error.message.includes('timeout')
-      )) {
-        throw new Error('Помилка підключення до сервера. Перевірте інтернет-з\'єднання та спробуйте ще раз.');
-      }
-      
-      // Re-throw with user-friendly message
-      throw new Error(error.message || 'Помилка підключення. Спробуйте ще раз.');
     }
+
+    if (response.status === 400) {
+      try {
+        response = await axios.post(REGISTRATION_API_URL, { login: email }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        });
+      } catch (postError) {
+        const formData = new URLSearchParams();
+        formData.append('login', email);
+        
+        response = await axios.post(REGISTRATION_API_URL, formData.toString(), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
+          },
+        });
+      }
+    }
+
+    const rawBody = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+    let data = null;
+    
+    try {
+      data = typeof response.data === 'object' ? response.data : (rawBody ? JSON.parse(rawBody) : null);
+    } catch (parseError) {
+      console.error('Parse error:', parseError, rawBody);
+    }
+
+    return {
+      status: response.status,
+      ok: response.status >= 200 && response.status < 300,
+      data: data,
+      rawBody: rawBody
+    };
   };
 
   const submitLogin = async (email) => {
-    try {
-      const params = new URLSearchParams();
-      params.append('login', email);
-      
-      const requestUrl = `${LOGIN_API_URL}?${params.toString()}`;
+    const params = new URLSearchParams();
+    params.append('login', email);
+    
+    const requestUrl = `${LOGIN_API_URL}?${params.toString()}`;
 
-      let response = await fetch(requestUrl, {
-        method: 'GET',
+    let response;
+    try {
+      response = await axios.get(requestUrl, {
         headers: {
           'Accept': 'application/json',
         },
-        timeout: 30000, // 30 second timeout for older devices
+        validateStatus: function (status) {
+          return status < 500;
+        },
       });
-
-      if (!response.ok && response.status === 400) {
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
         try {
-          response = await fetch(LOGIN_API_URL, {
-            method: 'POST',
+          response = await axios.post(LOGIN_API_URL, { login: email }, {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
             },
-            body: JSON.stringify({ login: email }),
-            timeout: 30000,
           });
         } catch (postError) {
           const formData = new URLSearchParams();
           formData.append('login', email);
           
-          response = await fetch(LOGIN_API_URL, {
-            method: 'POST',
+          response = await axios.post(LOGIN_API_URL, formData.toString(), {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Accept': 'application/json',
             },
-            body: formData.toString(),
-            timeout: 30000,
           });
         }
+      } else {
+        throw error;
       }
-
-      const rawBody = await response.text();
-      let data = null;
-      
-      try {
-        data = rawBody ? JSON.parse(rawBody) : null;
-      } catch (parseError) {
-        console.error('Parse error:', parseError, rawBody);
-      }
-
-      return {
-        status: response.status,
-        ok: response.ok,
-        data: data,
-        rawBody: rawBody
-      };
-    } catch (error) {
-      // Enhanced error handling for network issues
-      console.error('Login request error:', error);
-      
-      // Check if it's a network error
-      if (error.message && (
-        error.message.includes('Failed to fetch') ||
-        error.message.includes('Network request failed') ||
-        error.message.includes('NetworkError') ||
-        error.message.includes('timeout')
-      )) {
-        throw new Error('Помилка підключення до сервера. Перевірте інтернет-з\'єднання та спробуйте ще раз.');
-      }
-      
-      // Re-throw with user-friendly message
-      throw new Error(error.message || 'Помилка підключення. Спробуйте ще раз.');
     }
+
+    if (response.status === 400) {
+      try {
+        response = await axios.post(LOGIN_API_URL, { login: email }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        });
+      } catch (postError) {
+        const formData = new URLSearchParams();
+        formData.append('login', email);
+        
+        response = await axios.post(LOGIN_API_URL, formData.toString(), {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
+          },
+        });
+      }
+    }
+
+    const rawBody = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+    let data = null;
+    
+    try {
+      data = typeof response.data === 'object' ? response.data : (rawBody ? JSON.parse(rawBody) : null);
+    } catch (parseError) {
+      console.error('Parse error:', parseError, rawBody);
+    }
+
+    return {
+      status: response.status,
+      ok: response.status >= 200 && response.status < 300,
+      data: data,
+      rawBody: rawBody
+    };
   };
 
   const handleRegistration = async () => {
@@ -840,9 +871,7 @@
       }
     } catch (error) {
       console.error('Login error:', error);
-      // Show user-friendly error message
-      const errorMessage = error.message || t('somethingWentWrong');
-      showFloatingNotification(errorMessage, 'error');
+      showFloatingNotification(error.message || t('somethingWentWrong'), 'error');
       hideMessage();
     } finally {
       toggleButtonState(registerBtn, false);
