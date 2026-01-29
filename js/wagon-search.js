@@ -44,7 +44,11 @@
       operationDate: 'Дата операції',
       cargo: 'Вантаж',
       cargoWeight: 'Вага вантаж',
-      clearButton: 'Очистити'
+      clearButton: 'Очистити',
+      client: 'Клієнт',
+      nextClient: 'Наступний клієнт',
+      owner: 'Постачальник',
+      manageType: 'Вид управління вагоном'
     },
     ru: {
       noResults: 'Результатов не найдено',
@@ -65,7 +69,11 @@
       operationDate: 'Дата операции',
       cargo: 'Груз',
       cargoWeight: 'Вес груза',
-      clearButton: 'Очистить'
+      clearButton: 'Очистить',
+      client: 'Клиент',
+      nextClient: 'Следующий клиент',
+      owner: 'Поставщик',
+      manageType: 'Вид управления вагоном'
     },
     en: {
       noResults: 'No results found',
@@ -86,7 +94,11 @@
       operationDate: 'Operation date',
       cargo: 'Cargo',
       cargoWeight: 'Cargo weight',
-      clearButton: 'Clear all'
+      clearButton: 'Clear all',
+      client: 'Client',
+      nextClient: 'Next client',
+      owner: 'Supplier',
+      manageType: 'Wagon management type'
     },
     pl: {
       noResults: 'Nie znaleziono wyników',
@@ -107,7 +119,11 @@
       operationDate: 'Data operacji',
       cargo: 'Ładunek',
       cargoWeight: 'Waga ładunku',
-      clearButton: 'Wyczyść wszystko'
+      clearButton: 'Wyczyść wszystko',
+      client: 'Klient',
+      nextClient: 'Następny klient',
+      owner: 'Dostawca',
+      manageType: 'Rodzaj zarządzania wagonem'
     }
   };
 
@@ -208,19 +224,42 @@
     }
   }
 
-  function populateTable(data) {
-    const tbody = document.querySelector(`#${RESULTS_SECTION_ID} .wagon-results-table tbody`);
-    if (!tbody) {
-      console.error('Не знайдено tbody для таблиці результатів');
+  function populateTable(wagonData, haveFullAccess = false) {
+    const table = document.querySelector(`#${RESULTS_SECTION_ID} .wagon-results-table`);
+    const thead = table?.querySelector('thead tr');
+    const tbody = table?.querySelector('tbody');
+    
+    if (!tbody || !thead) {
+      console.error('Не знайдено таблицю результатів');
       return;
     }
 
     clearTable();
 
-    if (!data || !Array.isArray(data) || data.length === 0) {
+    const additionalColumns = [
+      { key: 'client', label: t('client') },
+      { key: 'nextclient', label: t('nextClient') },
+      { key: 'owner', label: t('owner') },
+      { key: 'managetype', label: t('manageType') }
+    ];
+
+    const existingAdditionalCols = thead.querySelectorAll('.additional-column');
+    existingAdditionalCols.forEach(col => col.remove());
+
+    if (haveFullAccess) {
+      additionalColumns.forEach(col => {
+        const th = document.createElement('th');
+        th.className = 'additional-column';
+        th.textContent = col.label;
+        thead.appendChild(th);
+      });
+    }
+
+    if (!wagonData || !Array.isArray(wagonData) || wagonData.length === 0) {
       const row = document.createElement('tr');
+      const colspan = haveFullAccess ? 12 : 8;
       row.innerHTML = `
-        <td colspan="8" style="text-align: center; padding: 40px;">
+        <td colspan="${colspan}" style="text-align: center; padding: 40px;">
           <div style="color: #666; font-size: 16px;">${t('noResults')}</div>
         </td>
       `;
@@ -233,9 +272,10 @@
       return th ? th.textContent.trim() : '';
     };
 
-    data.forEach((wagon) => {
+    wagonData.forEach((wagon) => {
       const row = document.createElement('tr');
-      row.innerHTML = `
+      
+      let rowHTML = `
         <td data-label="${getDataLabel(0)}">${wagon.carno || '-'}</td>
         <td data-label="${getDataLabel(1)}">${wagon.stationfromname || '-'}</td>
         <td data-label="${getDataLabel(2)}">${wagon.curstationname || '-'}</td>
@@ -245,6 +285,17 @@
         <td data-label="${getDataLabel(6)}">${wagon.cargotypename || '-'}</td>
         <td data-label="${getDataLabel(7)}">${formatWeight(wagon.Weight)}</td>
       `;
+
+      if (haveFullAccess) {
+        rowHTML += `
+          <td data-label="${t('client')}">${wagon.client || '-'}</td>
+          <td data-label="${t('nextClient')}">${wagon.nextclient || '-'}</td>
+          <td data-label="${t('owner')}">${wagon.owner || '-'}</td>
+          <td data-label="${t('manageType')}">${wagon.managetype || '-'}</td>
+        `;
+      }
+
+      row.innerHTML = rowHTML;
       tbody.appendChild(row);
     });
   }
@@ -311,48 +362,68 @@
 
   async function searchWagons(wagonNumbers) {
     const formattedNumbers = formatWagonNumbers(wagonNumbers);
+    const email = localStorage.getItem('triumph_user_email') || '';
     
     try {
       const formData = new URLSearchParams();
       formData.append('wagonNumbers', formattedNumbers);
+      if (email) {
+        formData.append('email', email);
+      }
       
-      let response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'application/json',
-        },
-        body: formData.toString()
-      });
-
-      if (!response.ok) {
-        response = await fetch(`${API_URL}?wagonNumbers=${encodeURIComponent(formattedNumbers)}`, {
-          method: 'GET',
+      let response;
+      try {
+        response = await axios.post(API_URL, formData.toString(), {
           headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': 'application/json',
           },
+          validateStatus: function (status) {
+            return status < 500;
+          },
         });
+      } catch (error) {
+        if (error.response && error.response.status >= 500) {
+          throw error;
+        }
+        
+        const getUrl = email 
+          ? `${API_URL}?wagonNumbers=${encodeURIComponent(formattedNumbers)}&email=${encodeURIComponent(email)}`
+          : `${API_URL}?wagonNumbers=${encodeURIComponent(formattedNumbers)}`;
+        
+        try {
+          response = await axios.get(getUrl, {
+            headers: {
+              'Accept': 'application/json',
+            },
+          });
+        } catch (getError) {
+          throw getError;
+        }
       }
 
-      if (!response.ok) {
+      if (response.status >= 400) {
         throw new Error(`${t('serverError')} ${response.status}`);
       }
 
-      const rawBody = await response.text();
       let result = null;
       
       try {
-        result = rawBody ? JSON.parse(rawBody) : null;
+        if (typeof response.data === 'string') {
+          result = response.data ? JSON.parse(response.data) : null;
+        } else {
+          result = response.data;
+        }
         console.log('Відповідь від API:', result);
       } catch (parseError) {
-        console.error('Помилка парсингу відповіді:', parseError, rawBody);
+        console.error('Помилка парсингу відповіді:', parseError, response.data);
         throw new Error(t('invalidDataFormat'));
       }
       
       if (result && result.message && result.message.trim() !== '') {
         console.warn('Повідомлення від сервера:', result.message);
         if (!result.data) {
-          return [];
+          return { data: [], haveFullAccess: false };
         }
       }
 
@@ -369,16 +440,24 @@
           data = result.data;
         }
 
+        const haveFullAccess = result.havefullaccess === 1 || result.havefullaccess === '1';
+        
+        let wagonData;
         if (Array.isArray(data)) {
-          return data;
+          wagonData = data;
         } else if (data && typeof data === 'object') {
-          return Object.values(data).find(Array.isArray) || [];
+          wagonData = Object.values(data).find(Array.isArray) || [];
         } else {
-          return [];
+          wagonData = [];
         }
+
+        return {
+          data: wagonData,
+          haveFullAccess: haveFullAccess
+        };
       }
 
-      return [];
+      return { data: [], haveFullAccess: false };
     } catch (error) {
       console.error('Помилка при пошуку вагонів:', error);
       throw error;
@@ -414,7 +493,8 @@
     resultsSection.style.display = 'none';
 
     try {
-      const allData = await searchWagons(wagonNumbers);
+      const result = await searchWagons(wagonNumbers);
+      const { data: allData, haveFullAccess } = result;
 
       const filteredData = allData.filter(wagon => {
         if (!wagon.carno) return false;
@@ -425,7 +505,7 @@
         });
       });
 
-      populateTable(filteredData);
+      populateTable(filteredData, haveFullAccess);
 
       resultsSection.style.display = 'block';
       

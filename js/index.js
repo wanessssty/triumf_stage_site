@@ -307,48 +307,45 @@
   };
 
   const fetchStations = async () => {
-    const response = await fetch(STATIONS_API_URL, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Помилка завантаження станцій: ${response.status}`);
+    try {
+      const response = await axios.get(STATIONS_API_URL, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      const status = error.response?.status || 500;
+      throw new Error(`Помилка завантаження станцій: ${status}`);
     }
-
-    return response.json();
   };
 
   const fetchCarTypes = async () => {
-    const response = await fetch(CAR_TYPES_API_URL, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Помилка завантаження типів рухомого складу: ${response.status}`);
+    try {
+      const response = await axios.get(CAR_TYPES_API_URL, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      const status = error.response?.status || 500;
+      throw new Error(`Помилка завантаження типів рухомого складу: ${status}`);
     }
-
-    return response.json();
   };
 
   const fetchCargoTypes = async () => {
-    const response = await fetch(CARGO_API_URL, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Помилка завантаження типів вантажів: ${response.status}`);
+    try {
+      const response = await axios.get(CARGO_API_URL, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      const status = error.response?.status || 500;
+      throw new Error(`Помилка завантаження типів вантажів: ${status}`);
     }
-
-    return response.json();
   };
 
   const initStations = async () => {
@@ -1043,49 +1040,84 @@
     const query = buildQueryString(payload);
     const requestUrl = query ? `${ADD_ORDER_API_URL}?${query}` : ADD_ORDER_API_URL;
 
-    const response = await fetch(requestUrl, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
-
-    const rawBody = await response.text();
-    let data = null;
     try {
-      data = rawBody ? JSON.parse(rawBody) : null;
-    } catch (parseError) {
-      console.error('Не вдалося розпарсити відповідь сервера', parseError, rawBody);
-    }
+      const response = await axios.get(requestUrl, {
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
 
-    const errorMessage = data?.errorMessage || data?.errormessage;
-    const isServerError = 
-      response.status >= 500 || 
-      (errorMessage && (
-        errorMessage.toLowerCase().includes('internal server error') ||
-        errorMessage.toLowerCase().includes('server error') ||
-        errorMessage.toLowerCase().includes('помилка сервера')
-      ));
-
-    if (!response.ok) {
-      if (isServerError) {
-        throw new Error(t('errorServer'));
+      let data = null;
+      try {
+        if (typeof response.data === 'string') {
+          data = response.data ? JSON.parse(response.data) : null;
+        } else {
+          data = response.data;
+        }
+      } catch (parseError) {
+        console.error('Не вдалося розпарсити відповідь сервера', parseError, response.data);
       }
-      const message =
-        errorMessage ||
-        rawBody ||
-        `${t('errorSubmit')}: ${response.status}`;
-      throw new Error(message);
-    }
 
-    if (data?.status === false) {
-      if (isServerError) {
-        throw new Error(t('errorServer'));
+      const errorMessage = data?.errorMessage || data?.errormessage;
+      const isServerError = 
+        response.status >= 500 || 
+        (errorMessage && (
+          errorMessage.toLowerCase().includes('internal server error') ||
+          errorMessage.toLowerCase().includes('server error') ||
+          errorMessage.toLowerCase().includes('помилка сервера')
+        ));
+
+      if (response.status >= 400) {
+        if (isServerError) {
+          throw new Error(t('errorServer'));
+        }
+        const message =
+          errorMessage ||
+          (typeof response.data === 'string' ? response.data : '') ||
+          `${t('errorSubmit')}: ${response.status}`;
+        throw new Error(message);
       }
-      throw new Error(errorMessage || t('errorSubmit'));
-    }
 
-    return data;
+      if (data?.status === false) {
+        if (isServerError) {
+          throw new Error(t('errorServer'));
+        }
+        throw new Error(errorMessage || t('errorSubmit'));
+      }
+
+      return data;
+    } catch (error) {
+      if (error.response) {
+        const status = error.response.status;
+        const errorData = error.response.data;
+        let errorMessage = null;
+        
+        try {
+          if (typeof errorData === 'string') {
+            const parsed = JSON.parse(errorData);
+            errorMessage = parsed?.errorMessage || parsed?.errormessage;
+          } else if (errorData) {
+            errorMessage = errorData?.errorMessage || errorData?.errormessage;
+          }
+        } catch (e) {
+          // ignore parse errors
+        }
+        
+        const isServerError = status >= 500 || 
+          (errorMessage && (
+            errorMessage.toLowerCase().includes('internal server error') ||
+            errorMessage.toLowerCase().includes('server error') ||
+            errorMessage.toLowerCase().includes('помилка сервера')
+          ));
+        
+        if (isServerError) {
+          throw new Error(t('errorServer'));
+        }
+        
+        throw new Error(errorMessage || `${t('errorSubmit')}: ${status}`);
+      }
+      throw error;
+    }
   }
 
   function toggleSubmitState(button, isSubmitting) {
