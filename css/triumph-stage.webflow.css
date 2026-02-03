@@ -1686,6 +1686,7 @@ figcaption {
   border-right: 1px solid rgba(21, 123, 192, 0.15);
   font-size: 13px;
   background-color: rgba(21, 123, 192, 0.01);
+  min-width: 56px;
 }
 
 .wagon-results-table th:last-child {
