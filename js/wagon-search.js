@@ -276,11 +276,11 @@
       return th ? th.textContent.trim() : '';
     };
 
-    wagonData.forEach((wagon) => {
+    wagonData.forEach((wagon, index) => {
       const row = document.createElement('tr');
-      
+      const rowNum = index + 1;
       let rowHTML = `
-        <td data-label="${getDataLabel(0)}">${wagon.rn != null && wagon.rn !== '' ? wagon.rn : '-'}</td>
+        <td data-label="${getDataLabel(0)}">${rowNum}</td>
         <td data-label="${getDataLabel(1)}">${wagon.carno || '-'}</td>
         <td data-label="${getDataLabel(2)}">${wagon.stationfromname || '-'}</td>
         <td data-label="${getDataLabel(3)}">${wagon.curstationname || '-'}</td>
