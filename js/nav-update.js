@@ -37,7 +37,7 @@
   };
 
   const currentLang = detectLanguage();
-  const t = (key) => translations[currentLang]?.[key] || translations.uk[key] || key;
+  const t = (key) => (translations[currentLang] && translations[currentLang][key]) || (translations.uk && translations.uk[key]) || key;
 
   const isAuthenticated = () => {
     if (typeof window.triumphAuth !== 'undefined' && window.triumphAuth.check) {

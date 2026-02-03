@@ -128,7 +128,7 @@
     },
   };
 
-  const t = (key) => translations[currentLang]?.[key] || translations.uk[key] || key;
+  const t = (key) => (translations[currentLang] && translations[currentLang][key]) || (translations.uk && translations.uk[key]) || key;
 
   const REGISTRATION_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Site/Registration';
   const LOGIN_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Site/Login';
@@ -434,7 +434,7 @@
 
     localStorage.setItem('triumph_authenticated', 'true');
     localStorage.setItem('triumph_auth_timestamp', Date.now().toString());
-    if (data?.login || data?.email) {
+    if (data && (data.login || data.email)) {
       localStorage.setItem('triumph_user_email', data.login || data.email);
     }
 
@@ -578,7 +578,7 @@
   const handleCodeVerification = async (email) => {
     const codeInput = document.getElementById('Auth-Code');
     const verifyBtn = document.getElementById('verify-code-btn');
-    const code = codeInput?.value?.trim() || '';
+    const code = codeInput ? (codeInput.value || '').trim() : '';
 
     hideMessage();
     hideFieldError(codeInput);
@@ -601,10 +601,9 @@
         hideMessage();
         showFieldError(codeInput, t('codeInvalid'));
       } else {
-        const errorMessage = result.data?.errorMessage || result.data?.errormessage || 
-                            result.data?.message ||
+        const errorMessage = (result.data && (result.data.errorMessage || result.data.errormessage || result.data.message)) ||
                             result.rawBody || 
-                            `${t('confirmationError')}: ${result.status}`;
+                            (t('confirmationError') + ': ' + result.status);
         showFloatingNotification(errorMessage, 'error');
         hideMessage();
       }
@@ -780,7 +779,7 @@
     const emailInput = document.getElementById('Auth-Email');
     const registerBtn = document.getElementById('register-btn');
     const loginBtn = document.getElementById('login-btn');
-    const email = emailInput?.value?.trim() || '';
+    const email = emailInput ? (emailInput.value || '').trim() : '';
 
     hideMessage();
     hideFieldError(emailInput);
@@ -828,7 +827,7 @@
     const emailInput = document.getElementById('Auth-Email');
     const registerBtn = document.getElementById('register-btn');
     const loginBtn = document.getElementById('login-btn');
-    const email = emailInput?.value?.trim() || '';
+    const email = emailInput ? (emailInput.value || '').trim() : '';
 
     hideMessage();
     hideFieldError(emailInput);
@@ -853,8 +852,8 @@
       if (result.status === 200) {
         localStorage.setItem('triumph_authenticated', 'true');
         localStorage.setItem('triumph_auth_timestamp', Date.now().toString());
-        if (result.data?.login || email) {
-          localStorage.setItem('triumph_user_email', result.data?.login || email);
+        if ((result.data && result.data.login) || email) {
+          localStorage.setItem('triumph_user_email', (result.data && result.data.login) || email);
         }
         
         showFloatingNotification(t('successLogin'), 'success');
@@ -885,10 +884,9 @@
         hideMessage();
         showCodeVerificationForm(email);
       } else {
-        const errorMessage = result.data?.errorMessage || result.data?.errormessage || 
-                            result.data?.message ||
+        const errorMessage = (result.data && (result.data.errorMessage || result.data.errormessage || result.data.message)) ||
                             result.rawBody || 
-                            `${t('loginError')}: ${result.status}`;
+                            (t('loginError') + ': ' + result.status);
         showFloatingNotification(errorMessage, 'error');
         hideMessage();
       }
@@ -906,7 +904,7 @@
   const handleFormSubmit = async (form) => {
     const emailInput = form.querySelector('#Login-Email');
     const submitButton = form.querySelector('.login-submit-btn');
-    const email = emailInput?.value?.trim() || '';
+    const email = emailInput ? (emailInput.value || '').trim() : '';
 
     hideMessages();
 
@@ -935,10 +933,9 @@
       } else if (result.status === 403) {
         showFloatingNotification(t('requestAlreadySent'), 'warning');
       } else {
-        const errorMessage = result.data?.errorMessage || result.data?.errormessage || 
-                            result.data?.message ||
+        const errorMessage = (result.data && (result.data.errorMessage || result.data.errormessage || result.data.message)) ||
                             result.rawBody || 
-                            `${t('sendError')}: ${result.status}`;
+                            (t('sendError') + ': ' + result.status);
         showFloatingNotification(errorMessage, 'error');
       }
     } catch (error) {
@@ -953,7 +950,7 @@
   const handleLoginAuthSubmit = async (form) => {
     const emailInput = form.querySelector('#Login-Email-Auth');
     const submitButton = form.querySelector('.login-submit-btn');
-    const email = emailInput?.value?.trim() || '';
+    const email = emailInput ? (emailInput.value || '').trim() : '';
 
     hideMessages();
 
@@ -976,8 +973,8 @@
       if (result.status === 200) {
         localStorage.setItem('triumph_authenticated', 'true');
         localStorage.setItem('triumph_auth_timestamp', Date.now().toString());
-        if (result.data?.login || email) {
-          localStorage.setItem('triumph_user_email', result.data?.login || email);
+        if ((result.data && result.data.login) || email) {
+          localStorage.setItem('triumph_user_email', (result.data && result.data.login) || email);
         }
         
         const urlParams = new URLSearchParams(window.location.search);
@@ -1002,10 +999,9 @@
       } else if (result.status === 403) {
         showFloatingNotification(t('needConfirmEmail'), 'warning');
       } else {
-        const errorMessage = result.data?.errorMessage || result.data?.errormessage || 
-                            result.data?.message ||
+        const errorMessage = (result.data && (result.data.errorMessage || result.data.errormessage || result.data.message)) ||
                             result.rawBody || 
-                            `${t('loginError')}: ${result.status}`;
+                            (t('loginError') + ': ' + result.status);
         showFloatingNotification(errorMessage, 'error');
       }
     } catch (error) {

@@ -127,7 +127,7 @@
     }
   };
 
-  const t = (key) => translations[currentLang]?.[key] || translations.uk[key] || key;
+  const t = (key) => (translations[currentLang] && translations[currentLang][key]) || (translations.uk && translations.uk[key]) || key;
 
   function normalizeWagonNumbers(input) {
     if (!input || typeof input !== 'string') {
@@ -226,8 +226,8 @@
 
   function populateTable(wagonData, haveFullAccess = false) {
     const table = document.querySelector(`#${RESULTS_SECTION_ID} .wagon-results-table`);
-    const thead = table?.querySelector('thead tr');
-    const tbody = table?.querySelector('tbody');
+    const thead = table && table.querySelector('thead tr');
+    const tbody = table && table.querySelector('tbody');
     
     if (!tbody || !thead) {
       console.error('Не знайдено таблицю результатів');
