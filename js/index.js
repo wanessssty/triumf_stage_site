@@ -215,8 +215,11 @@
 
     return stations
       .map((station) => {
-        const rawLabel = (station && (station.name || station.title || station.stationName || station.station));
-        const label = (rawLabel != null && rawLabel.toString && rawLabel.toString().trim()) ? rawLabel.toString().trim() : '';
+        const label =
+          (station?.name ||
+            station?.title ||
+            station?.stationName ||
+            station?.station)?.toString().trim() || '';
 
         if (!label) {
           return null;
@@ -228,10 +231,16 @@
         }
         seen.add(dedupeKey);
 
-        const value = (station && (station.idobject != null ? station.idobject : station.id != null ? station.id : station.code != null ? station.code : station.identifier != null ? station.identifier : null)) || label;
+        const value =
+          station?.idobject ??
+          station?.id ??
+          station?.code ??
+          station?.identifier ??
+          label;
 
-        const codePart = (station && (station.code && station.code.toString && station.code.toString().trim())) || (station && station.stationCode && station.stationCode.toString && station.stationCode.toString().trim());
-        const code = codePart || null;
+        const code = station?.code?.toString().trim() || 
+                     station?.stationCode?.toString().trim() || 
+                     null;
 
         return { label, value, code };
       })
@@ -246,8 +255,7 @@
 
     return types
       .map((type) => {
-        const labelPart = type && type.name && type.name.toString && type.name.toString().trim();
-        const label = labelPart || '';
+        const label = type?.name?.toString().trim() || '';
 
         if (!label) {
           return null;
@@ -259,9 +267,10 @@
         }
         seen.add(dedupeKey);
 
-        const value = (type && (type.idobject != null ? type.idobject : type.id != null ? type.id : null)) || label;
-        const codePart = (type && type.code && type.code.toString && type.code.toString().trim()) || (type && type.cargoCode && type.cargoCode.toString && type.cargoCode.toString().trim());
-        const code = codePart || null;
+        const value = type?.idobject ?? type?.id ?? label;
+        const code = type?.code?.toString().trim() || 
+                     type?.cargoCode?.toString().trim() || 
+                     null;
 
         return { label, value, code };
       })
@@ -276,8 +285,7 @@
 
     return types
       .map((type) => {
-        const labelPart = type && type.name && type.name.toString && type.name.toString().trim();
-        const label = labelPart || '';
+        const label = type?.name?.toString().trim() || '';
 
         if (!label) {
           return null;
@@ -289,7 +297,7 @@
         }
         seen.add(dedupeKey);
 
-        const value = (type && (type.idobject != null ? type.idobject : type.code != null ? type.code : null)) || label;
+        const value = type?.idobject ?? type?.code ?? label;
         return { label, value };
       })
       .filter(Boolean)
@@ -307,7 +315,7 @@
       });
       return response.data;
     } catch (error) {
-      const status = (error.response && error.response.status) || 500;
+      const status = error.response?.status || 500;
       throw new Error(`Помилка завантаження станцій: ${status}`);
     }
   };
@@ -321,7 +329,7 @@
       });
       return response.data;
     } catch (error) {
-      const status = (error.response && error.response.status) || 500;
+      const status = error.response?.status || 500;
       throw new Error(`Помилка завантаження типів рухомого складу: ${status}`);
     }
   };
@@ -335,7 +343,7 @@
       });
       return response.data;
     } catch (error) {
-      const status = (error.response && error.response.status) || 500;
+      const status = error.response?.status || 500;
       throw new Error(`Помилка завантаження типів вантажів: ${status}`);
     }
   };
@@ -351,7 +359,7 @@
 
     try {
       const payload = await fetchStations();
-      const stationsArray = Array.isArray(payload && payload.data)
+      const stationsArray = Array.isArray(payload?.data)
         ? payload.data
         : Array.isArray(payload)
           ? payload
@@ -387,7 +395,7 @@
 
     try {
       const payload = await fetchCargoTypes();
-      const cargoArray = Array.isArray(payload && payload.data)
+      const cargoArray = Array.isArray(payload?.data)
         ? payload.data
         : Array.isArray(payload)
           ? payload
@@ -423,7 +431,7 @@
 
     try {
       const payload = await fetchCarTypes();
-      const carArray = Array.isArray(payload && payload.data)
+      const carArray = Array.isArray(payload?.data)
         ? payload.data
         : Array.isArray(payload)
           ? payload
@@ -571,9 +579,9 @@
     const searchQuery = select.dataset.searchQuery || '';
     
     const existingSearchContainer = menu.querySelector('.custom-select__search');
-    const existingSearchInput = existingSearchContainer && existingSearchContainer.querySelector('.custom-select__search-input');
+    const existingSearchInput = existingSearchContainer?.querySelector('.custom-select__search-input');
     const wasFocused = document.activeElement === existingSearchInput;
-    const cursorPosition = (existingSearchInput && existingSearchInput.selectionStart) || 0;
+    const cursorPosition = existingSearchInput?.selectionStart || 0;
 
     menu.querySelectorAll('.custom-select__option, .custom-select__empty').forEach((el) => {
       el.remove();
@@ -621,8 +629,8 @@
       if (!normalizedQuery) {
         return true;
       }
-      const label = (option.textContent ? option.textContent.trim() : '').toLowerCase();
-      const code = (option.dataset && option.dataset.code ? option.dataset.code.trim() : '').toLowerCase();
+      const label = (option.textContent?.trim() || '').toLowerCase();
+      const code = (option.dataset.code?.trim() || '').toLowerCase();
       return label.startsWith(normalizedQuery) || 
              code.startsWith(normalizedQuery) ||
              label.includes(normalizedQuery) ||
@@ -674,7 +682,7 @@
 
     const selectedOption =
       select.options[select.selectedIndex] || select.options[0];
-    const textContent = (selectedOption && selectedOption.textContent ? selectedOption.textContent.trim() : '') || '';
+    const textContent = selectedOption?.textContent?.trim() || '';
 
     valueNode.textContent = textContent;
     valueNode.classList.toggle('is-placeholder', !select.value);
@@ -707,7 +715,7 @@
     closeAllCustomSelects(wrapper);
     wrapper.classList.add('is-open');
     const toggle = wrapper.querySelector(`[${CUSTOM_SELECT_TOGGLE}]`);
-    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+    toggle?.setAttribute('aria-expanded', 'true');
     requestAnimationFrame(() => {
       const searchInput = wrapper.querySelector('.custom-select__search-input');
       if (searchInput) {
@@ -720,7 +728,7 @@
   function closeCustomSelect(wrapper) {
     wrapper.classList.remove('is-open');
     const toggle = wrapper.querySelector(`[${CUSTOM_SELECT_TOGGLE}]`);
-    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    toggle?.setAttribute('aria-expanded', 'false');
   }
 
   function closeAllCustomSelects(except) {
@@ -755,20 +763,20 @@
     const hideErrorElements = () => {
       document.querySelectorAll('.error-message.w-form-fail').forEach((errorEl) => {
         const computedStyle = window.getComputedStyle(errorEl);
-        if (computedStyle.display !== 'none' && !(errorEl.textContent && errorEl.textContent.trim())) {
+        if (computedStyle.display !== 'none' && !errorEl.textContent?.trim()) {
           errorEl.style.setProperty('display', 'none', 'important');
         }
       });
     };
 
     forms.forEach((form) => {
-      const errorElement = form.parentElement && form.parentElement.querySelector(ERROR_SELECTOR);
+      const errorElement = form.parentElement?.querySelector(ERROR_SELECTOR);
       if (errorElement) {
         const observer = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
             if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
               const computedStyle = window.getComputedStyle(errorElement);
-              if (computedStyle.display !== 'none' && !(errorElement.textContent && errorElement.textContent.trim())) {
+              if (computedStyle.display !== 'none' && !errorElement.textContent?.trim()) {
                 errorElement.style.setProperty('display', 'none', 'important');
               }
             }
@@ -793,8 +801,8 @@
 
   async function handleFormSubmit(form) {
     const submitButton = form.querySelector(SUBMIT_BUTTON_SELECTOR);
-    const successElement = form.parentElement && form.parentElement.querySelector(SUCCESS_SELECTOR);
-    const errorElement = form.parentElement && form.parentElement.querySelector(ERROR_SELECTOR);
+    const successElement = form.parentElement?.querySelector(SUCCESS_SELECTOR);
+    const errorElement = form.parentElement?.querySelector(ERROR_SELECTOR);
 
     toggleSubmitState(submitButton, true);
     
@@ -879,7 +887,7 @@
 
   function collectOrderPayload(form) {
     const getField = (id) =>
-      (form && form.querySelector('[id="' + id + '"]')) || null;
+      form?.querySelector(`[id="${id}"]`) || null;
 
     const getValue = (id) => {
       const field = getField(id);
@@ -1050,7 +1058,7 @@
         console.error('Не вдалося розпарсити відповідь сервера', parseError, response.data);
       }
 
-      const errorMessage = (data && (data.errorMessage || data.errormessage)) || null;
+      const errorMessage = data?.errorMessage || data?.errormessage;
       const isServerError = 
         response.status >= 500 || 
         (errorMessage && (
@@ -1070,7 +1078,7 @@
         throw new Error(message);
       }
 
-      if (data && data.status === false) {
+      if (data?.status === false) {
         if (isServerError) {
           throw new Error(t('errorServer'));
         }
@@ -1087,9 +1095,9 @@
         try {
           if (typeof errorData === 'string') {
             const parsed = JSON.parse(errorData);
-            errorMessage = (parsed && (parsed.errorMessage || parsed.errormessage)) || null;
+            errorMessage = parsed?.errorMessage || parsed?.errormessage;
           } else if (errorData) {
-            errorMessage = (errorData && (errorData.errorMessage || errorData.errormessage)) || null;
+            errorMessage = errorData?.errorMessage || errorData?.errormessage;
           }
         } catch (e) {
           // ignore parse errors

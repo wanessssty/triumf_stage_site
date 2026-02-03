@@ -36,6 +36,7 @@
       serverError: 'Помилка сервера:',
       invalidDataFormat: 'Некоректний формат даних від сервера',
       searchError: 'Помилка при пошуку вагонів. Спробуйте ще раз.',
+      rowNumber: '№з/п',
       wagonNumber: '№ вагона',
       originStation: 'Станція початку рейсу',
       currentStation: 'Поточна станція',
@@ -61,6 +62,7 @@
       serverError: 'Ошибка сервера:',
       invalidDataFormat: 'Неверный формат данных от сервера',
       searchError: 'Ошибка при поиске вагонов. Попробуйте еще раз.',
+      rowNumber: '№з/п',
       wagonNumber: '№ вагона',
       originStation: 'Станция начала рейса',
       currentStation: 'Текущая станция',
@@ -86,6 +88,7 @@
       serverError: 'Server error:',
       invalidDataFormat: 'Invalid data format from server',
       searchError: 'Error searching for wagons. Please try again.',
+      rowNumber: '№r/n',
       wagonNumber: 'Wagon №',
       originStation: 'Origin station',
       currentStation: 'Current station',
@@ -111,6 +114,7 @@
       serverError: 'Błąd serwera:',
       invalidDataFormat: 'Nieprawidłowy format danych z serwera',
       searchError: 'Błąd podczas wyszukiwania wagonów. Spróbuj ponownie.',
+      rowNumber: '№r/n',
       wagonNumber: 'Nr wagonu',
       originStation: 'Stacja początkowa',
       currentStation: 'Bieżąca stacja',
@@ -257,7 +261,7 @@
 
     if (!wagonData || !Array.isArray(wagonData) || wagonData.length === 0) {
       const row = document.createElement('tr');
-      const colspan = haveFullAccess ? 12 : 8;
+      const colspan = haveFullAccess ? 13 : 9;
       row.innerHTML = `
         <td colspan="${colspan}" style="text-align: center; padding: 40px;">
           <div style="color: #666; font-size: 16px;">${t('noResults')}</div>
@@ -276,14 +280,15 @@
       const row = document.createElement('tr');
       
       let rowHTML = `
-        <td data-label="${getDataLabel(0)}">${wagon.carno || '-'}</td>
-        <td data-label="${getDataLabel(1)}">${wagon.stationfromname || '-'}</td>
-        <td data-label="${getDataLabel(2)}">${wagon.curstationname || '-'}</td>
-        <td data-label="${getDataLabel(3)}">${wagon.stationtoname || '-'}</td>
-        <td data-label="${getDataLabel(4)}">${wagon.opercode || '-'}</td>
-        <td data-label="${getDataLabel(5)}">${formatDate(wagon.operdate)}</td>
-        <td data-label="${getDataLabel(6)}">${wagon.cargotypename || '-'}</td>
-        <td data-label="${getDataLabel(7)}">${formatWeight(wagon.Weight)}</td>
+        <td data-label="${getDataLabel(0)}">${wagon.rn != null && wagon.rn !== '' ? wagon.rn : '-'}</td>
+        <td data-label="${getDataLabel(1)}">${wagon.carno || '-'}</td>
+        <td data-label="${getDataLabel(2)}">${wagon.stationfromname || '-'}</td>
+        <td data-label="${getDataLabel(3)}">${wagon.curstationname || '-'}</td>
+        <td data-label="${getDataLabel(4)}">${wagon.stationtoname || '-'}</td>
+        <td data-label="${getDataLabel(5)}">${wagon.opercode || '-'}</td>
+        <td data-label="${getDataLabel(6)}">${formatDate(wagon.operdate)}</td>
+        <td data-label="${getDataLabel(7)}">${wagon.cargotypename || '-'}</td>
+        <td data-label="${getDataLabel(8)}">${formatWeight(wagon.Weight)}</td>
       `;
 
       if (haveFullAccess) {
