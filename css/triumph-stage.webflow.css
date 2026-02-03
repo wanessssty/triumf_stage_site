@@ -1709,6 +1709,10 @@ figcaption {
   border-bottom: none;
 }
 
+.wagon-results-table tbody tr td:first-child {
+  text-align: center;
+}
+
 
 .wagon-results-table tbody tr:hover {
   background-color: rgba(21, 123, 192, 0.01);
