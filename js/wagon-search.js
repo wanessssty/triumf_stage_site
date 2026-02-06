@@ -2,6 +2,7 @@
   const API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Site/getcarlocation';
   const FORM_ID = 'wf-form-Search';
   const WAGON_NUMBERS_ID = 'Wagon-Numbers';
+  const WAGON_SEARCH_EMAIL_ID = 'Wagon-Search-Email';
   const RESULTS_SECTION_ID = 'sectionResults';
   const SUBMIT_BUTTON_ID = 'wagon-search-btn';
   const CLEAR_BUTTON_ID = 'wagon-clear-btn';
@@ -365,9 +366,22 @@
     }
   }
 
+  function getSearchEmail() {
+    var emailInput = document.getElementById(WAGON_SEARCH_EMAIL_ID);
+    if (emailInput && emailInput.value) {
+      var value = (emailInput.value || '').trim();
+      if (value) return value;
+    }
+    try {
+      return window.localStorage && window.localStorage.getItem('triumph_user_email') || '';
+    } catch (e) {
+      return '';
+    }
+  }
+
   async function searchWagons(wagonNumbers) {
     const formattedNumbers = formatWagonNumbers(wagonNumbers);
-    const email = localStorage.getItem('triumph_user_email') || '';
+    const email = getSearchEmail();
     
     try {
       const formData = new URLSearchParams();
@@ -588,6 +602,16 @@
     if (!form) {
       console.warn('Форма пошуку вагонів не знайдена');
       return;
+    }
+
+    var emailInput = document.getElementById(WAGON_SEARCH_EMAIL_ID);
+    if (emailInput) {
+      try {
+        var stored = window.localStorage && window.localStorage.getItem('triumph_user_email');
+        if (stored && stored.trim() && !emailInput.value.trim()) {
+          emailInput.value = stored.trim();
+        }
+      } catch (e) {}
     }
 
     form.addEventListener('submit', handleFormSubmit);
