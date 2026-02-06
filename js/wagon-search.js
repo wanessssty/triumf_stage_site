@@ -368,12 +368,15 @@
 
   function getSearchEmail() {
     var emailInput = document.getElementById(WAGON_SEARCH_EMAIL_ID);
-    if (emailInput && emailInput.value) {
-      var value = (emailInput.value || '').trim();
-      if (value) return value;
-    }
+    var formValue = emailInput ? (emailInput.value || '').trim() : '';
+    if (formValue) return formValue;
     try {
-      return window.localStorage && window.localStorage.getItem('triumph_user_email') || '';
+      var stored = (window.localStorage && window.localStorage.getItem('triumph_user_email')) || '';
+      stored = (stored && typeof stored === 'string') ? stored.trim() : '';
+      if (stored && emailInput) {
+        emailInput.value = stored;
+      }
+      return stored;
     } catch (e) {
       return '';
     }
