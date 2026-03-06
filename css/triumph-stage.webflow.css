@@ -4462,11 +4462,33 @@ figcaption {
   height: 3.125rem;
 }
 
+/* Карусель логотипів: швидкість — змінюй значення нижче (менше = швидше, більше = повільніше) */
 .logo-carousel-wrapper {
+  --logo-carousel-duration: 25s;
   justify-content: flex-start;
   align-items: center;
   display: flex;
-  overflow: visible;
+  overflow: hidden;
+  width: 100%;
+}
+
+.logo-carousel-wrapper .logo-grids {
+  flex-shrink: 0;
+  animation: logoCarouselScroll var(--logo-carousel-duration) linear infinite;
+  will-change: transform;
+}
+
+.logo-carousel-wrapper:hover .logo-grids {
+  animation-play-state: paused;
+}
+
+@keyframes logoCarouselScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .reviews_list {
