@@ -2119,7 +2119,6 @@ figcaption {
   background-color: #fff;
 }
 
-/* Contact form section (Зв'яжіться з нами) */
 .contact-form-section .contact-form-grid {
   grid-column-gap: 0;
   grid-row-gap: 0;
@@ -4650,13 +4649,11 @@ figcaption {
   height: 3.125rem;
 }
 
-/* Карусель логотипів: швидкість — змінюй значення нижче (менше = швидше, більше = повільніше) */
 .logo-carousel-wrapper {
   --logo-carousel-duration: 25s;
   justify-content: flex-start;
   align-items: center;
   display: flex;
-  overflow: hidden;
   width: 100%;
 }
 
