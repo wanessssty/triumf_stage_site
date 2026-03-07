@@ -2119,6 +2119,194 @@ figcaption {
   background-color: #fff;
 }
 
+/* Contact form section (Зв'яжіться з нами) */
+.contact-form-section .contact-form-grid {
+  grid-column-gap: 0;
+  grid-row-gap: 0;
+  background-color: var(--ghost-primary);
+  border-radius: 50px;
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+  overflow: hidden;
+}
+
+.contact-form-section .contact-form-left {
+  background-color: var(--primary-color);
+  border-radius: 50px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 60px 70px;
+  display: flex;
+}
+
+.contact-form-section .contact-form-right {
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 60px 40px;
+  display: flex;
+  background-color: var(--ghost-primary);
+}
+
+.contact-form-section .contact-form-grid-inner {
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+  margin-bottom: 20px;
+}
+
+.contact-form-section .contact-form-input-item {
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  display: flex;
+}
+
+.contact-form-section .contact-form-input-item.full {
+  grid-column: 1 / -1;
+}
+
+.contact-form-section .contact-form-label {
+  color: var(--dim-grey);
+  margin-bottom: 10px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.contact-form-section .contact-form-input {
+  border: 2px solid var(--dim-grey);
+  background-color: #0000;
+  border-radius: 9px;
+  width: 100%;
+  min-height: 56px;
+  margin-bottom: 0;
+  padding: 16px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.contact-form-section .contact-form-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.contact-form-section .contact-form-input::placeholder {
+  color: var(--dim-grey);
+}
+
+.contact-form-section .contact-form-textarea {
+  border: 2px solid var(--dim-grey);
+  background-color: #0000;
+  border-radius: 9px;
+  width: 100%;
+  min-height: 120px;
+  margin-bottom: 0;
+  padding: 16px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.contact-form-section .contact-form-textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.contact-form-section .contact-form-textarea::placeholder {
+  color: var(--dim-grey);
+}
+
+.contact-form-section .contact-form-submit {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  width: 100%;
+  min-height: 56px;
+  padding: 15px 17px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: inherit;
+}
+
+.contact-form-section .contact-form-submit:hover {
+  background-color: var(--black-2);
+  color: #fff;
+}
+
+.contact-form-section .contact-form-success {
+  margin-top: 15px;
+  padding: 12px 16px;
+  color: var(--primary-color);
+  background-color: #f1f4ff;
+  border-radius: 9px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.contact-form-section .contact-form-error {
+  margin-top: 15px;
+  padding: 12px 16px;
+  color: #fe0000;
+  background-color: #ffeaea;
+  border-radius: 9px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.contact-form-section .contact-form-tag {
+  display: flex;
+  justify-content: start;
+}
+
+.contact-form-section .contact-form-heading {
+  color: #fff;
+  margin-bottom: 40px;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+@media screen and (max-width: 991px) {
+  .contact-form-section .contact-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form-section .contact-form-left {
+    border-radius: 30px;
+    padding: 40px 25px;
+  }
+
+  .contact-form-section .contact-form-right {
+    border-radius: 30px;
+    padding: 40px 25px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .contact-form-section .contact-form-grid-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form-section .contact-form-heading {
+    font-size: 26px;
+  }
+}
+
 .margin-40px {
   margin-top: 40px;
 }

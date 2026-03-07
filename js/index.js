@@ -36,6 +36,9 @@
       searchPlaceholder: 'Пошук…',
       noResults: 'Нічого не знайдено',
       errorNameRequired: 'Вкажіть ім’я.',
+      errorMessageSubmit: 'Не вдалося відправити повідомлення',
+      successMessageSent: 'Дякуємо за ваше повідомлення. Ми зв\'яжемося з вами найближчим часом.',
+      contactSubmitButton: 'Надіслати повідомлення',
     },
     ru: {
       loading: 'Загрузка…',
@@ -61,6 +64,9 @@
       searchPlaceholder: 'Поиск…',
       noResults: 'Ничего не найдено',
       errorNameRequired: 'Укажите имя.',
+      errorMessageSubmit: 'Не удалось отправить сообщение',
+      successMessageSent: 'Спасибо за ваше сообщение. Мы свяжемся с вами в ближайшее время.',
+      contactSubmitButton: 'Отправить сообщение',
     },
     pl: {
       loading: 'Ładowanie…',
@@ -86,6 +92,9 @@
       searchPlaceholder: 'Szukaj…',
       noResults: 'Brak wyników',
       errorNameRequired: 'Wprowadź imię.',
+      errorMessageSubmit: 'Nie udało się wysłać wiadomości',
+      successMessageSent: 'Dziękujemy za wiadomość. Skontaktujemy się z Tobą wkrótce.',
+      contactSubmitButton: 'Wyślij wiadomość',
     },
     en: {
       loading: 'Loading…',
@@ -111,6 +120,9 @@
       searchPlaceholder: 'Search…',
       noResults: 'No matches found',
       errorNameRequired: 'Enter your name.',
+      errorMessageSubmit: 'Failed to send message',
+      successMessageSent: 'Thank you for your message. We will contact you soon.',
+      contactSubmitButton: 'Send message',
     },
   };
 
@@ -120,6 +132,7 @@
   const CARGO_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/GetCargoTypes';
   const CAR_TYPES_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/GetCarTypes';
   const ADD_ORDER_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/AddCalcOrder';
+  const SEND_MAIL_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/SendMailByIncomeMessage';
   const STATION_SELECTS = [
     { id: 'route-from', placeholder: t('from') },
     { id: 'route-to', placeholder: t('to') },
@@ -459,6 +472,7 @@
     enhanceSelectFields();
     bindGlobalSelectEvents();
     bindFormSubmit();
+    bindContactFormSubmit();
     bindFieldValidation();
     initStations();
     initCargoTypes();
@@ -797,6 +811,107 @@
         setTimeout(hideErrorElements, 200);
       });
     });
+  }
+
+  function bindContactFormSubmit() {
+    const form = document.getElementById('wf-form-ContactMessage');
+    if (!form) return;
+
+    const submitButton = form.querySelector('.contact-form-submit');
+    const successEl = form.querySelector('.contact-form-success');
+    const errorEl = form.querySelector('.contact-form-error');
+    const errorMsgEl = errorEl?.querySelector('div');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = (form.querySelector('#Contact-Name')?.value || '').trim();
+      const email = (form.querySelector('#Contact-Email-Message')?.value || '').trim();
+      const phone = (form.querySelector('#Contact-Phone-Message')?.value || '').trim();
+      const companyname = (form.querySelector('#Contact-Company-Message')?.value || '').trim();
+      const message = (form.querySelector('#Contact-Message')?.value || '').trim();
+
+      const nameField = form.querySelector('#Contact-Name');
+      const emailField = form.querySelector('#Contact-Email-Message');
+      const phoneField = form.querySelector('#Contact-Phone-Message');
+
+      [nameField, emailField, phoneField].forEach((f) => f?.classList.remove('field-error'));
+
+      if (!name) {
+        nameField?.classList.add('field-error');
+        showContactError(errorEl, errorMsgEl, t('errorNameRequired'));
+        return;
+      }
+      if (!phone) {
+        phoneField?.classList.add('field-error');
+        showContactError(errorEl, errorMsgEl, t('errorPhoneRequired'));
+        return;
+      }
+      if (!PHONE_REGEX.test(phone)) {
+        phoneField?.classList.add('field-error');
+        showContactError(errorEl, errorMsgEl, t('errorPhoneFormat'));
+        return;
+      }
+      if (email && !EMAIL_REGEX.test(email)) {
+        emailField?.classList.add('field-error');
+        showContactError(errorEl, errorMsgEl, t('errorEmailFormat'));
+        return;
+      }
+
+      if (successEl) successEl.style.display = 'none';
+      if (errorEl) errorEl.style.display = 'none';
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = t('submitting');
+      }
+
+      try {
+        const params = new URLSearchParams();
+        params.set('name', name);
+        params.set('Email', email);
+        params.set('Phone', phone);
+        params.set('companyname', companyname);
+        params.set('message', message);
+        const url = `${SEND_MAIL_API_URL}?${params.toString()}`;
+
+        const response = await axios.get(url, {
+          headers: { Accept: 'application/json' },
+        });
+
+        let data = response.data;
+        if (typeof data === 'string') {
+          try {
+            data = data ? JSON.parse(data) : {};
+          } catch {
+            data = {};
+          }
+        }
+        if (data?.status === false && data?.errormassage) {
+          throw new Error(data.errormassage);
+        }
+
+        if (successEl) {
+          successEl.style.display = 'block';
+          successEl.querySelector('div').textContent = t('successMessageSent');
+        }
+        form.reset();
+        [nameField, emailField, phoneField].forEach((f) => f?.classList.remove('field-error'));
+      } catch (err) {
+        console.error(err);
+        showContactError(errorEl, errorMsgEl, err.message || t('errorMessageSubmit'));
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = t('contactSubmitButton');
+        }
+      }
+    });
+  }
+
+  function showContactError(errorEl, msgEl, text) {
+    if (!errorEl) return;
+    if (msgEl) msgEl.textContent = text;
+    errorEl.style.display = 'block';
   }
 
   async function handleFormSubmit(form) {
@@ -1203,8 +1318,8 @@
   }
 
   function bindFieldValidation() {
-    const phoneFields = document.querySelectorAll('[id="Contact-Phone"]');
-    const emailFields = document.querySelectorAll('[id="Contact-Email"]');
+    const phoneFields = document.querySelectorAll('[id="Contact-Phone"], [id="Contact-Phone-Message"]');
+    const emailFields = document.querySelectorAll('[id="Contact-Email"], [id="Contact-Email-Message"]');
 
     phoneFields.forEach((phoneField) => {
       phoneField.addEventListener('input', () => {
