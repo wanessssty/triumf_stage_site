@@ -744,6 +744,7 @@
     if (!list) {
       return 0;
     }
+    const starsImageSrc = currentLang === 'uk' ? 'images/stars.svg' : '../images/stars.svg';
 
     const mergedReviews = mergeReviews(reviews);
     reviewsState.list = mergedReviews;
@@ -753,7 +754,7 @@
           <div class="swiper-slide">
             <article class="review_item">
               <div class="stars_container">
-                <img src="../images/stars.svg" loading="lazy" alt="5 stars rating">
+                <img src="${starsImageSrc}" loading="lazy" alt="5 stars rating">
               </div>
               <div class="review_text-container">
                 <p>${nlToBr(review.text)}</p>
