@@ -51,6 +51,8 @@
       reviewsTextRequired: 'Будь ласка, введіть текст відгуку.',
       reviewsTextMin: 'Текст відгуку має містити щонайменше 10 символів.',
       reviewsAuthorFallback: 'Клієнт',
+      marketsSectionTag: 'Ми постійно шукаємо нові ринки',
+      marketsSectionTitle: 'Перевезення в Україні та поза її межами',
     },
     ru: {
       loading: 'Загрузка…',
@@ -91,6 +93,8 @@
       reviewsTextRequired: 'Пожалуйста, введите текст отзыва.',
       reviewsTextMin: 'Текст отзыва должен содержать минимум 10 символов.',
       reviewsAuthorFallback: 'Клиент',
+      marketsSectionTag: 'Мы постоянно ищем новые рынки',
+      marketsSectionTitle: 'Перевозки по Украине и за её пределами',
     },
     pl: {
       loading: 'Ładowanie…',
@@ -131,6 +135,8 @@
       reviewsTextRequired: 'Wprowadź treść opinii.',
       reviewsTextMin: 'Treść opinii musi mieć co najmniej 10 znaków.',
       reviewsAuthorFallback: 'Klient',
+      marketsSectionTag: 'Stale szukamy nowych rynków',
+      marketsSectionTitle: 'Przewozy na Ukrainie i poza jej granicami',
     },
     en: {
       loading: 'Loading…',
@@ -171,6 +177,8 @@
       reviewsTextRequired: 'Please enter your review text.',
       reviewsTextMin: 'Review text must contain at least 10 characters.',
       reviewsAuthorFallback: 'Client',
+      marketsSectionTag: 'We are constantly exploring new markets',
+      marketsSectionTitle: 'Transportation in Ukraine and beyond its borders',
     },
   };
 
@@ -1035,6 +1043,19 @@
     });
   };
 
+  const initMarketsSection = () => {
+    const tagElement = document.getElementById('markets-section-tag');
+    const titleElement = document.getElementById('markets-section-title');
+
+    if (tagElement) {
+      tagElement.textContent = t('marketsSectionTag');
+    }
+
+    if (titleElement) {
+      titleElement.textContent = t('marketsSectionTitle');
+    }
+  };
+
   const init = () => {
     enhanceSelectFields();
     bindGlobalSelectEvents();
@@ -1047,6 +1068,7 @@
     initFirmStats();
     initReviewsSection();
     initServicesAccordion();
+    initMarketsSection();
   };
 
   document.addEventListener('DOMContentLoaded', init);
