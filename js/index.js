@@ -39,6 +39,18 @@
       errorMessageSubmit: 'Не вдалося відправити повідомлення',
       successMessageSent: 'Дякуємо за ваше повідомлення. Ми зв\'яжемося з вами найближчим часом.',
       contactSubmitButton: 'Надіслати повідомлення',
+      reviewsLoading: 'Завантажуємо відгуки...',
+      reviewsLoadError: 'Не вдалося завантажити відгуки. Спробуйте ще раз трохи пізніше.',
+      reviewsEmpty: 'Поки що немає відгуків. Будьте першим, хто поділиться враженнями.',
+      reviewsFormSubmit: 'Надіслати відгук',
+      reviewsFormSubmitting: 'Надсилаємо...',
+      reviewsFormSuccess: 'Дякуємо за ваш відгук! Він уже відображається в каруселі.',
+      reviewsFormError: 'Не вдалося надіслати відгук. Спробуйте ще раз.',
+      reviewsNameRequired: 'Будь ласка, вкажіть ім’я.',
+      reviewsCompanyRequired: 'Будь ласка, вкажіть назву компанії.',
+      reviewsTextRequired: 'Будь ласка, введіть текст відгуку.',
+      reviewsTextMin: 'Текст відгуку має містити щонайменше 10 символів.',
+      reviewsAuthorFallback: 'Клієнт',
     },
     ru: {
       loading: 'Загрузка…',
@@ -67,6 +79,18 @@
       errorMessageSubmit: 'Не удалось отправить сообщение',
       successMessageSent: 'Спасибо за ваше сообщение. Мы свяжемся с вами в ближайшее время.',
       contactSubmitButton: 'Отправить сообщение',
+      reviewsLoading: 'Загружаем отзывы...',
+      reviewsLoadError: 'Не удалось загрузить отзывы. Попробуйте немного позже.',
+      reviewsEmpty: 'Пока нет отзывов. Будьте первым, кто поделится впечатлениями.',
+      reviewsFormSubmit: 'Отправить отзыв',
+      reviewsFormSubmitting: 'Отправляем...',
+      reviewsFormSuccess: 'Спасибо за ваш отзыв! Он уже отображается в карусели.',
+      reviewsFormError: 'Не удалось отправить отзыв. Попробуйте еще раз.',
+      reviewsNameRequired: 'Пожалуйста, укажите имя.',
+      reviewsCompanyRequired: 'Пожалуйста, укажите компанию.',
+      reviewsTextRequired: 'Пожалуйста, введите текст отзыва.',
+      reviewsTextMin: 'Текст отзыва должен содержать минимум 10 символов.',
+      reviewsAuthorFallback: 'Клиент',
     },
     pl: {
       loading: 'Ładowanie…',
@@ -95,6 +119,18 @@
       errorMessageSubmit: 'Nie udało się wysłać wiadomości',
       successMessageSent: 'Dziękujemy za wiadomość. Skontaktujemy się z Tobą wkrótce.',
       contactSubmitButton: 'Wyślij wiadomość',
+      reviewsLoading: 'Ładowanie opinii...',
+      reviewsLoadError: 'Nie udało się załadować opinii. Spróbuj ponownie później.',
+      reviewsEmpty: 'Na razie brak opinii. Bądź pierwszy i podziel się doświadczeniem.',
+      reviewsFormSubmit: 'Wyślij opinię',
+      reviewsFormSubmitting: 'Wysyłanie...',
+      reviewsFormSuccess: 'Dziękujemy za opinię! Jest już widoczna w karuzeli.',
+      reviewsFormError: 'Nie udało się wysłać opinii. Spróbuj ponownie.',
+      reviewsNameRequired: 'Wprowadź imię.',
+      reviewsCompanyRequired: 'Wprowadź nazwę firmy.',
+      reviewsTextRequired: 'Wprowadź treść opinii.',
+      reviewsTextMin: 'Treść opinii musi mieć co najmniej 10 znaków.',
+      reviewsAuthorFallback: 'Klient',
     },
     en: {
       loading: 'Loading…',
@@ -123,6 +159,18 @@
       errorMessageSubmit: 'Failed to send message',
       successMessageSent: 'Thank you for your message. We will contact you soon.',
       contactSubmitButton: 'Send message',
+      reviewsLoading: 'Loading reviews...',
+      reviewsLoadError: 'Failed to load reviews. Please try again later.',
+      reviewsEmpty: 'No reviews yet. Be the first to share your experience.',
+      reviewsFormSubmit: 'Submit review',
+      reviewsFormSubmitting: 'Submitting...',
+      reviewsFormSuccess: 'Thank you for your review. It is already visible in the carousel.',
+      reviewsFormError: 'Failed to submit review. Please try again.',
+      reviewsNameRequired: 'Please enter your name.',
+      reviewsCompanyRequired: 'Please enter your company name.',
+      reviewsTextRequired: 'Please enter your review text.',
+      reviewsTextMin: 'Review text must contain at least 10 characters.',
+      reviewsAuthorFallback: 'Client',
     },
   };
 
@@ -131,8 +179,14 @@
   const STATIONS_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/GetStations';
   const CARGO_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/GetCargoTypes';
   const CAR_TYPES_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/GetCarTypes';
+  const FIRM_DATA_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/GetFirmData';
+  const FIRM_DATA_CACHE_KEY = 'triumph_firm_data_cache_v1';
+  const FIRM_DATA_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
   const ADD_ORDER_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/AddCalcOrder';
   const SEND_MAIL_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/SendMailByIncomeMessage';
+  const GET_RESPONSES_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/GetResponses';
+  const SAVE_RESPONSE_API_URL = 'https://dc.kdg.com.ua/Triumph/Triumph/Backend/SaveResponse';
+  const REVIEWS_PAGE_SIZE = 30;
   const STATION_SELECTS = [
     { id: 'route-from', placeholder: t('from') },
     { id: 'route-to', placeholder: t('to') },
@@ -159,6 +213,11 @@
   const CUSTOM_SELECT_VALUE = 'data-custom-select-value';
   const ENHANCED_ATTR = 'data-enhanced-select';
   let customSelectMenuId = 0;
+  const reviewsState = {
+    staticList: [],
+    list: [],
+    swiper: null,
+  };
 
   const isSearchableSelect = (select) =>
     Boolean(
@@ -468,6 +527,514 @@
     }
   };
 
+  const parseApiPayload = (payload) => {
+    if (typeof payload === 'string') {
+      try {
+        return payload ? JSON.parse(payload) : {};
+      } catch (error) {
+        return {};
+      }
+    }
+    return payload || {};
+  };
+
+  const getReviewText = (rawReview) =>
+    (
+      rawReview?.text ??
+      rawReview?.Text ??
+      rawReview?.response_text ??
+      rawReview?.response ??
+      rawReview?.review ??
+      ''
+    )
+      .toString()
+      .trim();
+
+  const normalizeReview = (rawReview) => {
+    const name = (
+      rawReview?.name ??
+      rawReview?.Name ??
+      rawReview?.clientname ??
+      rawReview?.clientName ??
+      rawReview?.author ??
+      ''
+    )
+      .toString()
+      .trim();
+    const company = (
+      rawReview?.companyname ??
+      rawReview?.CompanyName ??
+      rawReview?.company ??
+      rawReview?.firm ??
+      ''
+    )
+      .toString()
+      .trim();
+    const text = getReviewText(rawReview);
+
+    if (!text) {
+      return null;
+    }
+
+    return {
+      id:
+        rawReview?.idobject ??
+        rawReview?.id ??
+        `${name}-${company}-${text}`.toLowerCase(),
+      name: name || t('reviewsAuthorFallback'),
+      company,
+      text,
+    };
+  };
+
+  const escapeHtml = (value) =>
+    value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+  const nlToBr = (value) => escapeHtml(value).replace(/\r?\n/g, '<br>');
+  const normalizeSpaces = (value) => value.replace(/\s+/g, ' ').trim();
+
+  const getReviewsElements = () => ({
+    status: document.getElementById('reviewsStatus'),
+    error: document.getElementById('reviewsError'),
+    empty: document.getElementById('reviewsEmpty'),
+    carousel: document.getElementById('reviewsCarousel'),
+    list: document.getElementById('reviewsList'),
+    form: document.getElementById('wf-form-Review'),
+  });
+
+  const setHidden = (element, isHidden) => {
+    if (!element) {
+      return;
+    }
+    element.classList.toggle('is-hidden', isHidden);
+  };
+
+  const renderReviewsState = ({ isLoading = false, error = '', isEmpty = false }) => {
+    const elements = getReviewsElements();
+    if (!elements.status || !elements.error || !elements.empty || !elements.carousel) {
+      return;
+    }
+    const hasReviews = reviewsState.list.length > 0;
+
+    elements.status.textContent = isLoading ? t('reviewsLoading') : '';
+    elements.error.textContent = error;
+    elements.empty.textContent = isEmpty ? t('reviewsEmpty') : '';
+
+    setHidden(elements.status, !isLoading);
+    setHidden(elements.error, !error);
+    setHidden(elements.empty, !isEmpty);
+    setHidden(elements.carousel, (isLoading || Boolean(error) || isEmpty) && !hasReviews);
+  };
+
+  const destroyReviewsSlider = () => {
+    if (reviewsState.swiper) {
+      reviewsState.swiper.destroy(true, true);
+      reviewsState.swiper = null;
+    }
+  };
+
+  const initReviewsSlider = () => {
+    const carousel = document.getElementById('reviewsCarousel');
+    if (!carousel || typeof window.Swiper !== 'function') {
+      return;
+    }
+
+    destroyReviewsSlider();
+    reviewsState.swiper = new window.Swiper(carousel, {
+      slidesPerView: 1,
+      spaceBetween: 10,
+      loop: reviewsState.list.length > 2,
+      speed: 700,
+      grabCursor: true,
+      observer: true,
+      observeParents: true,
+      autoplay: {
+        delay: 3500,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      },
+      navigation: {
+        nextEl: '.reviews-button-next',
+        prevEl: '.reviews-button-prev',
+      },
+      pagination: {
+        el: '.reviews-pagination',
+        clickable: true,
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: 2,
+        },
+        992: {
+          slidesPerView: 3,
+        },
+      },
+    });
+  };
+
+  const ensureStaticReviewsCache = () => {
+    if (reviewsState.staticList.length) {
+      return reviewsState.staticList;
+    }
+
+    const { list } = getReviewsElements();
+    if (!list) {
+      return [];
+    }
+
+    const staticSlides = Array.from(list.querySelectorAll('.swiper-slide[data-static-review]'));
+    reviewsState.staticList = staticSlides
+      .map((slide) => {
+        const textNode = slide.querySelector('.review_text-container > p');
+        const nameNode = slide.querySelector('.review_person-container .text-person-review');
+        const companyNode = slide.querySelector('.review_person-container p');
+
+        const text = normalizeSpaces(textNode?.textContent || '');
+        if (!text) {
+          return null;
+        }
+
+        return {
+          id: `static-${normalizeSpaces(`${nameNode?.textContent || ''}-${companyNode?.textContent || ''}-${text}`).toLowerCase()}`,
+          name: normalizeSpaces(nameNode?.textContent || '') || t('reviewsAuthorFallback'),
+          company: normalizeSpaces(companyNode?.textContent || ''),
+          text,
+        };
+      })
+      .filter(Boolean);
+
+    return reviewsState.staticList;
+  };
+
+  const mergeReviews = (apiReviews) => {
+    const staticReviews = ensureStaticReviewsCache();
+    const uniqueKeys = new Set();
+    const merged = [];
+
+    [...staticReviews, ...apiReviews].forEach((review) => {
+      const key = normalizeSpaces(
+        `${review.name || ''}|${review.company || ''}|${review.text || ''}`,
+      ).toLowerCase();
+
+      if (uniqueKeys.has(key)) {
+        return;
+      }
+      uniqueKeys.add(key);
+      merged.push(review);
+    });
+
+    return merged;
+  };
+
+  const renderReviews = (reviews) => {
+    const { list } = getReviewsElements();
+    if (!list) {
+      return 0;
+    }
+
+    const mergedReviews = mergeReviews(reviews);
+    reviewsState.list = mergedReviews;
+    list.innerHTML = mergedReviews
+      .map(
+        (review) => `
+          <div class="swiper-slide">
+            <article class="review_item">
+              <div class="stars_container">
+                <img src="../images/stars.svg" loading="lazy" alt="5 stars rating">
+              </div>
+              <div class="review_text-container">
+                <p>${nlToBr(review.text)}</p>
+                <div class="review_person-container">
+                  <div class="text-person-review">${escapeHtml(review.name)}</div>
+                  ${review.company ? `<p>${escapeHtml(review.company)}</p>` : ''}
+                </div>
+              </div>
+            </article>
+          </div>
+        `,
+      )
+      .join('');
+
+    initReviewsSlider();
+    return mergedReviews.length;
+  };
+
+  const fetchReviews = async (pageNo = 1, linesPerPage = REVIEWS_PAGE_SIZE) => {
+    const response = await fetch(
+      `${GET_RESPONSES_API_URL}?p_pageno=${encodeURIComponent(pageNo)}&p_linesperpage=${encodeURIComponent(linesPerPage)}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(t('reviewsLoadError'));
+    }
+
+    const payload = parseApiPayload(await response.text());
+    const rawList = Array.isArray(payload?.data)
+      ? payload.data
+      : Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload?.items)
+          ? payload.items
+          : [];
+
+    return rawList.map(normalizeReview).filter(Boolean);
+  };
+
+  const loadAndRenderReviews = async () => {
+    ensureStaticReviewsCache();
+    reviewsState.list = [...reviewsState.staticList];
+    if (reviewsState.list.length) {
+      initReviewsSlider();
+    }
+
+    renderReviewsState({ isLoading: true });
+    try {
+      const reviews = await fetchReviews();
+      const mergedCount = renderReviews(reviews);
+      if (!mergedCount) {
+        destroyReviewsSlider();
+        renderReviewsState({ isEmpty: true });
+        return;
+      }
+      renderReviewsState({});
+    } catch (error) {
+      if (!reviewsState.list.length) {
+        destroyReviewsSlider();
+      }
+      renderReviewsState({ error: error.message || t('reviewsLoadError') });
+    }
+  };
+
+  const validateReviewPayload = (payload) => {
+    if (!payload.name) {
+      return t('reviewsNameRequired');
+    }
+    if (!payload.company) {
+      return t('reviewsCompanyRequired');
+    }
+    if (!payload.text) {
+      return t('reviewsTextRequired');
+    }
+    return '';
+  };
+
+  const showReviewFormMessage = (form, type, message) => {
+    const successElement = form.querySelector('.reviews-form-success');
+    const errorElement = form.querySelector('.reviews-form-error');
+    const successText = successElement?.querySelector('div');
+    const errorText = errorElement?.querySelector('div');
+
+    if (successText) {
+      successText.textContent = type === 'success' ? message : '';
+    }
+    if (errorText) {
+      errorText.textContent = type === 'error' ? message : '';
+    }
+
+    setHidden(successElement, type !== 'success');
+    setHidden(errorElement, type !== 'error');
+  };
+
+  const setReviewSubmitState = (button, isSubmitting) => {
+    if (!button) {
+      return;
+    }
+    button.disabled = isSubmitting;
+    button.classList.toggle('is-loading', isSubmitting);
+    button.textContent = isSubmitting
+      ? t('reviewsFormSubmitting')
+      : t('reviewsFormSubmit');
+  };
+
+  const saveReview = async (payload) => {
+    const response = await fetch(
+      `${SAVE_RESPONSE_API_URL}?p_name=${encodeURIComponent(payload.name)}&p_companyname=${encodeURIComponent(payload.company)}&p_text=${encodeURIComponent(payload.text)}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(t('reviewsFormError'));
+    }
+
+    const result = parseApiPayload(await response.text());
+    if (result?.status === false) {
+      throw new Error(result?.errormassage || t('reviewsFormError'));
+    }
+    return result;
+  };
+
+  const bindReviewsForm = () => {
+    const { form } = getReviewsElements();
+    if (!form) {
+      return;
+    }
+
+    const submitButton = form.querySelector('.reviews-submit');
+    const nameField = form.querySelector('#Review-Name');
+    const companyField = form.querySelector('#Review-Company');
+    const textField = form.querySelector('#Review-Text');
+
+    setReviewSubmitState(submitButton, false);
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      showReviewFormMessage(form, '', '');
+
+      const payload = {
+        name: (nameField?.value || '').trim(),
+        company: (companyField?.value || '').trim(),
+        text: (textField?.value || '').trim(),
+      };
+
+      [nameField, companyField, textField].forEach((field) => {
+        field?.classList.remove('field-error');
+      });
+
+      const validationError = validateReviewPayload(payload);
+      if (validationError) {
+        if (!payload.name) {
+          nameField?.classList.add('field-error');
+        }
+        if (!payload.company) {
+          companyField?.classList.add('field-error');
+        }
+        if (!payload.text) {
+          textField?.classList.add('field-error');
+        }
+        showReviewFormMessage(form, 'error', validationError);
+        return;
+      }
+
+      setReviewSubmitState(submitButton, true);
+      try {
+        await saveReview(payload);
+        form.reset();
+        [nameField, companyField, textField].forEach((field) => {
+          field?.classList.remove('field-error');
+        });
+        showReviewFormMessage(form, 'success', t('reviewsFormSuccess'));
+        await loadAndRenderReviews();
+      } catch (error) {
+        showReviewFormMessage(form, 'error', error.message || t('reviewsFormError'));
+      } finally {
+        setReviewSubmitState(submitButton, false);
+      }
+    });
+  };
+
+  const initReviewsSection = () => {
+    const elements = getReviewsElements();
+    if (!elements.list || !elements.form) {
+      return;
+    }
+    bindReviewsForm();
+    loadAndRenderReviews();
+  };
+
+  const initServicesAccordion = () => {
+    const accordion = document.querySelector('[data-services-accordion]');
+    if (!accordion) {
+      return;
+    }
+
+    const cards = Array.from(accordion.querySelectorAll('.service-accordion-card'));
+    if (!cards.length) {
+      return;
+    }
+
+    const closeCard = (card) => {
+      const trigger = card.querySelector('.service-accordion-trigger');
+      const panel = card.querySelector('.service-accordion-panel');
+      if (!trigger || !panel) {
+        return;
+      }
+
+      const panelHeight = panel.scrollHeight;
+      if (panel.style.maxHeight === 'none') {
+        panel.style.maxHeight = `${panelHeight}px`;
+      }
+
+      requestAnimationFrame(() => {
+        panel.style.maxHeight = '0px';
+      });
+
+      card.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    };
+
+    const openCard = (card) => {
+      const trigger = card.querySelector('.service-accordion-trigger');
+      const panel = card.querySelector('.service-accordion-panel');
+      if (!trigger || !panel) {
+        return;
+      }
+      card.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+      panel.addEventListener(
+        'transitionend',
+        () => {
+          if (card.classList.contains('is-open')) {
+            panel.style.maxHeight = 'none';
+          }
+        },
+        { once: true },
+      );
+    };
+
+    const toggleCard = (targetCard) => {
+      const isOpen = targetCard.classList.contains('is-open');
+
+      if (isOpen) {
+        closeCard(targetCard);
+      } else {
+        openCard(targetCard);
+      }
+    };
+
+    cards.forEach((card) => {
+      const trigger = card.querySelector('.service-accordion-trigger');
+      const panel = card.querySelector('.service-accordion-panel');
+      if (!trigger || !panel) {
+        return;
+      }
+
+      closeCard(card);
+
+      trigger.addEventListener('click', () => {
+        toggleCard(card);
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      cards.forEach((card) => {
+        if (!card.classList.contains('is-open')) {
+          return;
+        }
+        const panel = card.querySelector('.service-accordion-panel');
+        if (panel && panel.style.maxHeight !== 'none') {
+          panel.style.maxHeight = `${panel.scrollHeight}px`;
+        }
+      });
+    });
+  };
+
   const init = () => {
     enhanceSelectFields();
     bindGlobalSelectEvents();
@@ -477,6 +1044,9 @@
     initStations();
     initCargoTypes();
     initCarTypes();
+    initFirmStats();
+    initReviewsSection();
+    initServicesAccordion();
   };
 
   document.addEventListener('DOMContentLoaded', init);
@@ -1297,6 +1867,165 @@
     }
     return EMAIL_REGEX.test(emailValue);
   }
+
+  const toNumber = (value) => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  };
+
+  const floorToStep = (value, step) => {
+    const numericValue = toNumber(value);
+    if (numericValue === null || step <= 0) {
+      return null;
+    }
+    return Math.floor(numericValue / step) * step;
+  };
+
+  const formatCarsCount = (value) => {
+    const roundedDown = floorToStep(value, 10);
+    if (roundedDown === null) {
+      return null;
+    }
+    return `${String(roundedDown)}+`;
+  };
+
+  const formatAgeYears = (value) => {
+    const numericValue = toNumber(value);
+    if (numericValue === null) {
+      return null;
+    }
+    return `${String(Math.floor(numericValue))}+`;
+  };
+
+  const formatWeightTons = (value) => {
+    const numericValue = toNumber(value);
+    if (numericValue === null) {
+      return null;
+    }
+
+    if (numericValue >= 1_000_000) {
+      const millions = Math.floor((numericValue / 1_000_000) * 10) / 10;
+      return `${String(millions)}М`;
+    }
+
+    const roundedDown = numericValue >= 1_000 ? floorToStep(numericValue, 1_000) : Math.floor(numericValue);
+    return `${String(roundedDown)}+`;
+  };
+
+  const getFirmDataCache = () => {
+    try {
+      const rawCache = localStorage.getItem(FIRM_DATA_CACHE_KEY);
+      if (!rawCache) {
+        return null;
+      }
+
+      const parsedCache = JSON.parse(rawCache);
+      const cachedAt = toNumber(parsedCache?.cachedAt);
+      const data = parsedCache?.data;
+      if (!cachedAt || !data || typeof data !== 'object') {
+        return null;
+      }
+
+      const isFresh = Date.now() - cachedAt < FIRM_DATA_CACHE_TTL_MS;
+      return {
+        data,
+        cachedAt,
+        isFresh,
+      };
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const setFirmDataCache = (data) => {
+    try {
+      localStorage.setItem(
+        FIRM_DATA_CACHE_KEY,
+        JSON.stringify({
+          cachedAt: Date.now(),
+          data,
+        }),
+      );
+    } catch (error) {
+      // Ignore write errors (storage blocked/full).
+    }
+  };
+
+  const fetchFirmData = async () => {
+    const cache = getFirmDataCache();
+    if (cache?.isFresh) {
+      return cache.data;
+    }
+
+    const response = await axios.get(FIRM_DATA_API_URL, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    const payload = response.data;
+    const firmData = Array.isArray(payload?.data) ? payload.data[0] : null;
+    if (!firmData) {
+      throw new Error('Порожня відповідь GetFirmData');
+    }
+
+    setFirmDataCache(firmData);
+    return firmData;
+  };
+
+  const initFirmStats = async () => {
+    const carsCountElement = document.getElementById('firm-cars-count');
+    const ageElement = document.getElementById('firm-age');
+    const weightElement = document.getElementById('firm-weight');
+
+    if (!carsCountElement && !ageElement && !weightElement) {
+      return;
+    }
+
+    try {
+      const data = await fetchFirmData();
+
+      const carsCountText = formatCarsCount(data.carscount);
+      if (carsCountElement && carsCountText) {
+        carsCountElement.textContent = carsCountText;
+      }
+
+      const ageText = formatAgeYears(data.age);
+      if (ageElement && ageText) {
+        ageElement.textContent = ageText;
+      }
+
+      const weightText = formatWeightTons(data.weight);
+      if (weightElement && weightText) {
+        weightElement.textContent = weightText;
+      }
+    } catch (error) {
+      const staleCache = getFirmDataCache();
+      if (staleCache?.data) {
+        const cachedData = staleCache.data;
+
+        const carsCountText = formatCarsCount(cachedData.carscount);
+        if (carsCountElement && carsCountText) {
+          carsCountElement.textContent = carsCountText;
+        }
+
+        const ageText = formatAgeYears(cachedData.age);
+        if (ageElement && ageText) {
+          ageElement.textContent = ageText;
+        }
+
+        const weightText = formatWeightTons(cachedData.weight);
+        if (weightElement && weightText) {
+          weightElement.textContent = weightText;
+        }
+
+        console.warn('GetFirmData недоступний, використано кешовані дані', error);
+        return;
+      }
+
+      console.error('Не вдалося завантажити GetFirmData', error);
+    }
+  };
 
   function updateFieldValidation(field, isValid) {
     if (isValid) {

@@ -33,6 +33,7 @@
       rel="stylesheet"
       type="text/css"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
@@ -83,7 +84,7 @@
               <div class="flex-center">
                 <nav role="navigation" class="nav-menu w-nav-menu">
                   <a
-                    href="home.html"
+                    href="#Top"
                     aria-current="page"
                     class="nav-link w-nav-link w--current"
                     >Strona główna</a
@@ -91,6 +92,17 @@
                   <a href="about.html" class="nav-link w-nav-link"
                     >O nas</a
                   >
+                  <div data-hover="false" data-delay="0" class="nav-sections-dropdown w-dropdown">
+                    <div class="nav-link w-dropdown-toggle">
+                      <div class="w-icon-dropdown-toggle"></div>
+                      <div>Sekcje</div>
+                    </div>
+                    <nav class="w-dropdown-list">
+                      <a href="#sectionServices" class="nav-sections-link w-dropdown-link">Usługi</a>
+                      <a href="#sectionReviews" class="nav-sections-link w-dropdown-link">Opinie</a>
+                      <a href="#sectionContact" class="nav-sections-link w-dropdown-link">Formularz kontaktowy</a>
+                    </nav>
+                  </div>
                   <a href="contact.html" class="nav-link w-nav-link"
                     >Kontakt</a
                   >
@@ -278,7 +290,7 @@
                 href="home.html#sectionCalculator"
                 class="button-underline hide w-inline-block"
               >
-                <div class="button-color">Zamów usługę</div>
+                <div class="button-color">ON-LINE Wniosek</div>
                 <div class="line-animation">
                   <div class="underline"></div>
                 </div>
@@ -291,7 +303,7 @@
                   <div class="underline"></div>
                 </div>
               </a>
-            </div>
+            </div> 
             <div class="menu-button w-nav-button">
               <img
                 src="https://uploads-ssl.webflow.com/64dde8491796b73c619e78bf/64dde8491796b73c619e7953_icon-menu.svg"
@@ -372,7 +384,7 @@
                 <div class="title-tag">Nasi partnerzy</div>
               </div>
               <div>
-                <h2 class="display-2">Współpraca z kluczowymi graczami rynku transportowego. Ciągłe poszukiwanie i rozbudowa sieci partnerów.</h2>
+                <h2 class="display-2 text-center">Współpraca z kluczowymi graczami rynku transportowego. Ciągłe poszukiwanie i rozbudowa sieci partnerów.</h2>
               </div>
             </div>
           </div>
@@ -390,142 +402,98 @@
                   id="w-node-c3dac48d-c241-b506-dc3c-c2c64151a2d1-c3d85e57"
                   class="logo-main"
                 >
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/vagon-invest.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://vagoninvest.biz/" target="_blank" rel="noopener noreferrer">
+                    <img
+                      alt="Wagon-Inwest"
+                      loading="lazy"
+                      src="../images/vagon-invest.svg"
+                      class="logo-image"
+                    />
+                  </a>
                 </div>
                 <div
                   id="w-node-c3dac48d-c241-b506-dc3c-c2c64151a2d3-c3d85e57"
                   class="logo-main"
                 >
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/avangard.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://avangarddnepr.com.ua/" target="_blank" rel="noopener noreferrer">
+                    <img
+                      alt="Awangard-Dniepr"
+                      loading="lazy"
+                      src="../images/avangard.svg"
+                      class="logo-image"
+                    />
+                  </a>
                 </div>
                 <div
                   id="w-node-c3dac48d-c241-b506-dc3c-c2c64151a2d5-c3d85e57"
                   class="logo-main"
                 >
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="100"
-                    src="../images/Craft.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://craftmineral.com/" target="_blank" rel="noopener noreferrer">
+                    <img
+                      alt="Kraft-Mineral"
+                      loading="lazy"
+                      width="100"
+                      src="../images/Craft.svg"
+                      class="logo-image"
+                    />
+                  </a>
                 </div>
                 <div
                   id="w-node-c3dac48d-c241-b506-dc3c-c2c64151a2d9-c3d85e57"
                   class="logo-main"
                 >
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="63"
-                    src="../images/Polfrost.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://pol-ukr.com/polfrost/" target="_blank" rel="noopener noreferrer">
+                    <img
+                      alt="Polfrost"
+                      loading="lazy"
+                      width="63"
+                      src="../images/Polfrost.svg"
+                      class="logo-image"
+                    />
+                  </a>
                 </div>
                 <div
                   id="w-node-_1d3505c8-8aa5-56e7-5775-cdde4797934b-c3d85e57"
                   class="logo-main"
                 >
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/Cemark.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://www.cemark.ua/" target="_blank" rel="noopener noreferrer">
+                    <img
+                      alt="Cemark"
+                      loading="lazy"
+                      src="../images/Cemark.svg"
+                      class="logo-image"
+                    />
+                  </a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/vagon-invest.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://vagoninvest.biz/" target="_blank" rel="noopener noreferrer"><img alt="Wagon-Inwest" loading="lazy" src="../images/vagon-invest.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/avangard.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://avangarddnepr.com.ua/" target="_blank" rel="noopener noreferrer"><img alt="Awangard-Dniepr" loading="lazy" src="../images/avangard.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="100"
-                    src="../images/Craft.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://craftmineral.com/" target="_blank" rel="noopener noreferrer"><img alt="Kraft-Mineral" loading="lazy" width="100" src="../images/Craft.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="63"
-                    src="../images/Polfrost.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://pol-ukr.com/polfrost/" target="_blank" rel="noopener noreferrer"><img alt="Polfrost" loading="lazy" width="63" src="../images/Polfrost.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/Cemark.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://www.cemark.ua/" target="_blank" rel="noopener noreferrer"><img alt="Cemark" loading="lazy" src="../images/Cemark.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/vagon-invest.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://vagoninvest.biz/" target="_blank" rel="noopener noreferrer"><img alt="Wagon-Inwest" loading="lazy" src="../images/vagon-invest.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/avangard.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://avangarddnepr.com.ua/" target="_blank" rel="noopener noreferrer"><img alt="Awangard-Dniepr" loading="lazy" src="../images/avangard.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="100"
-                    src="../images/Craft.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://craftmineral.com/" target="_blank" rel="noopener noreferrer"><img alt="Kraft-Mineral" loading="lazy" width="100" src="../images/Craft.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="63"
-                    src="../images/Polfrost.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://pol-ukr.com/polfrost/" target="_blank" rel="noopener noreferrer"><img alt="Polfrost" loading="lazy" width="63" src="../images/Polfrost.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/Cemark.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://www.cemark.ua/" target="_blank" rel="noopener noreferrer"><img alt="Cemark" loading="lazy" src="../images/Cemark.svg" class="logo-image" /></a>
                 </div>
               </div>
             </div>
@@ -535,7 +503,10 @@
       <section id="sectionCalculator" class="section">
         <div class="container">
           <div class="container">
-            <div class="about-grid reverse">
+            <div>
+              <h2 class="display-2 text-center">ON-LINE Wniosek</h2>
+            </div>
+            <div class="margin-40px about-grid reverse">
               <div
                 id="w-node-_539bf559-4c54-f0b7-4991-3e0e829fd072-829fd06e"
                 class="left-part second"
@@ -614,12 +585,6 @@
                   class="maw-w-right"
                 >
                   <div>
-                    <div class="flex-tag white">
-                      <div class="bullet-tag"></div>
-                      <div class="title-tag">Kalkulator usług</div>
-                    </div>
-                  </div>
-                  <div>
                     <h2 class="display-2 white">
                       Oblicz koszt transportu online.
                     </h2>
@@ -655,97 +620,102 @@
           </div>
         </div>
       </section>
-      <section class="section">
+      <section id="sectionReviews" class="section">
         <div class="container">
-          <div
-            data-w-id="3e7432bd-f03d-8f3a-d717-926cee2c08a8"
-            class="max-w-center _1000"
-          >
+          <div data-w-id="3e7432bd-f03d-8f3a-d717-926cee2c08a8" class="max-w-center _1000">
             <div class="flex-tag">
               <div class="bullet-tag"></div>
-              <div class="title-tag">Opinie</div>
+              <div class="title-tag">Opinie i sugestie</div>
             </div>
             <div>
-              <h2 class="display-2">
-                Prawdziwe <span class="blue-color">przypadki</span> i opinie naszych <span class="blue-color">partnerów</span>
-              </h2>
+              <h2 class="display-2 text-center">Zawsze jesteśmy gotowi wysłuchać i ulepszać nasze <span class="blue-color">usługi</span></h2>
             </div>
           </div>
           <div class="margin-50px">
             <div class="reviews_out-container">
-              <div class="reviews_list">
-                <div
-                  data-w-id="129225df-8785-585d-dfa1-c73c40173190"
-                  class="review_item"
-                >
-                  <div class="stars_container">
-                    <img src="../images/“.svg" loading="lazy" alt="" /><img
-                      src="../images/stars.svg"
-                      loading="lazy"
-                      alt=""
-                    />
+              <div id="reviewsStatus" class="reviews_state is-hidden" role="status" aria-live="polite"></div>
+              <div id="reviewsError" class="reviews_state is-error is-hidden"></div>
+              <div id="reviewsEmpty" class="reviews_state is-empty is-hidden"></div>
+              <div id="reviewsCarousel" class="swiper reviews-swiper is-hidden">
+                <div id="reviewsList" class="swiper-wrapper reviews_list">
+                  <div class="swiper-slide" data-static-review="true">
+                    <article class="review_item">
+                      <div class="stars_container"><img src="../images/stars.svg" loading="lazy" alt="5 stars rating"></div>
+                      <div class="review_text-container">
+                        <p>Jako Państwa klient, dziękujemy za komfort w pracy, za opiekę, za terminowe i bezbłędne wykonywanie zleceń, za porządność, uczciwość i wysoki profesjonalizm Państwa zespołu. Życzymy dalszego rozwoju i doskonalenia oraz łatwej drogi do realizacji zamierzeń. Będziemy szczerze cieszyć się obserwowaniem Państwa przyszłych sukcesów!</p>
+                        <div class="review_person-container">
+                          <div class="text-person-review">Tetiana Meleszko</div>
+                          <p>Dyrektor SP «POLFROST-UKRAINA»</p>
+                        </div>
+                      </div>
+                    </article>
                   </div>
-                  <div class="review_text-container">
-                    <p>
-                      Jako Państwa klient, dziękujemy za komfort w pracy, za opiekę,
-                      za terminowe i bezbłędne wykonywanie zleceń, za
-                      porządność, uczciwość i wysoki profesjonalizm Państwa
-                      zespołu. Życzymy dalszego rozwoju i doskonalenia,
-                      oraz łatwej drogi do realizacji zamierzeń. Będziemy szczerze cieszyć się
-                      obserwowaniem Państwa przyszłych sukcesów!
-                    </p>
-                    <div class="review_person-container">
-                      <div class="text-person-review">Tetiana Meleszko</div>
-                      <p>Dyrektor SP «POLFROST-UKRAINA»</p>
-                    </div>
+                  <div class="swiper-slide" data-static-review="true">
+                    <article class="review_item">
+                      <div class="stars_container"><img src="../images/stars.svg" loading="lazy" alt="5 stars rating"></div>
+                      <div class="review_text-container">
+                        <p>SP «TPK TRIUMF» to dyscyplina w wykonywaniu zobowiązań wobec klienta od wniosku o organizację transportu do aktu świadczonych usług, zawsze terminowy i jakościowy feedback na pytania i problemy, które pojawiają się w procesie pracy.</p>
+                        <div class="review_person-container">
+                          <p>SP "TRANSINVESTKOMPANI"</p>
+                        </div>
+                      </div>
+                    </article>
                   </div>
-                </div>
-                <div
-                  data-w-id="797a264c-2de8-1263-8ea4-d6bd78edb4ff"
-                  class="review_item"
-                >
-                  <div class="stars_container">
-                    <img src="../images/“.svg" loading="lazy" alt="" /><img
-                      src="../images/stars.svg"
-                      loading="lazy"
-                      alt=""
-                    />
-                  </div>
-                  <div class="review_text-container">
-                    <p>
-                      SP «TPK TRIUMF» - to dyscyplina w wykonywaniu zobowiązań
-                      wobec klienta od wniosku o organizację transportu do
-                      aktu świadczonych usług, zawsze terminowy i jakościowy feedback
-                      na pytania i problemy, które pojawiają się w procesie pracy.
-                    </p>
-                    <div class="review_person-container">
-                      <p>SP &quot;TRANSINVESTKOMPANI&quot;</p>
-                    </div>
+                  <div class="swiper-slide" data-static-review="true">
+                    <article class="review_item">
+                      <div class="stars_container"><img src="../images/stars.svg" loading="lazy" alt="5 stars rating"></div>
+                      <div class="review_text-container">
+                        <p>Zespół firmy wykazuje odpowiedzialne podejście do wykonywania zobowiązań, uwagę do szczegółów i operatywne rozwiązywanie problemów roboczych. Wszystkie transporty są realizowane w jasno uzgodnionych terminach, z przestrzeganiem warunków umów i wysokim poziomem serwisu.</p>
+                        <div class="review_person-container">
+                          <p>SP «MAKOSZ MINERAŁ»</p>
+                        </div>
+                      </div>
+                    </article>
                   </div>
                 </div>
-                <div
-                  data-w-id="d1f0165b-f006-39f0-5227-1c3b22e40bc5"
-                  class="review_item"
-                >
-                  <div class="stars_container">
-                    <img src="../images/“.svg" loading="lazy" alt="" /><img
-                      src="../images/stars.svg"
-                      loading="lazy"
-                      alt=""
-                    />
-                  </div>
-                  <div class="review_text-container">
-                    <p>
-                      Zespół firmy wykazuje odpowiedzialne podejście do
-                      wykonywania zobowiązań, uwagę do szczegółów i operatywne
-                      rozwiązywanie problemów roboczych. Wszystkie transporty są realizowane w
-                      jasno uzgodnionych terminach, z przestrzeganiem warunków umów i
-                      wysokim poziomem serwisu.
-                    </p>
-                    <div class="review_person-container">
-                      <p>SP «MAKOSZ MINERAŁ»</p>
+                <button type="button" class="reviews-nav reviews-button-prev swiper-button-prev" aria-label="Poprzednia opinia"></button>
+                <button type="button" class="reviews-nav reviews-button-next swiper-button-next" aria-label="Następna opinia"></button>
+                <div class="reviews-pagination swiper-pagination"></div>
+              </div>
+            </div>
+          </div>
+          <div class="margin-60px about-grid reverse">
+            <div class="left-part second">
+              <div class="form-block w-form">
+                <form id="wf-form-Review" name="wf-form-Review" data-name="Review" method="get" class="form reviews-form">
+                  <div class="w-layout-grid form-grid">
+                    <div class="input-item">
+                      <p class="label dark blue"><span class="gray-text-2">Imię i nazwisko</span></p>
+                      <input class="input w-input" maxlength="256" name="Review-Name" data-name="Review Name" placeholder="Twoje imię i nazwisko" type="text" id="Review-Name">
+                    </div>
+                    <div class="input-item">
+                      <p class="label dark blue"><span class="gray-text-2">Firma</span></p>
+                      <input class="input w-input" maxlength="256" name="Review-Company" data-name="Review Company" placeholder="Nazwa firmy" type="text" id="Review-Company">
+                    </div>
+                    <div class="input-item full">
+                      <p class="label dark blue"><span class="gray-text-2">Opinia</span></p>
+                      <textarea class="text-area w-input" maxlength="3000" name="Review-Text" data-name="Review Text" placeholder="Podziel się doświadczeniem współpracy..." id="Review-Text"></textarea>
                     </div>
                   </div>
+                  <button type="submit" class="submit-button_calculator w-button reviews-submit">Wyślij opinię</button>
+                  <div class="contact-form-success w-form-done reviews-form-success is-hidden"><div></div></div>
+                  <div class="contact-form-error w-form-fail reviews-form-error is-hidden"><div></div></div>
+                </form>
+              </div>
+            </div>
+            <div class="photo-right blue-empty">
+              <div class="maw-w-right">
+                <div>
+                  <div class="flex-tag white">
+                    <div class="bullet-tag"></div>
+                    <div class="title-tag">Zostaw swoją opinię</div>
+                  </div>
+                </div>
+                <div>
+                  <h2 class="display-2 white">Twoje doświadczenie pomaga nam stawać się lepszymi</h2>
+                </div>
+                <div class="margin-40px">
+                  <p class="subhead white">Podziel się opinią o współpracy z TRIUMPH. Uważnie czytamy każdą opinię i wykorzystujemy ją do ulepszania serwisu.</p>
                 </div>
               </div>
             </div>
@@ -776,7 +746,7 @@
           </div>
         </div>
       </section>
-      <section class="section half">
+      <section id="sectionServices" class="section half">
         <div class="container">
           <div>
             <div class="number-grid">
@@ -833,7 +803,118 @@
               </div>
             </div>
             <div class="margin-80px">
-              <div class="service-grid">
+              <div class="services-accordion-grid" data-services-accordion>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-1" id="service-trigger-1">
+                      <span>Przewozy kolejowe</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-1" role="region" aria-labelledby="service-trigger-1">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Usługi transportowo-spedycyjne</li>
+                      </ul>
+                      <p class="service-accordion-desc">Pełny cykl logistyki kolejowej dla ładunków przemysłowych i rolniczych.</p>
+                    </div>
+                  </div>
+                </article>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-2" id="service-trigger-2">
+                      <span>Wynajem taboru</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-2" role="region" aria-labelledby="service-trigger-2">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Wagony samowyładowcze klapowe i z pełnym dnem</li>
+                        <li>Wagony kryte o różnej pojemności</li>
+                        <li>Wagony do drewna</li>
+                        <li>Wagony do zrębków</li>
+                      </ul>
+                      <p class="service-accordion-desc">Oferujemy rynkowe ceny, długoterminową i wzajemnie korzystną współpracę. Gwarantujemy rzetelność oraz terminowe płatności.</p>
+                    </div>
+                  </div>
+                </article>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-3" id="service-trigger-3">
+                      <span>Podnajem taboru</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-3" role="region" aria-labelledby="service-trigger-3">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Wagony samowyładowcze klapowe</li>
+                        <li>Wagony samowyładowcze z pełnym dnem</li>
+                        <li>Wagony kryte</li>
+                        <li>Hopper-zbożowy</li>
+                        <li>Hopper-cementowy</li>
+                        <li>Hopper-mineralny</li>
+                        <li>Inne rodzaje taboru</li>
+                      </ul>
+                      <p class="service-accordion-desc">Konkurencyjne ceny i długoterminowa współpraca.</p>
+                    </div>
+                  </div>
+                </article>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-4" id="service-trigger-4">
+                      <span>Usługi finansowe</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-4" role="region" aria-labelledby="service-trigger-4">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Opłata taryfy kolejowej na Ukrainie i poza jej granicami</li>
+                        <li>Opłata płatności tranzytowych</li>
+                        <li>Ubezpieczenie ładunków</li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-5" id="service-trigger-5">
+                      <span>Kontrola dyspozytorska</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-5" role="region" aria-labelledby="service-trigger-5">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Dyslokacja wagonów</li>
+                        <li>Obliczanie taryfy kolejowej</li>
+                        <li>Konsultacje dotyczące dokumentów przewozowych</li>
+                        <li>Schematy optymalizacji tras</li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-6" id="service-trigger-6">
+                      <span>Działalność handlowa</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-6" role="region" aria-labelledby="service-trigger-6">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Materiały budowlane: kruszywo granitowe, odsiew, piasek itd.</li>
+                        <li>Materiały niemetaliczne: wapień, wapień do topnikowania</li>
+                        <li>Surowce przemysłowe: żużel wielkopiecowy, żużel granulowany</li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <div class="service-grid is-hidden">
                 <div
                   data-w-id="a4ff1857-26f9-219f-366a-52c5950b691d"
                   style="opacity: 0"
@@ -1250,6 +1331,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="../js/webflow.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="../js/index.js" type="text/javascript"></script>
     <script src="../js/auth-check.js" type="text/javascript"></script>
     <script src="../js/nav-update.js" type="text/javascript"></script>

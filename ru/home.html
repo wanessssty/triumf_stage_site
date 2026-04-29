@@ -33,6 +33,7 @@
       rel="stylesheet"
       type="text/css"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
@@ -83,7 +84,7 @@
               <div class="flex-center">
                 <nav role="navigation" class="nav-menu w-nav-menu">
                   <a
-                    href="home.html"
+                    href="#Top"
                     aria-current="page"
                     class="nav-link w-nav-link w--current"
                     >Главная</a
@@ -91,6 +92,17 @@
                   <a href="about.html" class="nav-link w-nav-link"
                     >О нас</a
                   >
+                  <div data-hover="false" data-delay="0" class="nav-sections-dropdown w-dropdown">
+                    <div class="nav-link w-dropdown-toggle">
+                      <div class="w-icon-dropdown-toggle"></div>
+                      <div>Разделы</div>
+                    </div>
+                    <nav class="w-dropdown-list">
+                      <a href="#sectionServices" class="nav-sections-link w-dropdown-link">Услуги</a>
+                      <a href="#sectionReviews" class="nav-sections-link w-dropdown-link">Отзывы</a>
+                      <a href="#sectionContact" class="nav-sections-link w-dropdown-link">Обратная связь</a>
+                    </nav>
+                  </div>
                   <a href="contact.html" class="nav-link w-nav-link"
                     >Контакты</a
                   >
@@ -278,7 +290,7 @@
                 href="home.html#sectionCalculator"
                 class="button-underline hide w-inline-block"
               >
-                <div class="button-color">Заказать услугу</div>
+                <div class="button-color">ON-LINE Заявка</div>
                 <div class="line-animation">
                   <div class="underline"></div>
                 </div>
@@ -372,7 +384,7 @@
                 <div class="title-tag">Наши партнеры</div>
               </div>
               <div>
-                <h2 class="display-2">Сотрудничество с ключевыми игроками рынка перевозок. Постоянный поиск и расширение партнерской сети.</h2>
+                <h2 class="display-2 text-center">Сотрудничество с ключевыми игроками рынка перевозок. Постоянный поиск и расширение партнерской сети.</h2>
               </div>
             </div>
           </div>
@@ -390,142 +402,98 @@
                   id="w-node-c3dac48d-c241-b506-dc3c-c2c64151a2d1-c3d85e57"
                   class="logo-main"
                 >
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/vagon-invest.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://vagoninvest.biz/" target="_blank" rel="noopener noreferrer">
+                    <img
+                      alt="Вагон-Инвест"
+                      loading="lazy"
+                      src="../images/vagon-invest.svg"
+                      class="logo-image"
+                    />
+                  </a>
                 </div>
                 <div
                   id="w-node-c3dac48d-c241-b506-dc3c-c2c64151a2d3-c3d85e57"
                   class="logo-main"
                 >
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/avangard.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://avangarddnepr.com.ua/" target="_blank" rel="noopener noreferrer">
+                    <img
+                      alt="Авангард-Днепр"
+                      loading="lazy"
+                      src="../images/avangard.svg"
+                      class="logo-image"
+                    />
+                  </a>
                 </div>
                 <div
                   id="w-node-c3dac48d-c241-b506-dc3c-c2c64151a2d5-c3d85e57"
                   class="logo-main"
                 >
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="100"
-                    src="../images/Craft.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://craftmineral.com/" target="_blank" rel="noopener noreferrer">
+                    <img
+                      alt="Крафт-Минерал"
+                      loading="lazy"
+                      width="100"
+                      src="../images/Craft.svg"
+                      class="logo-image"
+                    />
+                  </a>
                 </div>
                 <div
                   id="w-node-c3dac48d-c241-b506-dc3c-c2c64151a2d9-c3d85e57"
                   class="logo-main"
                 >
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="63"
-                    src="../images/Polfrost.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://pol-ukr.com/polfrost/" target="_blank" rel="noopener noreferrer">
+                    <img
+                      alt="Полфрост"
+                      loading="lazy"
+                      width="63"
+                      src="../images/Polfrost.svg"
+                      class="logo-image"
+                    />
+                  </a>
                 </div>
                 <div
                   id="w-node-_1d3505c8-8aa5-56e7-5775-cdde4797934b-c3d85e57"
                   class="logo-main"
                 >
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/Cemark.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://www.cemark.ua/" target="_blank" rel="noopener noreferrer">
+                    <img
+                      alt="Цемарк"
+                      loading="lazy"
+                      src="../images/Cemark.svg"
+                      class="logo-image"
+                    />
+                  </a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/vagon-invest.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://vagoninvest.biz/" target="_blank" rel="noopener noreferrer"><img alt="Вагон-Инвест" loading="lazy" src="../images/vagon-invest.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/avangard.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://avangarddnepr.com.ua/" target="_blank" rel="noopener noreferrer"><img alt="Авангард-Днепр" loading="lazy" src="../images/avangard.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="100"
-                    src="../images/Craft.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://craftmineral.com/" target="_blank" rel="noopener noreferrer"><img alt="Крафт-Минерал" loading="lazy" width="100" src="../images/Craft.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="63"
-                    src="../images/Polfrost.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://pol-ukr.com/polfrost/" target="_blank" rel="noopener noreferrer"><img alt="Полфрост" loading="lazy" width="63" src="../images/Polfrost.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/Cemark.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://www.cemark.ua/" target="_blank" rel="noopener noreferrer"><img alt="Цемарк" loading="lazy" src="../images/Cemark.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/vagon-invest.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://vagoninvest.biz/" target="_blank" rel="noopener noreferrer"><img alt="Вагон-Инвест" loading="lazy" src="../images/vagon-invest.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/avangard.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://avangarddnepr.com.ua/" target="_blank" rel="noopener noreferrer"><img alt="Авангард-Днепр" loading="lazy" src="../images/avangard.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="100"
-                    src="../images/Craft.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://craftmineral.com/" target="_blank" rel="noopener noreferrer"><img alt="Крафт-Минерал" loading="lazy" width="100" src="../images/Craft.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    width="63"
-                    src="../images/Polfrost.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://pol-ukr.com/polfrost/" target="_blank" rel="noopener noreferrer"><img alt="Полфрост" loading="lazy" width="63" src="../images/Polfrost.svg" class="logo-image" /></a>
                 </div>
                 <div class="logo-main">
-                  <img
-                    alt=""
-                    loading="lazy"
-                    src="../images/Cemark.svg"
-                    class="logo-image"
-                  />
+                  <a href="https://www.cemark.ua/" target="_blank" rel="noopener noreferrer"><img alt="Цемарк" loading="lazy" src="../images/Cemark.svg" class="logo-image" /></a>
                 </div>
               </div>
             </div>
@@ -535,7 +503,10 @@
       <section id="sectionCalculator" class="section">
         <div class="container">
           <div class="container">
-            <div class="about-grid reverse">
+            <div>
+              <h2 class="display-2 text-center">ON-LINE Заявка</h2>
+            </div>
+            <div class="margin-40px about-grid reverse">
               <div
                 id="w-node-_539bf559-4c54-f0b7-4991-3e0e829fd072-829fd06e"
                 class="left-part second"
@@ -614,12 +585,6 @@
                   class="maw-w-right"
                 >
                   <div>
-                    <div class="flex-tag white">
-                      <div class="bullet-tag"></div>
-                      <div class="title-tag">Калькулятор услуг</div>
-                    </div>
-                  </div>
-                  <div>
                     <h2 class="display-2 white">
                       Рассчитайте стоимость перевозки онлайн.
                     </h2>
@@ -655,97 +620,102 @@
           </div>
         </div>
       </section>
-      <section class="section">
+      <section id="sectionReviews" class="section">
         <div class="container">
-          <div
-            data-w-id="3e7432bd-f03d-8f3a-d717-926cee2c08a8"
-            class="max-w-center _1000"
-          >
+          <div data-w-id="3e7432bd-f03d-8f3a-d717-926cee2c08a8" class="max-w-center _1000">
             <div class="flex-tag">
               <div class="bullet-tag"></div>
-              <div class="title-tag">Отзывы</div>
+              <div class="title-tag">Отзывы и предложения</div>
             </div>
             <div>
-              <h2 class="display-2">
-                Реальные <span class="blue-color">кейсы</span> и отзывы наших <span class="blue-color">партнеров</span>
-              </h2>
+              <h2 class="display-2 text-center">Мы <span class="blue-color">всегда</span> готовы вас выслушать и улучшать наши <span class="blue-color">услуги</span></h2>
             </div>
           </div>
           <div class="margin-50px">
             <div class="reviews_out-container">
-              <div class="reviews_list">
-                <div
-                  data-w-id="129225df-8785-585d-dfa1-c73c40173190"
-                  class="review_item"
-                >
-                  <div class="stars_container">
-                    <img src="../images/stars.svg" loading="lazy" alt="" /><img
-                      src="../images/stars.svg"
-                      loading="lazy"
-                      alt=""
-                    />
+              <div id="reviewsStatus" class="reviews_state is-hidden" role="status" aria-live="polite"></div>
+              <div id="reviewsError" class="reviews_state is-error is-hidden"></div>
+              <div id="reviewsEmpty" class="reviews_state is-empty is-hidden"></div>
+              <div id="reviewsCarousel" class="swiper reviews-swiper is-hidden">
+                <div id="reviewsList" class="swiper-wrapper reviews_list">
+                  <div class="swiper-slide" data-static-review="true">
+                    <article class="review_item">
+                      <div class="stars_container"><img src="../images/stars.svg" loading="lazy" alt="5 stars rating"></div>
+                      <div class="review_text-container">
+                        <p>Мы, как Ваш Клиент, благодарим за комфорт в работе, за заботу, за своевременное и безупречное выполнение заявок, за порядочность, честность и высокий профессионализм Вашей команды. Желаем и дальше развиваться и совершенствоваться, и легкого пути к реализации задуманного. Будем искренне рады наблюдать за Вашими будущими успехами!</p>
+                        <div class="review_person-container">
+                          <div class="text-person-review">Татьяна Мелешко</div>
+                          <p>Директор ООО «ПОЛФРОСТ-УКРАИНА»</p>
+                        </div>
+                      </div>
+                    </article>
                   </div>
-                  <div class="review_text-container">
-                    <p>
-                      Мы, как Ваш Клиент, благодарим за комфорт в работе, за заботу,
-                      за своевременное и безупречное выполнение заявок, за
-                      порядочность, честность и высокий профессионализм Вашей
-                      команды. Желаем и дальше развиваться и совершенствоваться,
-                      и легкого пути к реализации задуманного. Будем искренне рады
-                      наблюдать за Вашими будущими успехами!
-                    </p>
-                    <div class="review_person-container">
-                      <div class="text-person-review">Татьяна Мелешко</div>
-                      <p>Директор ООО «ПОЛФРОСТ-УКРАИНА»</p>
-                    </div>
+                  <div class="swiper-slide" data-static-review="true">
+                    <article class="review_item">
+                      <div class="stars_container"><img src="../images/stars.svg" loading="lazy" alt="5 stars rating"></div>
+                      <div class="review_text-container">
+                        <p>ООО «ТПК»ТРИУМФ» — это дисциплина в выполнении обязательств перед клиентом от заявки на организацию перевозки до акта оказанных услуг, всегда своевременная и качественная обратная связь на вопросы и проблемы, возникающие в процессе работы.</p>
+                        <div class="review_person-container">
+                          <p>ООО "ТРАНСИНВЕСТКОМПАНИ"</p>
+                        </div>
+                      </div>
+                    </article>
                   </div>
-                </div>
-                <div
-                  data-w-id="797a264c-2de8-1263-8ea4-d6bd78edb4ff"
-                  class="review_item"
-                >
-                  <div class="stars_container">
-                    <img src="../images/stars.svg" loading="lazy" alt="" /><img
-                      src="../images/stars.svg"
-                      loading="lazy"
-                      alt=""
-                    />
-                  </div>
-                  <div class="review_text-container">
-                    <p>
-                      ООО «ТПК»ТРИУМФ» - это дисциплина в выполнении обязательств
-                      перед клиентом от заявки на организацию перевозки до
-                      акта оказанных услуг, всегда своевременная и качественная обратная связь
-                      на вопросы и проблемы, возникающие в процессе работы.
-                    </p>
-                    <div class="review_person-container">
-                      <p>ООО &quot;ТРАНСИНВЕСТКОМПАНИ&quot;</p>
-                    </div>
+                  <div class="swiper-slide" data-static-review="true">
+                    <article class="review_item">
+                      <div class="stars_container"><img src="../images/stars.svg" loading="lazy" alt="5 stars rating"></div>
+                      <div class="review_text-container">
+                        <p>Команда компании демонстрирует ответственное отношение к выполнению обязательств, внимательность к деталям и оперативное решение рабочих вопросов. Все перевозки осуществляются в четко согласованные сроки, с соблюдением условий договоров и высоким уровнем сервиса.</p>
+                        <div class="review_person-container">
+                          <p>ООО «МАКОШ МИНЕРАЛ»</p>
+                        </div>
+                      </div>
+                    </article>
                   </div>
                 </div>
-                <div
-                  data-w-id="d1f0165b-f006-39f0-5227-1c3b22e40bc5"
-                  class="review_item"
-                >
-                  <div class="stars_container">
-                    <img src="../images/stars.svg" loading="lazy" alt="" /><img
-                      src="../images/stars.svg"
-                      loading="lazy"
-                      alt=""
-                    />
-                  </div>
-                  <div class="review_text-container">
-                    <p>
-                      Команда компании демонстрирует ответственное отношение к
-                      выполнению обязательств, внимательность к деталям и оперативное
-                      решение рабочих вопросов. Все перевозки осуществляются в
-                      четко согласованные сроки, с соблюдением условий договоров и
-                      высоким уровнем сервиса.
-                    </p>
-                    <div class="review_person-container">
-                      <p>ООО «МАКОШ МИНЕРАЛ»</p>
+                <button type="button" class="reviews-nav reviews-button-prev swiper-button-prev" aria-label="Предыдущий отзыв"></button>
+                <button type="button" class="reviews-nav reviews-button-next swiper-button-next" aria-label="Следующий отзыв"></button>
+                <div class="reviews-pagination swiper-pagination"></div>
+              </div>
+            </div>
+          </div>
+          <div class="margin-60px about-grid reverse">
+            <div class="left-part second">
+              <div class="form-block w-form">
+                <form id="wf-form-Review" name="wf-form-Review" data-name="Review" method="get" class="form reviews-form">
+                  <div class="w-layout-grid form-grid">
+                    <div class="input-item">
+                      <p class="label dark blue"><span class="gray-text-2">Имя и фамилия</span></p>
+                      <input class="input w-input" maxlength="256" name="Review-Name" data-name="Review Name" placeholder="Ваше имя и фамилия" type="text" id="Review-Name">
+                    </div>
+                    <div class="input-item">
+                      <p class="label dark blue"><span class="gray-text-2">Компания</span></p>
+                      <input class="input w-input" maxlength="256" name="Review-Company" data-name="Review Company" placeholder="Название компании" type="text" id="Review-Company">
+                    </div>
+                    <div class="input-item full">
+                      <p class="label dark blue"><span class="gray-text-2">Отзыв</span></p>
+                      <textarea class="text-area w-input" maxlength="3000" name="Review-Text" data-name="Review Text" placeholder="Поделитесь вашим опытом сотрудничества..." id="Review-Text"></textarea>
                     </div>
                   </div>
+                  <button type="submit" class="submit-button_calculator w-button reviews-submit">Отправить отзыв</button>
+                  <div class="contact-form-success w-form-done reviews-form-success is-hidden"><div></div></div>
+                  <div class="contact-form-error w-form-fail reviews-form-error is-hidden"><div></div></div>
+                </form>
+              </div>
+            </div>
+            <div class="photo-right blue-empty">
+              <div class="maw-w-right">
+                <div>
+                  <div class="flex-tag white">
+                    <div class="bullet-tag"></div>
+                    <div class="title-tag">Оставьте ваш отзыв</div>
+                  </div>
+                </div>
+                <div>
+                  <h2 class="display-2 white">Ваш опыт помогает нам становиться лучше</h2>
+                </div>
+                <div class="margin-40px">
+                  <p class="subhead white">Поделитесь впечатлениями о сотрудничестве с TRIUMPH. Мы внимательно читаем каждый отзыв и используем его для улучшения сервиса.</p>
                 </div>
               </div>
             </div>
@@ -776,7 +746,7 @@
           </div>
         </div>
       </section>
-      <section class="section half">
+      <section id="sectionServices" class="section half">
         <div class="container">
           <div>
             <div class="number-grid">
@@ -785,7 +755,7 @@
                 style="opacity: 0"
                 class="number-wrapper"
               >
-                <h2 class="number-about">450+</h2>
+                <h2 id="firm-cars-count" class="number-about">450+</h2>
                 <div class="sub-text-about white">
                   Вагонов в оперативном управлении
                 </div>
@@ -795,7 +765,7 @@
                 style="opacity: 0"
                 class="number-wrapper"
               >
-                <h2 class="number-about">9+</h2>
+                <h2 id="firm-age" class="number-about">9+</h2>
                 <div class="sub-text-about white">Лет на рынке</div>
               </div>
               <div
@@ -811,7 +781,7 @@
                 style="opacity: 0"
                 class="number-wrapper four"
               >
-                <h2 class="number-about">1,2М+</h2>
+                <h2 id="firm-weight" class="number-about">1,2М+</h2>
                 <div class="sub-text-about white">Тонн перевезенных грузов за 2025 г.</div>
               </div>
             </div>
@@ -833,7 +803,118 @@
               </div>
             </div>
             <div class="margin-80px">
-              <div class="service-grid">
+              <div class="services-accordion-grid" data-services-accordion>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-1" id="service-trigger-1">
+                      <span>Железнодорожные перевозки</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-1" role="region" aria-labelledby="service-trigger-1">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Транспортно-экспедиторские услуги</li>
+                      </ul>
+                      <p class="service-accordion-desc">Полный цикл железнодорожной логистики для индустриальных и аграрных грузов.</p>
+                    </div>
+                  </div>
+                </article>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-2" id="service-trigger-2">
+                      <span>Аренда подвижного состава</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-2" role="region" aria-labelledby="service-trigger-2">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Полувагоны люковые и глуходонные</li>
+                        <li>Крытые вагоны различного объема</li>
+                        <li>Вагоны-лесовозы</li>
+                        <li>Вагоны-щеповозы</li>
+                      </ul>
+                      <p class="service-accordion-desc">Предлагаем рыночные цены, долгосрочное и взаимовыгодное сотрудничество. Гарантируем порядочность и своевременную оплату.</p>
+                    </div>
+                  </div>
+                </article>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-3" id="service-trigger-3">
+                      <span>Предоставление в субаренду</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-3" role="region" aria-labelledby="service-trigger-3">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Полувагоны люковые</li>
+                        <li>Полувагоны глуходонные</li>
+                        <li>Крытые вагоны</li>
+                        <li>Хоппер-зерновоз</li>
+                        <li>Хоппер-цементовоз</li>
+                        <li>Хоппер-минераловоз</li>
+                        <li>Другие виды подвижного состава</li>
+                      </ul>
+                      <p class="service-accordion-desc">Конкурентные цены, долгосрочное сотрудничество.</p>
+                    </div>
+                  </div>
+                </article>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-4" id="service-trigger-4">
+                      <span>Финансовые услуги</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-4" role="region" aria-labelledby="service-trigger-4">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Оплата железнодорожного тарифа по Украине и за ее пределами</li>
+                        <li>Оплата транзитных платежей</li>
+                        <li>Страхование грузов</li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-5" id="service-trigger-5">
+                      <span>Диспетчерский контроль</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-5" role="region" aria-labelledby="service-trigger-5">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Дислокация вагонов</li>
+                        <li>Расчет железнодорожного тарифа</li>
+                        <li>Консультации по оформлению перевозочных документов</li>
+                        <li>Схемы оптимизации маршрутов</li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+                <article class="service-accordion-card">
+                  <h3 class="service-accordion-title">
+                    <button class="service-accordion-trigger" type="button" aria-expanded="false" aria-controls="service-panel-6" id="service-trigger-6">
+                      <span>Торговая деятельность</span>
+                      <span class="service-accordion-icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div class="service-accordion-panel" id="service-panel-6" role="region" aria-labelledby="service-trigger-6">
+                    <div class="service-accordion-content">
+                      <ul class="service-accordion-list">
+                        <li>Строительные материалы: щебень гранитный, отсев, песок и т.д.</li>
+                        <li>Нерудные материалы: известняк, известняк для флюсования</li>
+                        <li>Промышленное сырье: шлак доменный, шлак гранулированный</li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <div class="service-grid is-hidden" aria-hidden="true">
                 <div
                   data-w-id="a4ff1857-26f9-219f-366a-52c5950b691d"
                   style="opacity: 0"
@@ -1256,6 +1337,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="../js/webflow.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="../js/index.js" type="text/javascript"></script>
     <script src="../js/auth-check.js" type="text/javascript"></script>
     <script src="../js/nav-update.js" type="text/javascript"></script>
