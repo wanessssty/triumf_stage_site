@@ -1,4 +1,8 @@
 (function() {
+  const CALCULATOR_HASH = '#sectionCalculator';
+  const REVIEW_FORM_HASH = '#sectionReviewForm';
+  const INSTANT_HASHES = new Set([CALCULATOR_HASH, REVIEW_FORM_HASH]);
+
   if (document.documentElement) {
     document.documentElement.classList.add('nav-initializing');
   }
@@ -34,6 +38,7 @@
         reviews: 'Відгуки',
         services: 'Послуги',
         feedback: "Зворотний зв'язок",
+        leaveReview: 'Залишити відгук',
         contacts: 'Контакти',
       },
       en: {
@@ -43,6 +48,7 @@
         reviews: 'Reviews',
         services: 'Services',
         feedback: 'Contact form',
+        leaveReview: 'Leave a review',
         contacts: 'Contacts',
       },
       pl: {
@@ -52,6 +58,7 @@
         reviews: 'Opinie',
         services: 'Usługi',
         feedback: 'Kontakt',
+        leaveReview: 'Zostaw opinię',
         contacts: 'Kontakty',
       },
       ru: {
@@ -61,6 +68,7 @@
         reviews: 'Отзывы',
         services: 'Услуги',
         feedback: 'Обратная связь',
+        leaveReview: 'Оставить отзыв',
         contacts: 'Контакты',
       },
     };
@@ -71,6 +79,7 @@
     const contactUrl = 'contact.html';
     const sectionBase = isHomePage ? '' : `${homeUrl}`;
     const reviewsUrl = `${sectionBase}#sectionReviews`;
+    const leaveReviewUrl = `${sectionBase}#sectionReviewForm`;
     const servicesUrl = `${sectionBase}#sectionServices`;
     const feedbackUrl = `${sectionBase}#sectionContact`;
     const homeLink = isHomePage ? '#Top' : homeUrl;
@@ -91,8 +100,62 @@
           </nav>
         </div>
         <a href="${contactUrl}" class="nav-link w-nav-link${page === 'contact.html' ? ' w--current' : ''}"${page === 'contact.html' ? ' aria-current="page"' : ''}>${dictionary.contacts}</a>
+        <a href="${leaveReviewUrl}" class="nav-link w-nav-link">${dictionary.leaveReview}</a>
       `,
     };
+  };
+
+  const isModifiedClick = (event) =>
+    event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
+
+  const scrollToHashInstantly = (hash) => {
+    if (!INSTANT_HASHES.has(hash) || window.location.hash !== hash) {
+      return;
+    }
+
+    const targetId = hash.slice(1);
+    const target = document.getElementById(targetId);
+    if (!target) {
+      return;
+    }
+
+    // Force instant jump in case any smooth-scroll behavior is active.
+    const root = document.documentElement;
+    const previousBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    root.style.scrollBehavior = previousBehavior;
+  };
+
+  const bindInstantHashLinks = () => {
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href*="#"]');
+      if (!link || isModifiedClick(event)) {
+        return;
+      }
+
+      const linkUrl = new URL(link.getAttribute('href'), window.location.href);
+      if (!INSTANT_HASHES.has(linkUrl.hash)) {
+        return;
+      }
+
+      const isSamePage =
+        linkUrl.origin === window.location.origin &&
+        linkUrl.pathname === window.location.pathname &&
+        linkUrl.search === window.location.search;
+
+      event.preventDefault();
+
+      if (isSamePage) {
+        if (window.location.hash !== linkUrl.hash) {
+          history.replaceState(null, '', `${window.location.pathname}${window.location.search}${linkUrl.hash}`);
+        }
+        scrollToHashInstantly(linkUrl.hash);
+        return;
+      }
+
+      window.location.assign(`${linkUrl.pathname}${linkUrl.search}${linkUrl.hash}`);
+    });
   };
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -116,5 +179,9 @@
     } catch (error) {
       // Keep menu rendering even if Webflow modules are unavailable.
     }
+
+    bindInstantHashLinks();
+    scrollToHashInstantly(CALCULATOR_HASH);
+    scrollToHashInstantly(REVIEW_FORM_HASH);
   });
 })();

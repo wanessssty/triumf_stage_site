@@ -4683,7 +4683,6 @@ figcaption {
 }
 
 .reviews_list {
-  grid-column-gap: 20px;
   grid-row-gap: 20px;
   justify-content: center;
   align-items: stretch;
@@ -4701,6 +4700,10 @@ figcaption {
   padding: 20px;
   display: flex;
 }
+
+/* .photo-right.blue-empty.review-form {
+  min-height: 520px !important;
+} */
 
 .collection-list-wrapper {
   background-color: #0000;
@@ -4727,6 +4730,7 @@ figcaption {
 
 .reviews-swiper {
   width: 100%;
+  box-sizing: border-box;
   padding-bottom: 38px;
   padding-left: 52px;
   padding-right: 52px;
@@ -4935,6 +4939,12 @@ figcaption {
   padding-left: 20px;
   font-size: 15px;
   line-height: 1.5;
+}
+
+.service-accordion-list.is-why-us li {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.55;
 }
 
 .service-accordion-list li + li {
