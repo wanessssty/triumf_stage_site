@@ -2130,7 +2130,11 @@ figcaption {
 }
 
 .contact-form-section .contact-form-left {
-  background-color: var(--primary-color);
+  background-color: transparent;
+  background-image: url('../images/calculator_image-background.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   border-radius: 50px;
   flex-direction: column;
   justify-content: center;
@@ -2462,10 +2466,10 @@ figcaption {
 }
 
 .hero {
-  background-image: url('../images/Frame-594.png'), url('../images/line-hero-home.svg');
-  background-position: 100%, 50% 100%;
-  background-repeat: no-repeat, no-repeat;
-  background-size: 670px, contain;
+  background-image: url('../images/hero_home-page.jpg');
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: cover;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -3322,7 +3326,7 @@ figcaption {
 .nav-component {
   grid-column-gap: 16px;
   grid-row-gap: 16px;
-  background-color: #0000;
+  background-color: #fff;
   grid-template-rows: auto;
   grid-template-columns: 1fr 1fr 1fr;
   grid-auto-columns: 1fr;
@@ -3887,12 +3891,11 @@ figcaption {
 } */
 
 .number-about {
-  color: #fff;
-  text-shadow: 2px -2px 0 var(--primary-color), -2px 2px 0 var(--primary-color), -2px -2px 0 var(--primary-color), 2px 2px 0 var(--primary-color), -2px 0 0 var(--primary-color), 2px 0 0 var(--primary-color), 0 -2px 0 var(--primary-color), 0 2px 0 var(--primary-color);
+  color: rgba(224, 172, 82, 1);
   margin-top: 0;
   margin-bottom: 0;
   font-size: 150px;
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1.3;
   display: inline-block;
 }
@@ -4169,6 +4172,15 @@ figcaption {
   padding-right: 40px;
 }
 
+#sectionCalculator .photo-right.blue-empty,
+#sectionReviewForm .photo-right.blue-empty {
+  background-color: transparent;
+  background-image: url('../images/calculator_image-background.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .photo-right.second-photo {
   background-image: url('../images/about-right.jpg');
 }
@@ -4203,6 +4215,11 @@ figcaption {
 
 .maw-w-right.why-us {
   max-width: 482px;
+}
+
+#w-node-a6cb3eb9-1bad-aff7-994f-6a23618f7672-c3d85e57.photo-right {
+  background-image: url('../images/why-us_background.jpg');
+  background-position: center;
 }
 
 .lightbox-link {
@@ -5230,7 +5247,6 @@ figcaption {
 
 @media screen and (min-width: 1280px) {
   .hero {
-    background-position: 100%, 50% 90%;
     padding-bottom: 270px;
   }
 
@@ -5271,10 +5287,6 @@ figcaption {
 }
 
 @media screen and (min-width: 1440px) {
-  .hero {
-    background-position: 100%, 50% 110%;
-  }
-
   .icon-first {
     width: 100px;
     height: 100px;
@@ -5312,17 +5324,7 @@ figcaption {
     max-width: none;
   }
 
-  .hero {
-    background-position: 100%, 50% 125%;
-  }
-
   .nav_lang-container {
-  }
-}
-
-@media screen and (min-width: 1800px) {
-  .hero {
-    background-position: 100%, 50% 125%;
   }
 }
 
@@ -5434,8 +5436,6 @@ figcaption {
   }
 
   .hero {
-    background-position: 100%, 50% 75%;
-    background-size: 350px, contain;
     min-height: auto;
     padding-top: 131px;
     padding-bottom: 90px;
@@ -5853,8 +5853,6 @@ figcaption {
   }
 
   .hero {
-    background-position: 100% 82%, 50% 535px;
-    background-size: 300px, contain;
     padding-bottom: 245px;
   }
 
@@ -6249,10 +6247,6 @@ figcaption {
   }
 
   .hero {
-    background-image: none;
-    background-position: 0 0;
-    background-repeat: repeat;
-    background-size: auto;
     padding-top: 100px;
     padding-bottom: 39px;
   }
