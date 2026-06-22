@@ -1,5 +1,6 @@
 :root {
   --black-2: #0e0e0e;
+  --heading-color: rgba(14, 14, 14, 0.8);
   --dim-grey: #63666d;
   --white-smoke: #e9eaec;
   --primary-color: #157bc0;
@@ -937,6 +938,7 @@ body {
 }
 
 h1 {
+  color: var(--heading-color);
   margin-top: 20px;
   margin-bottom: 10px;
   font-size: 38px;
@@ -945,6 +947,7 @@ h1 {
 }
 
 h2 {
+  color: var(--heading-color);
   margin-top: 20px;
   margin-bottom: 10px;
   font-size: 31px;
@@ -953,6 +956,7 @@ h2 {
 }
 
 h3 {
+  color: var(--heading-color);
   margin-top: 20px;
   margin-bottom: 10px;
   font-size: 24px;
@@ -961,6 +965,7 @@ h3 {
 }
 
 h4 {
+  color: var(--heading-color);
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 17px;
@@ -969,6 +974,7 @@ h4 {
 }
 
 h5 {
+  color: var(--heading-color);
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 14px;
@@ -977,6 +983,7 @@ h5 {
 }
 
 h6 {
+  color: var(--heading-color);
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 12px;
@@ -1319,6 +1326,7 @@ figcaption {
 }
 
 .display-1 {
+  color: var(--heading-color);
   letter-spacing: -1px;
   margin-top: 0;
   margin-bottom: 0;
@@ -1336,6 +1344,7 @@ figcaption {
 }
 
 .display-2 {
+  color: var(--heading-color);
   letter-spacing: -1px;
   margin-top: 0;
   margin-bottom: 5px;
@@ -1848,6 +1857,7 @@ figcaption {
 }
 
 .display-3 {
+  color: var(--heading-color);
   margin-top: 0;
   margin-bottom: 0;
   font-size: 30px;
@@ -2435,7 +2445,7 @@ figcaption {
 }
 
 .pricing-title {
-  color: var(--black);
+  color: var(--heading-color);
   margin-bottom: 16px;
   font-size: 28px;
   font-weight: 500;
@@ -3370,6 +3380,7 @@ figcaption {
 }
 
 .title-fade {
+  color: var(--heading-color);
   letter-spacing: -1px;
   margin-top: 0;
   margin-bottom: 5px;
@@ -3434,6 +3445,7 @@ figcaption {
 }
 
 .item-heading {
+  color: var(--heading-color);
   margin-top: 0;
   margin-bottom: 0;
   font-size: 17px;
@@ -3602,7 +3614,7 @@ figcaption {
 }
 
 .footer-title.dark {
-  color: var(--black-2);
+  color: var(--heading-color);
 }
 
 .social-link-main {
@@ -3732,7 +3744,7 @@ figcaption {
 }
 
 .main-display {
-  color: var(--black-2);
+  color: var(--heading-color);
   margin-top: 0;
   margin-bottom: 5px;
   font-size: 74px;
@@ -4093,6 +4105,7 @@ figcaption {
 }
 
 .main-display-2 {
+  color: var(--heading-color);
   margin-top: 0;
   margin-bottom: 5px;
   font-size: 60px;
@@ -4889,7 +4902,7 @@ figcaption {
 }
 
 .service-accordion-trigger {
-  color: var(--black);
+  color: var(--heading-color);
   text-align: left;
   cursor: pointer;
   background-color: #0000;
