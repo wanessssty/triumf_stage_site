@@ -4182,7 +4182,8 @@ figcaption {
 }
 
 .photo-right.second-photo {
-  background-image: url('../images/about-right.jpg');
+  background-image: url('../images/why-us_background.jpg');
+  background-position: center;
 }
 
 .photo-right.product-photo {
