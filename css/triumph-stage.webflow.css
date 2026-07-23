@@ -4776,10 +4776,12 @@ figcaption {
   align-items: center;
   display: flex;
   width: 100%;
+  overflow: hidden;
 }
 
 .logo-carousel-wrapper .logo-grids {
   flex-shrink: 0;
+  width: max-content;
   animation: logoCarouselScroll var(--logo-carousel-duration) linear infinite;
   will-change: transform;
 }
@@ -4793,7 +4795,8 @@ figcaption {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    /* Three identical logo sets in the markup — shift by exactly one set. */
+    transform: translateX(-33.333333%);
   }
 }
 
