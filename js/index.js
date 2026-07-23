@@ -956,6 +956,103 @@
     loadAndRenderReviews();
   };
 
+  const initCollapsibleAccordion = ({ accordion, hash, openEvent }) => {
+    const trigger = accordion.querySelector('.calculator-accordion-trigger');
+    const panel = accordion.querySelector('.calculator-accordion-panel');
+    if (!trigger || !panel) {
+      return;
+    }
+
+    const close = () => {
+      const panelHeight = panel.scrollHeight;
+      if (panel.style.maxHeight === 'none') {
+        panel.style.maxHeight = `${panelHeight}px`;
+      }
+
+      requestAnimationFrame(() => {
+        panel.style.maxHeight = '0px';
+      });
+
+      accordion.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    };
+
+    const open = () => {
+      accordion.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+      panel.addEventListener(
+        'transitionend',
+        () => {
+          if (accordion.classList.contains('is-open')) {
+            panel.style.maxHeight = 'none';
+          }
+        },
+        { once: true },
+      );
+    };
+
+    const toggle = () => {
+      if (accordion.classList.contains('is-open')) {
+        close();
+      } else {
+        open();
+      }
+    };
+
+    const openFromHash = () => {
+      if (window.location.hash === hash) {
+        open();
+      }
+    };
+
+    accordion.classList.remove('is-open');
+    trigger.setAttribute('aria-expanded', 'false');
+    panel.style.maxHeight = '0px';
+
+    trigger.addEventListener('click', toggle);
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+    if (openEvent) {
+      window.addEventListener(openEvent, open);
+    }
+
+    window.addEventListener('resize', () => {
+      if (!accordion.classList.contains('is-open')) {
+        return;
+      }
+      if (panel.style.maxHeight !== 'none') {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+      }
+    });
+  };
+
+  const initCalculatorAccordion = () => {
+    const accordion = document.querySelector('[data-calculator-accordion]');
+    if (!accordion) {
+      return;
+    }
+
+    initCollapsibleAccordion({
+      accordion,
+      hash: '#sectionCalculator',
+      openEvent: 'triumph:open-calculator',
+    });
+  };
+
+  const initReviewAccordion = () => {
+    const accordion = document.querySelector('[data-review-accordion]');
+    if (!accordion) {
+      return;
+    }
+
+    initCollapsibleAccordion({
+      accordion,
+      hash: '#sectionReviewForm',
+      openEvent: 'triumph:open-review',
+    });
+  };
+
   const initServicesAccordion = () => {
     const accordion = document.querySelector('[data-services-accordion]');
     if (!accordion) {
@@ -1069,6 +1166,8 @@
     initFirmStats();
     initReviewsSection();
     initServicesAccordion();
+    initCalculatorAccordion();
+    initReviewAccordion();
     initMarketsSection();
   };
 

@@ -34,40 +34,24 @@
       uk: {
         home: 'Головна',
         about: 'Про нас',
-        sections: 'Розділи',
-        reviews: 'Відгуки',
-        services: 'Послуги',
-        feedback: "Зворотний зв'язок",
         leaveReview: 'Залишити відгук',
         contacts: 'Контакти',
       },
       en: {
         home: 'Home',
         about: 'About us',
-        sections: 'Sections',
-        reviews: 'Reviews',
-        services: 'Services',
-        feedback: 'Contact form',
         leaveReview: 'Leave a review',
         contacts: 'Contacts',
       },
       pl: {
         home: 'Główna',
         about: 'O nas',
-        sections: 'Sekcje',
-        reviews: 'Opinie',
-        services: 'Usługi',
-        feedback: 'Kontakt',
         leaveReview: 'Zostaw opinię',
         contacts: 'Kontakty',
       },
       ru: {
         home: 'Главная',
         about: 'О нас',
-        sections: 'Разделы',
-        reviews: 'Отзывы',
-        services: 'Услуги',
-        feedback: 'Обратная связь',
         leaveReview: 'Оставить отзыв',
         contacts: 'Контакты',
       },
@@ -77,32 +61,88 @@
     const homeUrl = lang === 'uk' ? 'index.html' : 'home.html';
     const aboutUrl = 'about.html';
     const contactUrl = 'contact.html';
-    const sectionBase = isHomePage ? '' : `${homeUrl}`;
-    const reviewsUrl = `${sectionBase}#sectionReviews`;
-    const leaveReviewUrl = `${sectionBase}#sectionReviewForm`;
-    const servicesUrl = `${sectionBase}#sectionServices`;
-    const feedbackUrl = `${sectionBase}#sectionContact`;
+    const leaveReviewUrl = `${isHomePage ? '' : homeUrl}#sectionReviewForm`;
     const homeLink = isHomePage ? '#Top' : homeUrl;
+    const leaveReviewButton = (extraClass = '') => `
+        <a href="${leaveReviewUrl}" class="button-underline w-inline-block${extraClass ? ` ${extraClass}` : ''}">
+          <div class="button-color">${dictionary.leaveReview}</div>
+          <div class="line-animation">
+            <div class="underline"></div>
+          </div>
+        </a>`;
 
     return {
-      html: `
+      menuHtml: `
         <a href="${homeLink}" class="nav-link w-nav-link${isHomePage ? ' w--current' : ''}"${isHomePage ? ' aria-current="page"' : ''}>${dictionary.home}</a>
         <a href="${aboutUrl}" class="nav-link w-nav-link${page === 'about.html' ? ' w--current' : ''}"${page === 'about.html' ? ' aria-current="page"' : ''}>${dictionary.about}</a>
-        <div data-hover="false" data-delay="0" class="nav-sections-dropdown w-dropdown">
-          <div class="nav-link w-dropdown-toggle">
-            <div class="w-icon-dropdown-toggle"></div>
-            <div>${dictionary.sections}</div>
-          </div>
-          <nav class="w-dropdown-list">
-            <a href="${reviewsUrl}" class="nav-sections-link w-dropdown-link">${dictionary.reviews}</a>
-            <a href="${servicesUrl}" class="nav-sections-link w-dropdown-link">${dictionary.services}</a>
-            <a href="${feedbackUrl}" class="nav-sections-link w-dropdown-link">${dictionary.feedback}</a>
-          </nav>
-        </div>
         <a href="${contactUrl}" class="nav-link w-nav-link${page === 'contact.html' ? ' w--current' : ''}"${page === 'contact.html' ? ' aria-current="page"' : ''}>${dictionary.contacts}</a>
-        <a href="${leaveReviewUrl}" class="nav-link w-nav-link">${dictionary.leaveReview}</a>
+        ${leaveReviewButton('nav-link menu leave-review-mobile')}
+      `,
+      leaveReviewHtml: `
+        <div class="leave-review-nav">
+          ${leaveReviewButton()}
+        </div>
       `,
     };
+  };
+
+  const bindUnderlineHover = (root) => {
+    root.querySelectorAll('.button-underline').forEach((button) => {
+      const underline = button.querySelector('.underline');
+      if (!underline || button.dataset.underlineBound === '1') {
+        return;
+      }
+
+      button.dataset.underlineBound = '1';
+      underline.style.transform = 'translate3d(-101%, 0px, 0px)';
+
+      button.addEventListener('mouseenter', () => {
+        underline.style.transition = 'transform 300ms ease';
+        underline.style.transform = 'translate3d(0%, 0px, 0px)';
+      });
+
+      button.addEventListener('mouseleave', () => {
+        underline.style.transition = 'transform 300ms ease';
+        underline.style.transform = 'translate3d(100%, 0px, 0px)';
+
+        const reset = (event) => {
+          if (event && event.propertyName && event.propertyName !== 'transform') {
+            return;
+          }
+          underline.removeEventListener('transitionend', reset);
+          underline.style.transition = 'none';
+          underline.style.transform = 'translate3d(-101%, 0px, 0px)';
+        };
+
+        underline.addEventListener('transitionend', reset);
+      });
+    });
+  };
+
+  const placeLeaveReviewAfterOnlineRequest = (leaveReviewHtml) => {
+    document.querySelectorAll('.flex-nav-button').forEach((container) => {
+      container.querySelectorAll('.leave-review-nav').forEach((node) => node.remove());
+
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = leaveReviewHtml.trim();
+      const leaveReviewNode = wrapper.firstElementChild;
+      if (!leaveReviewNode) {
+        return;
+      }
+
+      const onlineRequest = container.querySelector('.email-flex');
+      const authButton = container.querySelector('.auth-button_nav');
+
+      if (onlineRequest && onlineRequest.parentNode === container) {
+        onlineRequest.insertAdjacentElement('afterend', leaveReviewNode);
+      } else if (authButton && authButton.parentNode === container) {
+        container.insertBefore(leaveReviewNode, authButton);
+      } else {
+        container.appendChild(leaveReviewNode);
+      }
+
+      bindUnderlineHover(leaveReviewNode);
+    });
   };
 
   const isModifiedClick = (event) =>
@@ -151,6 +191,12 @@
           history.replaceState(null, '', `${window.location.pathname}${window.location.search}${linkUrl.hash}`);
         }
         scrollToHashInstantly(linkUrl.hash);
+        if (linkUrl.hash === CALCULATOR_HASH) {
+          window.dispatchEvent(new CustomEvent('triumph:open-calculator'));
+        }
+        if (linkUrl.hash === REVIEW_FORM_HASH) {
+          window.dispatchEvent(new CustomEvent('triumph:open-review'));
+        }
         return;
       }
 
@@ -164,10 +210,12 @@
       return;
     }
 
-    const { html } = buildMenuLinks();
+    const { menuHtml, leaveReviewHtml } = buildMenuLinks();
     navMenus.forEach((menu) => {
-      menu.innerHTML = html;
+      menu.innerHTML = menuHtml;
+      bindUnderlineHover(menu);
     });
+    placeLeaveReviewAfterOnlineRequest(leaveReviewHtml);
 
     try {
       if (window.Webflow && typeof window.Webflow.require === 'function') {
@@ -183,5 +231,8 @@
     bindInstantHashLinks();
     scrollToHashInstantly(CALCULATOR_HASH);
     scrollToHashInstantly(REVIEW_FORM_HASH);
+
+    document.documentElement.classList.remove('nav-initializing');
+    document.documentElement.classList.add('nav-initialized');
   });
 })();

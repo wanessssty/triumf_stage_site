@@ -92,17 +92,6 @@
                   <a href="about.html" class="nav-link w-nav-link"
                     >О нас</a
                   >
-                  <div data-hover="false" data-delay="0" class="nav-sections-dropdown w-dropdown">
-                    <div class="nav-link w-dropdown-toggle">
-                      <div class="w-icon-dropdown-toggle"></div>
-                      <div>Разделы</div>
-                    </div>
-                    <nav class="w-dropdown-list">
-                      <a href="#sectionServices" class="nav-sections-link w-dropdown-link">Услуги</a>
-                      <a href="#sectionReviews" class="nav-sections-link w-dropdown-link">Отзывы</a>
-                      <a href="#sectionContact" class="nav-sections-link w-dropdown-link">Обратная связь</a>
-                    </nav>
-                  </div>
                   <a href="contact.html" class="nav-link w-nav-link"
                     >Контакты</a
                   >
@@ -331,21 +320,21 @@
                 <p
                   data-w-id="cada07a3-41ea-109e-2c80-013dd06f338e"
                   style="opacity: 0"
-                  class="subhead"
+                  class="subhead black-text"
                 >
                 Комплекс услуг по организации перевозок грузов по таможенной территории Украины и за её пределами. Эффективное планирование маршрутов перевозок, экспедиторское сопровождение и информирование заказчика о ходе перевозки гарантируют безопасность и своевременную доставку груза в пункт назначения.<br />
                 </p>
               </div>
-              <div class="margin-60px">
+              <div class="margin-30px">
                 <div
                   data-w-id="4b8a182f-68c0-3561-a75d-c2a8f2eeff2f"
                   style="opacity: 0"
-                  class="button-flex"
+                  class="hero-buttons"
                 >
                   <a
                     href="contact.html"
                     class="button-underline w-inline-block"
-                    style="max-width: 174px;"
+                    style="max-width: 280px;"
                   >
                     <div class="button-color">Рассчитать стоимость перевозки</div>
                     <div class="line-animation">
@@ -379,12 +368,11 @@
               style="opacity: 0"
               class="align-center"
             >
-              <div class="flex-tag">
-                <div class="bullet-tag"></div>
-                <div class="title-tag">Наши партнеры</div>
+              <div class="flex-tag clear">
+                <div class="heading-tag blue-color">НАШИ ПАРТНЕРЫ</div>
               </div>
               <div>
-                <h2 class="display-2 text-center">Сотрудничество с ключевыми игроками рынка перевозок. Постоянный поиск и расширение партнерской сети.</h2>
+                <h2 class="display-2 text-center">Сотрудничество с ключевыми игроками <span class="yellow-color">рынка перевозок</span>. Постоянный поиск и расширение <span class="blue-color">партнерской сети</span>.</h2>
               </div>
             </div>
           </div>
@@ -512,9 +500,14 @@
       <section id="sectionCalculator" class="section">
         <div class="container">
           <div class="container">
-            <div>
-              <h2 class="display-2 text-center">ON-LINE Заявка</h2>
-            </div>
+            <div class="calculator-accordion" data-calculator-accordion>
+              <h2 class="display-2 text-center calculator-accordion-heading">
+                <button type="button" class="calculator-accordion-trigger" id="calculator-trigger" aria-expanded="false" aria-controls="calculator-panel">
+                  <span>ON-LINE Заявка</span>
+                  <span class="calculator-accordion-icon" aria-hidden="true"></span>
+                </button>
+              </h2>
+              <div class="calculator-accordion-panel" id="calculator-panel" role="region" aria-labelledby="calculator-trigger">
             <div class="margin-40px about-grid reverse">
               <div
                 id="w-node-_539bf559-4c54-f0b7-4991-3e0e829fd072-829fd06e"
@@ -591,19 +584,19 @@
               >
                 <div
                   data-w-id="539bf559-4c54-f0b7-4991-3e0e829fd0a2"
-                  class="maw-w-right"
+                  class="form_text-container"
                 >
                   <div>
-                    <h2 class="display-2 white">
-                      Рассчитайте стоимость перевозки онлайн.
+                    <h2 class="display-2 white text-center">
+                      РАССЧИТАЙТЕ СТОИМОСТЬ ПЕРЕВОЗКИ ОНЛАЙН
                     </h2>
                   </div>
                   <div class="margin-40px">
-                    <div>
+                    <div class="form-details-container">
                       <div class="contact-details-flex">
                         <div class="contact-details">
                           <p class="label dark">
-                            Email<span class="gray-text-2"></span>
+                            Email
                           </p>
                           <div>
                             <a
@@ -626,16 +619,14 @@
                 </div>
               </div>
             </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
       <section id="sectionReviews" class="section">
         <div class="container">
           <div data-w-id="3e7432bd-f03d-8f3a-d717-926cee2c08a8" class="max-w-center _1000">
-            <div class="flex-tag">
-              <div class="bullet-tag"></div>
-              <div class="title-tag">Отзывы и предложения</div>
-            </div>
             <div>
               <h2 class="display-2 text-center">Мы <span class="blue-color">всегда</span> готовы вас выслушать и улучшать наши <span class="blue-color">услуги</span></h2>
             </div>
@@ -688,7 +679,16 @@
               </div>
             </div>
           </div>
-          <div id="sectionReviewForm" class="margin-60px about-grid reverse">
+          <div id="sectionReviewForm" class="margin-60px">
+            <div class="calculator-accordion" data-review-accordion>
+              <h2 class="display-2 text-center calculator-accordion-heading">
+                <button type="button" class="calculator-accordion-trigger" id="review-trigger" aria-expanded="false" aria-controls="review-panel">
+                  <span>ОСТАВИТЬ ОТЗЫВ</span>
+                  <span class="calculator-accordion-icon" aria-hidden="true"></span>
+                </button>
+              </h2>
+              <div class="calculator-accordion-panel" id="review-panel" role="region" aria-labelledby="review-trigger">
+            <div class="margin-35px about-grid reverse">
             <div class="left-part second">
               <div class="form-block w-form">
                 <form id="wf-form-Review" name="wf-form-Review" data-name="Review" method="get" class="form reviews-form">
@@ -712,20 +712,17 @@
                 </form>
               </div>
             </div>
-            <div class="photo-right blue-empty">
-              <div class="maw-w-right">
+            <div class="photo-right blue-empty review-form">
+              <div class="form_text-container">
                 <div>
-                  <div class="flex-tag white">
-                    <div class="bullet-tag"></div>
-                    <div class="title-tag">Оставьте ваш отзыв</div>
-                  </div>
-                </div>
-                <div>
-                  <h2 class="display-2 white">Ваш опыт помогает нам становиться лучше</h2>
+                  <h2 class="display-2 white">ВАШ ОПЫТ ПОМОГАЕТ НАМ СТАНОВИТЬСЯ ЛУЧШЕ</h2>
                 </div>
                 <div class="margin-40px">
                   <p class="subhead white">Поделитесь впечатлениями о сотрудничестве с TRIUMPH. Мы внимательно читаем каждый отзыв и используем его для улучшения сервиса.</p>
                 </div>
+              </div>
+            </div>
+            </div>
               </div>
             </div>
           </div>
@@ -737,21 +734,18 @@
             data-w-id="dcd8d792-22c9-8ece-6a2b-50744df929b1"
             class="max-w-center _1200"
           >
-            <div class="flex-tag">
-              <div class="bullet-tag"></div>
-              <div id="markets-section-tag" class="title-tag">Мы постоянно ищем новые рынки</div>
+            <div class="flex-tag clear">
+              <div class="heading-tag blue-color">НАПРАВЛЕНИЯ</div>
             </div>
             <div>
-              <h2 id="markets-section-title" class="display-2">
-                Перевозки по Украине и за её пределами
-              </h2>
+              <h2 class="display-2">Логистика по <span class="blue-color">Украине</span> и международные маршруты: <span class="blue-color">Польша</span>, <span class="blue-color">Венгрия</span>, <span class="blue-color">Румыния</span>, <span class="blue-color">Молдова</span>.</h2>
             </div>
           </div>
           <div
             data-w-id="dcd8d792-22c9-8ece-6a2b-50744df929bf"
-            class="margin-50px align-center"
+            class="margin-50px align-center map-image"
           >
-            <img src="../images/map.svg" loading="lazy" alt="" />
+            <img class="map-image-item" src="../images/map.svg" loading="lazy" alt="" />
           </div>
         </div>
       </section>
@@ -822,7 +816,7 @@
                   </h3>
                   <div class="service-accordion-panel" id="service-panel-1" role="region" aria-labelledby="service-trigger-1">
                     <div class="service-accordion-content">
-                      <ul class="service-accordion-list">
+                      <ul class="service-accordion-list blue-text">
                         <li>Транспортно-экспедиторские услуги</li>
                       </ul>
                       <p class="service-accordion-desc">Полный комплекс экспедиторских услуг по территории Украины и за её пределами.</p>
@@ -838,7 +832,7 @@
                   </h3>
                   <div class="service-accordion-panel" id="service-panel-2" role="region" aria-labelledby="service-trigger-2">
                     <div class="service-accordion-content">
-                      <ul class="service-accordion-list">
+                      <ul class="service-accordion-list blue-text">
                         <li>Полувагоны люковые и глуходонные</li>
                         <li>Крытые вагоны различного объема</li>
                         <li>Вагоны-лесовозы</li>
@@ -857,7 +851,7 @@
                   </h3>
                   <div class="service-accordion-panel" id="service-panel-3" role="region" aria-labelledby="service-trigger-3">
                     <div class="service-accordion-content">
-                      <ul class="service-accordion-list">
+                      <ul class="service-accordion-list blue-text">
                         <li>Полувагоны люковые</li>
                         <li>Полувагоны глуходонные</li>
                         <li>Крытые вагоны</li>
@@ -880,7 +874,7 @@
                   </h3>
                   <div class="service-accordion-panel" id="service-panel-4" role="region" aria-labelledby="service-trigger-4">
                     <div class="service-accordion-content">
-                      <ul class="service-accordion-list">
+                      <ul class="service-accordion-list blue-text">
                         <li>Оплата железнодорожного тарифа по Украине и за ее пределами</li>
                         <li>Оплата транзитных платежей</li>
                         <li>Страхование грузов</li>
@@ -898,7 +892,7 @@
                   </h3>
                   <div class="service-accordion-panel" id="service-panel-5" role="region" aria-labelledby="service-trigger-5">
                     <div class="service-accordion-content">
-                      <ul class="service-accordion-list">
+                      <ul class="service-accordion-list blue-text">
                         <li>Дислокация вагонов</li>
                         <li>Консультации по оформлению перевозочных документов</li>
                         <li>Схемы оптимизации маршрутов</li>
@@ -915,7 +909,7 @@
                   </h3>
                   <div class="service-accordion-panel" id="service-panel-6" role="region" aria-labelledby="service-trigger-6">
                     <div class="service-accordion-content">
-                      <ul class="service-accordion-list">
+                      <ul class="service-accordion-list blue-text">
                         <li>Строительные материалы: щебень гранитный, отсев, песок и т.д.</li>
                         <li>Нерудные материалы: известняк, известняк для флюсования</li>
                         <li>Промышленное сырье: шлак доменный, шлак гранулированный</li>
@@ -1040,16 +1034,6 @@
                 </div>
               </div>
             </div>
-            <div class="margin-60px">
-              <p
-                data-w-id="cbb0c66b-5a42-f63d-0b96-6c97ca9d7d71"
-                style="opacity: 0"
-                class="small-paragraph center"
-              >
-              И это только вершина айсберга. Мы стараемся найти индивидуальный подход и предложить максимально выгодные условия перевозок для каждого клиента.
-              </p>
-        
-            </div>
           </div>
           <div class="margim-150px">
             <div class="about-grid">
@@ -1060,7 +1044,7 @@
                 <div
                   data-w-id="d01d1e9a-9055-421b-ed24-67cffa21fd41"
                   style="opacity: 0"
-                  class="maw-w-right"
+                  class="maw-w-right why-us"
                 >
                   <div>
                     <div class="flex-tag white">
@@ -1091,14 +1075,9 @@
       <section id="sectionContact" class="section contact-form-section">
         <div class="container">
           <div class="contact-form-grid">
-            <div class="contact-form-left">
-              <div class="contact-form-tag">
-                <div class="flex-tag white">
-                  <div class="bullet-tag"></div>
-                  <div class="title-tag">Свяжитесь с нами</div>
-                </div>
-              </div>
-              <h2 class="display-2 white">Ответим на вопросы в течение 24 часов</h2>
+            <div class="contact-form-left form_text-container">
+
+              <h2 class="display-2 white">ОТВЕТИМ НА ВОПРОСЫ В ТЕЧЕНИЕ 24 ЧАСОВ</h2>
         
               <div class="contact-details-flex margin-30px">
                 <div class="contact-details">
