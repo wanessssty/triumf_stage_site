@@ -4776,7 +4776,18 @@ figcaption {
   align-items: center;
   display: flex;
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
+}
+
+.logo-carousel-full {
+  width: 100vw;
+  max-width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
 .logo-carousel-wrapper .logo-grids {
