@@ -2095,7 +2095,16 @@
     return firmData;
   };
 
+  const updateCurrentYearLabels = () => {
+    const year = String(new Date().getFullYear());
+    document.querySelectorAll('[data-current-year]').forEach((element) => {
+      element.textContent = year;
+    });
+  };
+
   const initFirmStats = async () => {
+    updateCurrentYearLabels();
+
     const carsCountElement = document.getElementById('firm-cars-count');
     const ageElement = document.getElementById('firm-age');
     const weightElement = document.getElementById('firm-weight');
